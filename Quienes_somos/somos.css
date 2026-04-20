@@ -1,0 +1,124 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+  color: #333;
+}
+
+/* HEADER */
+.header {
+  background: #0c0829;
+  color: white;
+  padding: 18px 24px;
+}
+
+.header h1 {
+  font-size: 22px;
+}
+
+/* NAV */
+nav {
+  background: #1a1a1a;
+  display: flex;
+}
+
+nav a {
+  color: #ccc;
+  text-decoration: none;
+  padding: 12px 16px;
+  font-size: 14px;
+}
+
+nav a:hover,
+nav .active {
+  color: white;
+  border-bottom: 2px solid #bc99dc;
+}
+
+/* HERO */
+.hero {
+  background: #1d093a;
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.hero h2 {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+/* CONTENIDO */
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 30px 20px;
+}
+
+/* TARJETAS */
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+}
+
+.card h3 {
+  color: #0e072c;
+  margin-bottom: 10px;
+}
+
+/* PILARES */
+.pillars {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.pillar {
+  background: white;
+  flex: 1;
+  margin: 5px;
+  padding: 15px;
+  text-align: center;
+  border-radius: 8px;
+}
+
+.pillar strong {
+  font-size: 20px;
+  color: #dec5c7;
+}
+
+/* BOTÓN */
+.cta {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.cta button {
+  background: #0d0016;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cta button:hover {
+  background: #100019;
+}
+
+/* FOOTER */
+.footer {
+  background: #111;
+  color: #aaa;
+  text-align: center;
+  padding: 15px;
+  font-size: 13px;
+}

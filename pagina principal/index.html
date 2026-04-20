@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Tecnology</title>
+    <link rel="stylesheet" href="index.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- BARRA OFERTA -->
+    <div class="barra-oferta">
+        ¡SOLO OFERTAS! Encuentra lo mejor en tecnología
+    </div>
+
+    <!-- MENU -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">⚡ Tienda<span>Tecnology</span></div>
+            <nav>
+                <a href="#" class="active">☰ Todo</a>
+                <a href="#">Inicio</a>
+                <a href="#" onclick="showSection('productos')">Ofertas</a>
+                <a href="#">Categorías</a>
+                <a href="#">Contacto</a>
+            </nav>
+            <button class="btn-whatsapp" onclick="enviarWhatsApp()">📲 WhatsApp</button>
+        </div>
+    </header>
+
+    <!-- HERO / BUSCADOR -->
+    <div class="hero">
+        <h1>Lo mejor en <span>Tecnología</span></h1>
+        <p>Laptops gaming, periféricos y más al mejor precio</p>
+        <div class="search-bar">
+            <input type="text" placeholder="Busca aquí la tecnología para ti..." id="searchInput"
+                oninput="filtrarProductos()">
+            <button>🔍</button>
+        </div>
+    </div>
+
+    <!-- BOTONES VER PRODUCTOS / CARRITO -->
+    <div class="actions">
+        <button class="btn-primary" onclick="showSection('productos')">Ver Productos</button>
+        <button class="btn-success" onclick="showSection('carrito')">
+            🛒 Ver Carrito
+            <span id="badge-count" class="badge-count hidden"></span>
+        </button>
+    </div>
+
+    <main>
+
+        <!-- PRODUCTOS -->
+        <section id="productos">
+
+            <!-- FILTROS -->
+            <div class="categorias">
+                <button class="cat-btn active" onclick="setCat(this,'all')">Todos</button>
+                <button class="cat-btn" onclick="setCat(this,'pc')">💻 PCs</button>
+                <button class="cat-btn" onclick="setCat(this,'periferico')">🖱️ Periféricos</button>
+                <button class="cat-btn" onclick="setCat(this,'audio')">🎧 Audio</button>
+                <button class="cat-btn" onclick="setCat(this,'Laptop')">🎧 Laptop</button>
+            </div>
+
+            <div class="section-title">Productos Destacados</div>
+
+            <div class="row" id="productosGrid">
+
+                <!-- PRODUCTO 1 -->
+                <div class="col" data-cat="pc">
+                    <div class="card producto">
+                      
+                        <img src="/imagenes/pc3.jpg" alt="PC Gaming RTX 5080">
+                        <div class="card-body">
+                            <div class="card-marca">Custom Build</div>
+                            <h5 class="card-nombre">PC Gaming RTX 5080</h5>
+                            <p class="descripcion">
+                                Procesador Intel Core i7 de 13ª generación, tarjeta gráfica RTX 5080 16GB,
+                                32GB RAM DDR5, SSD 1TB NVMe, refrigeración líquida y fuente 750W certificada.
+                            </p>
+                           
+                            <p class="precio">S/ 4,500</p>
+                            <button class="btn-agregar" onclick="agregarCarrito('PC Gaming RTX 5080', 4500)">+ Agregar
+                                al carrito</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 2 -->
+                <div class="col" data-cat="periferico">
+                    <div class="card producto">
+                        <img src="/imagenes/Mouserazer.jpg" alt="Mouse Razer">
+                        <div class="card-body">
+                            <div class="card-marca">Razer</div>
+                            <h5 class="card-nombre">Mouse Razer DeathAdder</h5>
+                            <p class="descripcion">
+                                Sensor óptico de 20,000 DPI, iluminación RGB, 8 botones programables,
+                                diseño ergonómico y conexión USB de alta precisión.
+                            </p>
+                            
+                            <p class="precio">S/ 150</p>
+                            <button class="btn-agregar" onclick="agregarCarrito('Mouse Razer', 150)">+ Agregar al
+                                carrito</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 3 -->
+                <div class="col" data-cat="Laptop">
+                    <div class="card producto">
+                        <img src="/imagenes/laptop.jpg" alt="Audífonos HyperX">
+                        <div class="card-body">
+                            <div class="card-marca">HyperX</div>
+                            <h5 class="card-nombre">Audífonos HyperX Cloud</h5>
+                            <p class="descripcion">
+                                Sonido envolvente 7.1, drivers de 53mm, micrófono desmontable con cancelación
+                                de ruido, estructura de aluminio y almohadillas memory foam.
+                            </p>
+                           
+                            <p class="precio">S/ 320</p>
+                            <button class="btn-agregar" onclick="agregarCarrito('Audífonos HyperX', 320)">+ Agregar al
+                                carrito</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 4 -->
+                <div class="col" data-cat="periferico">
+                    <div class="card producto">
+                        
+                        <img src="/imagenes/mause_teclado.jpg" alt="Teclado Gamer Razer">
+                        <div class="card-body">
+                            <div class="card-marca">Razer</div>
+                            <h5 class="card-nombre">Teclado Gamer Razer</h5>
+                            <p class="descripcion">
+                                Switches mecánicos Razer Green, retroiluminación RGB Chroma,
+                                anti-ghosting, estructura resistente y reposamuñecas ergonómico.
+                            </p>
+                            
+                            <p class="precio">S/ 280</p>
+                            <button class="btn-agregar" onclick="agregarCarrito('Teclado Gamer Razer', 280)">+ Agregar
+                                al carrito</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 5 -->
+                <div class="col" data-cat="Laptop">
+                    <div class="card producto">
+                        <img src="/imagenes/laptop2.jpg" alt="MSI Katana 15">
+                        <div class="card-body">
+                            <div class="card-marca">MSI</div>
+                            <h5 class="card-nombre">Katana 15 RTX 4070</h5>
+                            <p class="descripcion">
+                                i7-13620H, RTX 4070 8GB, 15.6” FHD, 16GB DDR5, SSD 1TB, Windows 11.
+                            </p>
+                            <p class="precio">S/ 1920</p>
+                            <button class="btn-agregar" onclick="agregarCarrito('MSI Katana 15', 1320)">+ Agregar al
+                                carrito</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 6 -->
+                <div class="col" data-cat="Laptop">
+                    <div class="card producto">
+                        <img src="/imagenes/laptop4.jpg" alt="Lenovo LOQ 15IAX9">
+                        <div class="card-body">
+                            <div class="card-marca">Lenovo</div>
+                            <h5 class="card-nombre">LOQ 15 RTX 3050</h5>
+                            <p class="descripcion">
+                                i5-12450HX, RTX 3050 6GB, 15.6” FHD, 8GB DDR5, SSD 512GB, Windows 11.
+                            </p>
+                            <p class="precio">S/ 2920</p>
+                            <button class="btn-agregar" onclick="agregarCarrito('MSI Katana 15', 1320)">+ Agregar al
+                                carrito</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 7 -->
+                <div class="col" data-cat="Laptop">
+                    <div class="card producto">
+                        <img src="/imagenes/laptop3.jpg" alt="ASUS ROG Strix G614">
+                        <div class="card-body">
+                            <div class="card-marca">ASUS</div>
+                            <h5 class="card-nombre">ROG Strix G614 RTX 4070</h5>
+                            <p class="descripcion">
+                                Intel Core i9-14900HX, RTX 4070 8GB, 32GB DDR5, SSD 1TB, Windows 11.
+                            </p>
+                            <p class="precio">S/1780</p>
+                            <button class="btn-agregar" onclick="agregarCarrito('ASUS ROG Strix G614', 0)"> + Agregar al
+                                carrito</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- fin row -->
+
+            <div id="noResultados" class="no-resultados hidden">
+                No se encontraron productos 😕
+            </div>
+
+        </section>
+
+        <!-- CARRITO -->
+        <section id="carrito" class="hidden">
+
+            <div class="section-title">🛒 Carrito de Compras</div>
+
+            <div id="carritoVacio" class="carrito-vacio hidden">
+                <div class="icono">🛒</div>
+                <p>Tu carrito está vacío</p>
+            </div>
+
+            <ul id="listaCarrito" class="lista-carrito"></ul>
+
+            <div class="total-box" id="totalBox">
+                <span class="total-label">Total a pagar</span>
+                <span class="total-monto">S/ <span id="total">0</span></span>
+            </div>
+
+            <div class="carrito-actions">
+                <button class="btn-whatsapp" onclick="enviarWhatsApp()">📲 Comprar por WhatsApp</button>
+                <button class="btn-volver" onclick="showSection('productos')">← Volver</button>
+            </div>
+
+        </section>
+
+        
+    </main>
+
+    <!-- VIDEO -->
+    <div class="video-section">
+        <div class="section-title">Video Destacado</div>
+        <div class="video-wrapper">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/fmSmcSfC5fk?si=Ht8lI6trd4q1DJC7"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+
+    <footer>
+        © 2025 TiendaTecnology — Todos los derechos reservados
+    </footer>
+
+    <footer class="footer-pc">
+        <div class="footer-container">
+
+            <!-- IZQUIERDA -->
+            <div class="footer-left">
+                <h2 class="logo-footer">Tienda<span>Tecnology</span></h2>
+
+                <a href="https://www.google.com/maps" target="_blank" class="btn-tienda">
+                    📍 Encuentra tu tienda
+                </a>
+
+                <p>Obtén ofertas y promociones exclusivas.</p>
+                <a href="#" class="btn-suscribir">Suscríbete</a>
+
+                <div class="social">
+                    <a href="#">📸</a>
+                    <a href="#">📘</a>
+                    <a href="#">▶️</a>
+                    <a href="#">🎵</a>
+                </div>
+            </div>
+
+            <!-- SOLO 3 COLUMNAS -->
+            <div class="footer-links">
+
+                <div class="footer-col">
+                    <h4>Ayuda</h4>
+                    <a href="#faq">Preguntas frecuentes</a>
+                    <a href="#terminos">Términos y condiciones</a>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Acerca de</h4>
+                   
+                    <a href="/Quienes_somos/somos.html" target="_blank">Quiénes somos</a>
+                    <a href="#privacidad">Privacidad</a>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Servicios</h4>
+                    <a href="#armatuPC">Arma tu PC</a>
+                    <a href="#asesoria">Asesoría online</a>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+
+    <script src="index.js"></script>
+
+</body>
+
+</html>
