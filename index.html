@@ -1,307 +1,1646 @@
 <!DOCTYPE html>
+<!-- pagina principal de la tienda -->
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda Tecnology</title>
-    <link rel="stylesheet" href="index.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap"
-        rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TiendaTech — La Mejor Tecnología</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="index.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-
 <body>
 
-    <!-- BARRA OFERTA -->
-    <div class="barra-oferta">
-        ¡SOLO OFERTAS! Encuentra lo mejor en tecnología
+<!-- toast -->
+<div class="toast" id="toast">
+  <span class="toast-icon">✓</span>
+  <span id="toast-msg">Acción completada</span>
+</div>
+
+<!-- added to cart modal -->
+<div class="added-modal-overlay" id="addedModal" onclick="closeAddedModal(event)">
+  <div class="added-modal-box">
+    <div class="added-modal-header">
+      <span class="added-check">✓</span>
+      <span class="added-modal-title">Producto agregado al carro de compras</span>
+      <button class="added-modal-close" onclick="closeAddedModal()">✕</button>
+    </div>
+    <div class="added-modal-body">
+      <div class="added-product-img" id="addedProductImg"></div>
+      <div class="added-product-info">
+        <div class="added-product-meta" id="addedProductMeta"></div>
+        <div class="added-product-name" id="addedProductName"></div>
+        <div class="added-product-pricing" id="addedProductPricing"></div>
+      </div>
+    </div>
+    <div class="added-modal-footer">
+      <button class="added-btn-secondary" onclick="closeAddedModal()">Seguir comprando</button>
+      <button class="added-btn-primary" onclick="closeAddedModal(); toggleCart()">Ir al carro</button>
+    </div>
+  </div>
+</div>
+
+<!-- login / register modal -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-logo">Tienda<span>Tech</span></div>
+    <p class="modal-subtitle">Tecnología al mejor precio del Perú</p>
+
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="tab-login"    onclick="switchTab('login')">Iniciar Sesión</button>
+      <button class="modal-tab"        id="tab-register" onclick="switchTab('register')">Crear Cuenta</button>
     </div>
 
-    <!-- MENU -->
-    <header class="header">
-        <div class="header-inner">
-            <div class="logo">⚡ Tienda<span>Tecnology</span></div>
-            <nav>
-                <a href="#" class="active">☰ Todo</a>
-                <a href="#">Inicio</a>
-                <a href="#" onclick="showSection('productos')">Ofertas</a>
-                <a href="#">Categorías</a>
-                <a href="#">Contacto</a>
-            </nav>
-            <button class="btn-whatsapp" onclick="enviarWhatsApp()">📲 WhatsApp</button>
+    <!-- FORM LOGIN -->
+    <form class="modal-form active" id="form-login" onsubmit="doLogin(); return false;" novalidate>
+      <div class="form-group">
+        <label for="login-email"><i class="fas fa-envelope" style="color:var(--green);margin-right:6px;"></i>Correo electrónico</label>
+        <input type="email" id="login-email" name="email" placeholder="tu@correo.com" required>
+      </div>
+      <div class="form-group">
+        <label for="login-pass"><i class="fas fa-lock" style="color:var(--green);margin-right:6px;"></i>Contraseña</label>
+        <input type="password" id="login-pass" name="password" placeholder="••••••••" required minlength="6">
+      </div>
+      <p class="form-error" id="login-error"></p>
+      <button type="submit" class="btn-primary"><i class="fas fa-sign-in-alt" style="margin-right:6px;"></i>Iniciar Sesión</button>
+      <p class="form-note">¿No tienes cuenta? <a onclick="switchTab('register')">Crear cuenta</a></p>
+    </form>
+
+    <!-- FORM REGISTER -->
+    <form class="modal-form" id="form-register" onsubmit="doRegister(); return false;" novalidate>
+      <div class="form-group">
+        <label for="reg-name"><i class="fas fa-user" style="color:var(--green);margin-right:6px;"></i>Nombre completo</label>
+        <input type="text" id="reg-name" name="name" placeholder="Juan Pérez" required>
+      </div>
+      <div class="form-group">
+        <label for="reg-email"><i class="fas fa-envelope" style="color:var(--green);margin-right:6px;"></i>Correo electrónico</label>
+        <input type="email" id="reg-email" name="email" placeholder="tu@correo.com" required>
+      </div>
+      <div class="form-group">
+        <label for="reg-pass"><i class="fas fa-lock" style="color:var(--green);margin-right:6px;"></i>Contraseña</label>
+        <input type="password" id="reg-pass" name="password" placeholder="Mínimo 6 caracteres" required minlength="6">
+      </div>
+      <p class="form-error" id="reg-error"></p>
+      <button type="submit" class="btn-primary"><i class="fas fa-user-plus" style="margin-right:6px;"></i>Crear Cuenta</button>
+      <p class="form-note">¿Ya tienes cuenta? <a onclick="switchTab('login')">Iniciar sesión</a></p>
+    </form>
+  </div>
+</div>
+
+<!-- cart panel -->
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Carrito de Compras</h3>
+    <button class="cart-header-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-summary">
+      <div class="cart-row"><span>Subtotal</span><span id="cart-subtotal">S/ 0.00</span></div>
+      <div class="cart-row"><span>Envío</span><span style="color:var(--green)">GRATIS</span></div>
+      <div class="cart-row total"><span>Total</span><span class="price" id="cart-total">S/ 0.00</span></div>
+    </div>
+    <button class="btn-checkout" onclick="checkout()">Proceder al Pago →</button>
+  </div>
+</div>
+
+
+
+<!-- navbar -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">Tienda<span>Tech</span></div>
+
+  <!-- Categorías button -->
+  <button class="cat-btn" id="catBtn" onclick="toggleMega()">
+    <div class="ham"><span></span><span></span><span></span></div>
+    <span class="cat-label">Categorias</span>
+    <span class="cat-arrow">▾</span>
+  </button>
+
+  <!-- Nav links -->
+  <button class="btn-nav" data-page="nosotros" onclick="showPage('nosotros')">Nosotros</button>
+  <button class="btn-nav" data-page="tiendas"  onclick="showPage('tiendas')">Tiendas</button>
+
+  <!-- Search bar (centro) -->
+  <div class="nav-search">
+    <input type="text" id="mainSearchInput" placeholder="Busca aqui la tecnologia para ti" oninput="liveSearch(this.value)" onkeydown="if(event.key==='Enter')doSearch(this.value)">
+    <button onclick="doSearch(document.getElementById('mainSearchInput').value)">
+    <i class="fas fa-search"></i>
+</button>
+    <div class="search-dropdown" id="searchDropdown"></div>
+  </div>
+
+  <!-- Guest state -->
+  <div id="nav-guest" class="nav-auth-group">
+    <button class="btn-outline-nav" onclick="openModal('login')">Iniciar Sesión</button>
+    <button class="btn-outline-nav" onclick="openModal('register')">Crear Cuenta</button>
+  </div>
+
+  <!-- Logged-in state -->
+  <div id="nav-user" style="display:none;" class="user-menu-wrap">
+    <div class="user-greeting" onclick="toggleUserMenu()">
+       <span id="greeting-name">Mi cuenta</span> ▾
+    </div>
+    <div class="user-dropdown" id="userDropdown">
+      <a onclick="showPage('pedidos');toggleUserMenu(false)"> Mis Pedidos</a>
+      <a onclick="showToast('🔧 Perfil próximamente')"> Mi Perfil</a>
+      <hr>
+      <a class="danger" onclick="doLogout()"> Cerrar Sesión</a>
+    </div>
+  </div>
+
+  <!-- Mobile search toggle -->
+  <button class="mobile-search-btn" id="mobileSearchBtn" onclick="toggleMobileSearch()" aria-label="Buscar">
+    <i class="fas fa-search" style="font-size:18px;"></i>
+  </button>
+
+  <!-- Mobile menu toggle -->
+  <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileDrawer()" aria-label="Menú">
+    <svg class="icon-menu" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <svg class="icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+
+  <a class="whatsapp-contact" 
+   href="https://wa.me/51977900157?text=Hola,%20quiero%20más%20informacion"  
+   target="_blank">
+  <i class="fab fa-whatsapp"></i>
+  <span>CONTÁCTENOS</span>
+</a>
+
+  <!-- Cart -->
+  <button class="cart-btn" onclick="toggleCart()">
+    <i class="fas fa-shopping-cart" style="font-size:16px;"></i>
+    <span class="cart-text">CARRITO</span>
+    <span class="cart-count" id="cart-count">0</span>
+  </button>
+</nav>
+
+<!-- mobile search bar -->
+<div class="mobile-search-bar" id="mobileSearchBar">
+  <div class="mobile-search-inner">
+    <input type="text" id="mobileSearchInput" placeholder="Busca aquí la tecnología para ti"
+      oninput="mobileLiveSearch(this.value)"
+      onkeydown="if(event.key==='Enter'){doSearch(this.value);toggleMobileSearch();}">
+    <button onclick="doSearch(document.getElementById('mobileSearchInput').value);toggleMobileSearch()">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <div class="search-dropdown" id="mobileSearchDropdown"></div>
+  </div>
+</div>
+
+<!-- mobile nav drawer -->
+<div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="toggleMobileDrawer()"></div>
+<div class="mobile-nav-drawer" id="mobileNavDrawer">
+  <div class="mobile-drawer-logo">Tienda<span>Tech</span></div>
+  <button class="mobile-nav-item" onclick="showPage('home');toggleMobileDrawer()">
+    <i class="fas fa-home" style="width:18px;text-align:center;"></i>
+    Inicio
+  </button>
+  <button class="mobile-nav-item" onclick="showPage('nosotros');toggleMobileDrawer()">
+    <i class="fas fa-users" style="width:18px;text-align:center;"></i>
+    Nosotros
+  </button>
+  <button class="mobile-nav-item" onclick="showPage('tiendas');toggleMobileDrawer()">
+    <i class="fas fa-map-marker-alt" style="width:18px;text-align:center;"></i>
+    Tiendas
+  </button>
+  <div class="mobile-drawer-divider"></div>
+  <div id="mobile-auth-section">
+    <button class="mobile-nav-item accent" onclick="openModal('login');toggleMobileDrawer()">
+      <i class="fas fa-sign-in-alt" style="width:18px;text-align:center;"></i>
+      Iniciar Sesión
+    </button>
+    <button class="mobile-nav-item" onclick="openModal('register');toggleMobileDrawer()">
+      <i class="fas fa-user-plus" style="width:18px;text-align:center;"></i>
+      Crear Cuenta
+    </button>
+  </div>
+</div>
+
+<!-- mega menu -->
+<div class="mega-overlay" id="megaOverlay" onclick="toggleMega()"></div>
+<div class="mega-wrap" id="megaWrap">
+  <div class="mega-menu" id="megaMenuGrid">
+    <!-- Populated dynamically by buildMegaMenu() -->
+  </div>
+</div>
+
+<!-- home page -->
+<div class="page active" id="home-page">
+
+  <!-- HERO CAROUSEL -->
+  <!-- ═══════════════════════════════════════════════
+       HERO CAROUSEL — DISEÑO ESPECTACULAR v2
+  ════════════════════════════════════════════════ -->
+  <div class="hero-carousel" id="heroCarousel">
+
+    <!-- Canvas de partículas de fondo -->
+    <canvas id="heroParticles" class="hero-particles-canvas"></canvas>
+
+    <!-- Track de slides -->
+    <div class="hero-slides" id="heroSlides">
+
+      <!-- ── SLIDE 1: Gaming Laptops ── -->
+      <div class="hero-slide s1 hero">
+        <!-- Imagen de fondo difuminada (parallax) -->
+        <div class="hs-bg-img" style="background-image:url('imagenes/gaming.jpg')"></div>
+        <!-- Orbe de luz -->
+        <div class="hs-orb"></div>
+
+        <div class="hs-layout">
+          <!-- Columna izquierda: texto -->
+          <div class="hs-left">
+            <div class="hs-eyebrow">
+              <span class="hs-live-dot"></span>NUEVA TEMPORADA 2025
+            </div>
+            <h1 class="hs-title">GAMING<br><span>LAPTOPS</span></h1>
+            <p class="hs-sub">MSI · ASUS ROG · Lenovo Legion</p>
+
+            <div class="hs-price-block">
+              <span class="hs-price-old">Desde S/7,299.90</span>
+              <span class="hs-price-now">S/2,599<sup>.90</sup></span>
+            </div>
+
+            <div class="hs-actions">
+              <button class="hs-btn-primary" onclick="document.querySelector('.products-track').scrollIntoView({behavior:'smooth'})">
+                VER OFERTAS
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+              <button class="hs-btn-ghost">Ver Catálogo</button>
+            </div>
+
+            <!-- Mini specs -->
+            <div class="hs-specs">
+              <div class="hs-spec"><span class="hs-spec-val">RTX 4090</span><span class="hs-spec-lbl">GPU</span></div>
+              <div class="hs-spec-div"></div>
+              <div class="hs-spec"><span class="hs-spec-val">32GB</span><span class="hs-spec-lbl">RAM DDR5</span></div>
+              <div class="hs-spec-div"></div>
+              <div class="hs-spec"><span class="hs-spec-val">1TB</span><span class="hs-spec-lbl">NVMe SSD</span></div>
+            </div>
+          </div>
+
+          <!-- Columna central: imagen hero GRANDE -->
+          <div class="hs-center">
+            <div class="hs-img-ring">
+              <div class="hs-img-glow s1-glow"></div>
+              <div class="hs-inner-carousel" id="innerCarousel0">
+                <div class="hs-inner-track" id="innerTrack0">
+                  <img src="imagenes/laptop.jpg"  alt="Gaming Laptop"       class="hs-main-img">
+                  <img src="imagenes/laptop2.jpg" alt="Gaming Laptop 2"     class="hs-main-img">
+                  <img src="imagenes/laptop3.jpg" alt="Gaming Laptop 3"     class="hs-main-img">
+                  <img src="imagenes/laptop4.jpg" alt="Gaming Laptop 4"     class="hs-main-img">
+                  <img src="imagenes/laptop5.jpg" alt="Gaming Laptop 5"     class="hs-main-img">
+                </div>
+                <div class="hs-inner-dots" id="innerDots0"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna derecha: tarjetas flotantes -->
+          <div class="hs-right">
+            <div class="hs-float-card">
+              <div class="hs-fc-label">MSI Vector 16 HX</div>
+              <div class="hs-fc-price">S/10,999</div>
+              <div class="hs-fc-badge s1-badge">RTX 4090</div>
+            </div>
+            <div class="hs-float-card">
+              <div class="hs-fc-label">ASUS ROG Strix</div>
+              <div class="hs-fc-price">S/19,499</div>
+              <div class="hs-fc-badge s1-badge">-11%</div>
+            </div>
+            <div class="hs-float-card">
+              <div class="hs-fc-label">Lenovo LOQ</div>
+              <div class="hs-fc-price">S/2,999</div>
+              <div class="hs-fc-badge s1-badge">NEW</div>
+            </div>
+            <div class="hs-float-card">
+              <div class="hs-fc-label">ASUS TUF F16</div>
+              <div class="hs-fc-price">S/2,599</div>
+              <div class="hs-fc-badge s1-badge">-19%</div>
+            </div>
+          </div>
         </div>
-    </header>
 
-    <!-- HERO / BUSCADOR -->
-    <div class="hero">
-        <h1>Lo mejor en <span>Tecnología</span></h1>
-        <p>Laptops gaming, periféricos y más al mejor precio</p>
-        <div class="search-bar">
-            <input type="text" placeholder="Busca aquí la tecnología para ti..." id="searchInput"
-                oninput="filtrarProductos()">
-            <button>🔍</button>
+        <!-- Video oculto para compatibilidad con JS -->
+        <video id="heroVideo" src="imagenes/videoplayback.mp4" muted autoplay loop playsinline preload="metadata" style="display:none"></video>
+      </div>
+
+      <!-- ── SLIDE 2: Smartphones ── -->
+      <div class="hero-slide s2 hero">
+        <div class="hs-bg-img" style="background-image:url('imagenes/iphone17negro.jpg')"></div>
+        <div class="hs-orb s2-orb"></div>
+
+        <div class="hs-layout">
+          <div class="hs-left">
+            <div class="hs-eyebrow s2-eye">
+              <span class="hs-live-dot s2-dot"></span>NUEVO LANZAMIENTO
+            </div>
+            <h1 class="hs-title">iPhone<br><span class="s2-span">17 Pro</span></h1>
+            <p class="hs-sub">Apple · 256GB · Titanio Natural</p>
+
+            <div class="hs-price-block">
+              <span class="hs-price-old">S/5,899.90</span>
+              <span class="hs-price-now s2-price">S/5,379<sup>.90</sup></span>
+            </div>
+
+            <div class="hs-actions">
+              <button class="hs-btn-primary s2-btn">VER SMARTPHONES
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+              <button class="hs-btn-ghost">Comparar modelos</button>
+            </div>
+
+            <div class="hs-specs">
+              <div class="hs-spec"><span class="hs-spec-val s2-val">A19 Pro</span><span class="hs-spec-lbl">Chip</span></div>
+              <div class="hs-spec-div"></div>
+              <div class="hs-spec"><span class="hs-spec-val s2-val">48 MP</span><span class="hs-spec-lbl">Cámara</span></div>
+              <div class="hs-spec-div"></div>
+              <div class="hs-spec"><span class="hs-spec-val s2-val">5G</span><span class="hs-spec-lbl">Conectividad</span></div>
+            </div>
+          </div>
+
+          <div class="hs-center">
+            <div class="hs-img-ring s2-ring">
+              <div class="hs-img-glow s2-glow"></div>
+              <div class="hs-inner-carousel" id="innerCarousel1">
+                <div class="hs-inner-track" id="innerTrack1">
+                  <img src="imagenes/a.png"           alt="iPhone 17 Pro"    class="hs-main-img hs-phone">
+                  <img src="imagenes/iphone17negro.jpg" alt="iPhone 17 Negro" class="hs-main-img hs-phone">
+                  <img src="imagenes/iphone15.png"    alt="iPhone 15"        class="hs-main-img hs-phone">
+                  <img src="imagenes/apple 16.jpg"    alt="Apple 16"         class="hs-main-img hs-phone">
+                  <img src="imagenes/redmi.png"       alt="Redmi"            class="hs-main-img hs-phone">
+                  <img src="imagenes/mi.jpg"          alt="Xiaomi Mi"        class="hs-main-img hs-phone">
+                </div>
+                <div class="hs-inner-dots" id="innerDots1"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hs-right">
+            <div class="hs-float-card s2-card">
+              <div class="hs-fc-label">iPhone 17 256GB</div>
+              <div class="hs-fc-price s2-price-fc">S/5,379</div>
+              <div class="hs-fc-badge s2-badge">-9%</div>
+            </div>
+            <div class="hs-float-card s2-card">
+              <div class="hs-fc-label">iPhone 17 Pro 256GB</div>
+              <div class="hs-fc-price s2-price-fc">S/6,199</div>
+              <div class="hs-fc-badge s2-badge">NEW</div>
+            </div>
+            <div class="hs-float-card s2-card">
+              <div class="hs-fc-label">iPhone 17 Pro Max</div>
+              <div class="hs-fc-price s2-price-fc">S/7,299</div>
+              <div class="hs-fc-badge s2-badge">-10%</div>
+            </div>
+            <div class="hs-float-card s2-card">
+              <div class="hs-fc-label">iPhone 16e 128GB</div>
+              <div class="hs-fc-price s2-price-fc">S/3,499</div>
+              <div class="hs-fc-badge s2-badge">-15%</div>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- ── SLIDE 3: Componentes ── -->
+      <div class="hero-slide s3 hero">
+        <div class="hs-bg-img" style="background-image:url('imagenes/Tarjetadevideo.jpg')"></div>
+        <div class="hs-orb s3-orb"></div>
+
+        <div class="hs-layout">
+          <div class="hs-left">
+            <div class="hs-eyebrow s3-eye">
+              <span class="hs-live-dot s3-dot"></span>⚡ OFERTA FLASH
+            </div>
+            <h1 class="hs-title">RTX<br><span class="s3-span">4090</span></h1>
+            <p class="hs-sub">NVIDIA GeForce · 24GB GDDR6X</p>
+
+            <div class="hs-price-block">
+              <span class="hs-price-old">S/5,999.90</span>
+              <span class="hs-price-now s3-price">S/4,799<sup>.90</sup></span>
+            </div>
+
+            <div class="hs-actions">
+              <button class="hs-btn-primary s3-btn">VER COMPONENTES
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+              <button class="hs-btn-ghost">Ver más GPUs</button>
+            </div>
+
+            <div class="hs-specs">
+              <div class="hs-spec"><span class="hs-spec-val s3-val">24 GB</span><span class="hs-spec-lbl">VRAM</span></div>
+              <div class="hs-spec-div"></div>
+              <div class="hs-spec"><span class="hs-spec-val s3-val">450W</span><span class="hs-spec-lbl">TDP</span></div>
+              <div class="hs-spec-div"></div>
+              <div class="hs-spec"><span class="hs-spec-val s3-val">4K</span><span class="hs-spec-lbl">Gaming</span></div>
+            </div>
+          </div>
+
+          <div class="hs-center">
+            <div class="hs-img-ring s3-ring">
+              <div class="hs-img-glow s3-glow"></div>
+              <div class="hs-inner-carousel" id="innerCarousel2">
+                <div class="hs-inner-track" id="innerTrack2">
+                  <img src="imagenes/v.jpeg"           alt="RTX 4090"         class="hs-main-img">
+                  <img src="imagenes/Tarjetadevideo.jpg" alt="Tarjeta de Video" class="hs-main-img">
+                  <img src="imagenes/amdryzen.jpg"     alt="AMD Ryzen"        class="hs-main-img">
+                  <img src="imagenes/componentes1.png" alt="Componentes"      class="hs-main-img">
+                  <img src="imagenes/placa-asus-rog-strix-x870-e-gaming-wifi7-r2usbc-card-amd-ryzen-am5-ddr5-pn90mb1p00-m0vay0.jpg" alt="Placa ASUS ROG" class="hs-main-img">
+                  <img src="imagenes/fuente-de-poder-antryx-b600-v3-600w-atx-v231.jpg" alt="Fuente de Poder" class="hs-main-img">
+                </div>
+                <div class="hs-inner-dots" id="innerDots2"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hs-right">
+            <div class="hs-float-card s3-card">
+              <div class="hs-fc-label">RTX 3060 8GB</div>
+              <div class="hs-fc-price s3-price-fc">S/929</div>
+              <div class="hs-fc-badge s3-badge">MSI</div>
+            </div>
+            <div class="hs-float-card s3-card">
+              <div class="hs-fc-label">Ryzen 7 9800X3D</div>
+              <div class="hs-fc-price s3-price-fc">S/1,399</div>
+              <div class="hs-fc-badge s3-badge">AMD</div>
+            </div>
+            <div class="hs-float-card s3-card">
+              <div class="hs-fc-label">SSD 1TB PCIe Gen4</div>
+              <div class="hs-fc-price s3-price-fc">S/729</div>
+              <div class="hs-fc-badge s3-badge">-27%</div>
+            </div>
+            <div class="hs-float-card s3-card">
+              <div class="hs-fc-label">RAM DDR5 48GB</div>
+              <div class="hs-fc-price s3-price-fc">S/3,499</div>
+              <div class="hs-fc-badge s3-badge">NEW</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SLIDE 4: Smart TV ── -->
+      <div class="hero-slide s4 hero">
+        <div class="hs-bg-img" style="background-image:url('imagenes/Smart.jpg')"></div>
+        <div class="hs-orb s4-orb"></div>
+
+        <div class="hs-layout">
+          <div class="hs-left">
+            <div class="hs-eyebrow s4-eye">
+              <span class="hs-live-dot s4-dot"></span>SMART HOME
+            </div>
+            <h1 class="hs-title">SMART TV<br><span class="s4-span">55" 4K</span></h1>
+            <p class="hs-sub">TCL · Google TV · HDR10+</p>
+
+            <div class="hs-price-block">
+              <span class="hs-price-old">S/3,499.90</span>
+              <span class="hs-price-now s4-price">S/2,999<sup>.90</sup></span>
+            </div>
+
+            <div class="hs-actions">
+              <button class="hs-btn-primary s4-btn">VER SMART TVs
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+              <button class="hs-btn-ghost">Ver todos los modelos</button>
+            </div>
+
+            <div class="hs-specs">
+              <div class="hs-spec"><span class="hs-spec-val s4-val">4K</span><span class="hs-spec-lbl">Ultra HD</span></div>
+              <div class="hs-spec-div"></div>
+              <div class="hs-spec"><span class="hs-spec-val s4-val">120Hz</span><span class="hs-spec-lbl">Refresco</span></div>
+              <div class="hs-spec-div"></div>
+              <div class="hs-spec"><span class="hs-spec-val s4-val">HDR10+</span><span class="hs-spec-lbl">Imagen</span></div>
+            </div>
+          </div>
+
+          <div class="hs-center">
+            <div class="hs-img-ring s4-ring">
+              <div class="hs-img-glow s4-glow"></div>
+              <div class="hs-inner-carousel" id="innerCarousel3">
+                <div class="hs-inner-track" id="innerTrack3">
+                  <img src="imagenes/qeDzNNRUZvtFmFsY5THk7Q-840-80.jpg" alt="Smart TV 55 4K"  class="hs-main-img hs-tv">
+                  <img src="imagenes/Smart.jpg"    alt="Smart TV"           class="hs-main-img hs-tv">
+                  <img src="imagenes/Smartd.jpg"   alt="Smart TV Display"   class="hs-main-img hs-tv">
+                  <img src="imagenes/pantalla.jpg" alt="Pantalla"           class="hs-main-img hs-tv">
+                  <img src="imagenes/samsung.jpg"  alt="Samsung"            class="hs-main-img hs-tv">
+                </div>
+                <div class="hs-inner-dots" id="innerDots3"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hs-right">
+            <div class="hs-float-card s4-card">
+              <div class="hs-fc-label">TCL 55" 4K Google TV</div>
+              <div class="hs-fc-price s4-price-fc">S/2,999</div>
+              <div class="hs-fc-badge s4-badge">HDR10+</div>
+            </div>
+            <div class="hs-float-card s4-card">
+              <div class="hs-fc-label">Samsung 65" QLED</div>
+              <div class="hs-fc-price s4-price-fc">S/4,799</div>
+              <div class="hs-fc-badge s4-badge">-12%</div>
+            </div>
+            <div class="hs-float-card s4-card">
+              <div class="hs-fc-label">LG 50" NanoCell</div>
+              <div class="hs-fc-price s4-price-fc">S/2,299</div>
+              <div class="hs-fc-badge s4-badge">NEW</div>
+            </div>
+            <div class="hs-float-card s4-card">
+              <div class="hs-fc-label">Sony Bravia 55"</div>
+              <div class="hs-fc-price s4-price-fc">S/3,599</div>
+              <div class="hs-fc-badge s4-badge">-8%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /hero-slides -->
+
+    <!-- Flechas de navegación rediseñadas -->
+    <button class="hs-arrow hs-arrow-left" onclick="prevSlide()" aria-label="Anterior">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="hs-arrow hs-arrow-right" onclick="nextSlide()" aria-label="Siguiente">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+
+    <!-- Barra de progreso y dots rediseñados -->
+    <div class="hs-nav-bar">
+      <div class="hs-progress-wrap">
+        <div class="hs-progress-bar" id="hsProgressBar"></div>
+      </div>
+      <div class="hs-dots-row" id="hsDots">
+        <!-- generados por JS -->
+      </div>
+      <div class="hs-counter" id="hsCounter">1 / 4</div>
     </div>
 
-    <!-- BOTONES VER PRODUCTOS / CARRITO -->
-    <div class="actions">
-        <button class="btn-primary" onclick="showSection('productos')">Ver Productos</button>
-        <button class="btn-success" onclick="showSection('carrito')">
-            🛒 Ver Carrito
-            <span id="badge-count" class="badge-count hidden"></span>
-        </button>
+  </div><!-- /hero-carousel -->
+
+ 
+
+  <!-- FEATURED ROW -->
+ <div class="featured-banners">
+
+    <div class="feat-banner dark" style="padding:0;overflow:hidden;position:relative;">
+      <video
+        src="imagenes/videoplayback.mp4"
+        autoplay
+        muted
+        loop
+        playsinline
+        style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit;"
+      ></video>
     </div>
 
-    <main>
+    <div class="feat-banner light">
+      <p style="font-size:11px;color:var(--gray);">MacBook Neo</p>
+      <h3 style="font-size:19px;">MacBook Neo 14"</h3>
+      <div class="bprice" style="margin-top:6px;">S/4,299.90</div>
+      <span class="badge" style="margin-top:4px;">-11%</span>
+      <img src="imagenes/mac.png" alt="MacBook Neo">
+    </div>
 
-        <!-- PRODUCTOS -->
-        <section id="productos">
+    <div class="feat-banner dark">
+  <p style="font-size:11px;color:var(--gray);">Smart TV TCL 55" Google TV</p>
+  <div class="bprice" style="margin-top:6px;">S/3,299.90</div>
+  <p style="margin-top:6px;">
+    Barra de Sonido JBL Cinema SB170<br>
+    <strong style="font-size:17px;">S/629.90</strong>
+    <span class="badge red">-10%</span>
+  </p>
+  <img src="imagenes/Smart.jpg" alt="Smart TV">
+</div>
 
-            <!-- FILTROS -->
-            <div class="categorias">
-                <button class="cat-btn active" onclick="setCat(this,'all')">Todos</button>
-                <button class="cat-btn" onclick="setCat(this,'pc')">💻 PCs</button>
-                <button class="cat-btn" onclick="setCat(this,'periferico')">🖱️ Periféricos</button>
-                <button class="cat-btn" onclick="setCat(this,'audio')">🎧 Audio</button>
-                <button class="cat-btn" onclick="setCat(this,'Laptop')">🎧 Laptop</button>
-            </div>
+  </div>
 
-            <div class="section-title">Productos Destacados</div>
 
-            <div class="row" id="productosGrid">
+  <!-- BRANDS -->
+  <div class="brands-section">
+    <div class="brands-label">Las Mejores Marcas</div>
+    <div class="brands">
+      <div class="brand-chip"><span class="dot" style="background:#1428A0"></span>Samsung</div>
+      <div class="brand-chip"><span class="dot" style="background:#555"></span>Apple</div>
+      <div class="brand-chip"><span class="dot" style="background:#E2001A"></span>Lenovo</div>
+      <div class="brand-chip"><span class="dot" style="background:#00599A"></span>ASUS</div>
+      <div class="brand-chip"><span class="dot" style="background:#B60000"></span>MSI</div>
+      <div class="brand-chip"><span class="dot" style="background:#FF6900"></span>Xiaomi</div>
+      <div class="brand-chip"><span class="dot" style="background:#ED1C24"></span>AMD</div>
+      <div class="brand-chip"><span class="dot" style="background:#0071C5"></span>Intel</div>
+      <div class="brand-chip"><span class="dot" style="background:#76B900"></span>Nvidia</div>
+    </div>
+  </div>
 
-                <!-- PRODUCTO 1 -->
-                <div class="col" data-cat="pc">
-                    <div class="card producto">
-                      
-                        <img src="imagenes/pc3.jpg" alt="PC Gaming RTX 5080">
-                        <div class="card-body">
-                            <div class="card-marca">Custom Build</div>
-                            <h5 class="card-nombre">PC Gaming RTX 5080</h5>
-                            <p class="descripcion">
-                                Procesador Intel Core i7 de 13ª generación, tarjeta gráfica RTX 5080 16GB,
-                                32GB RAM DDR5, SSD 1TB NVMe, refrigeración líquida y fuente 750W certificada.
-                            </p>
-                           
-                            <p class="precio">S/ 4,500</p>
-                            <button class="btn-agregar" onclick="agregarCarrito('PC Gaming RTX 5080', 4500)">+ Agregar
-                                al carrito</button>
-                        </div>
-                    </div>
-                </div>
+  <!-- ECOSISTEMA BANNER -->
+  <div style="padding: 20px 24px 8px; background: var(--bg);">
+    <div class="eco-banner">
+      <div>
+        <div class="eco-label">Descubre más</div>
+        <div class="eco-title">ECOSISTEMA XIAOMI</div>
+      </div>
+      <button class="eco-cta">Ver Todo</button>
+    </div>
+  </div>
 
-                <!-- PRODUCTO 2 -->
-                <div class="col" data-cat="periferico">
-                    <div class="card producto">
-                        <img src="imagenes/Mouserazer.jpg" alt="Mouse Razer">
-                        <div class="card-body">
-                            <div class="card-marca">Razer</div>
-                            <h5 class="card-nombre">Mouse Razer DeathAdder</h5>
-                            <p class="descripcion">
-                                Sensor óptico de 20,000 DPI, iluminación RGB, 8 botones programables,
-                                diseño ergonómico y conexión USB de alta precisión.
-                            </p>
-                            
-                            <p class="precio">S/ 150</p>
-                            <button class="btn-agregar" onclick="agregarCarrito('Mouse Razer', 150)">+ Agregar al
-                                carrito</button>
-                        </div>
-                    </div>
-                </div>
+  <!-- sticky category bar -->
+  <div class="cat-sticky-bar" id="catStickyBar">
+    <div class="cat-sticky-inner" id="catStickyInner">
+      <!-- Populated dynamically by JS -->
+    </div>
+  </div>
 
-                <!-- PRODUCTO 3 -->
-                <div class="col" data-cat="Laptop">
-                    <div class="card producto">
-                        <img src="imagenes/laptop.jpg" alt="Audífonos HyperX">
-                        <div class="card-body">
-                            <div class="card-marca">HyperX</div>
-                            <h5 class="card-nombre">Audífonos HyperX Cloud</h5>
-                            <p class="descripcion">
-                                Sonido envolvente 7.1, drivers de 53mm, micrófono desmontable con cancelación
-                                de ruido, estructura de aluminio y almohadillas memory foam.
-                            </p>
-                           
-                            <p class="precio">S/ 320</p>
-                            <button class="btn-agregar" onclick="agregarCarrito('Audífonos HyperX', 320)">+ Agregar al
-                                carrito</button>
-                        </div>
-                    </div>
-                </div>
+  <!-- LAPTOPS GAMER -->
+  <div class="section" id="section-laptops" data-category="Laptops Gamer">
+    <div class="section-head">
+      <div class="section-title">Laptops Gamer</div>
+      <a class="section-link">Ver todos →</a>
+    </div>
+    <div class="carousel-wrap">
+      <button class="carousel-arrow left-arr"  onclick="scrollCarousel(this,-1)">❮</button>
+      <div class="products-track">
 
-                <!-- PRODUCTO 4 -->
-                <div class="col" data-cat="periferico">
-                    <div class="card producto">
-                        
-                        <img src="imagenes/mause_teclado.jpg" alt="Teclado Gamer Razer">
-                        <div class="card-body">
-                            <div class="card-marca">Razer</div>
-                            <h5 class="card-nombre">Teclado Gamer Razer</h5>
-                            <p class="descripcion">
-                                Switches mecánicos Razer Green, retroiluminación RGB Chroma,
-                                anti-ghosting, estructura resistente y reposamuñecas ergonómico.
-                            </p>
-                            
-                            <p class="precio">S/ 280</p>
-                            <button class="btn-agregar" onclick="agregarCarrito('Teclado Gamer Razer', 280)">+ Agregar
-                                al carrito</button>
-                        </div>
-                    </div>
-                </div>
+        <div class="product-card" data-brand="PC GAMER" data-id="4105" data-name="Laptop Gamer MSI Katana 17 HX B14VFK 17.3&quot; QHD Intel Core Ultra 9" data-price="6,899.90">
+          <img src="imagenes/laptop.jpg" alt="Laptop Gamer MSI Katana 17" onerror="this.style.display='none'">
+          <div class="product-brand">PC GAMER</div>
+          <div class="product-name">Laptop Gamer MSI Katana 17 HX B14VFK 17.3" QHD Intel Core Ultra 9</div>
+          <div class="product-id">ID 4105</div>
+          <span class="badge">-5%</span>
+          <div class="product-price-old">S/7,299.90</div>
+          <div class="product-price">S/6,899.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
 
-                <!-- PRODUCTO 5 -->
-                <div class="col" data-cat="Laptop">
-                    <div class="card producto">
-                        <img src="imagenes/laptop2.jpg" alt="MSI Katana 15">
-                        <div class="card-body">
-                            <div class="card-marca">MSI</div>
-                            <h5 class="card-nombre">Katana 15 RTX 4070</h5>
-                            <p class="descripcion">
-                                i7-13620H, RTX 4070 8GB, 15.6” FHD, 16GB DDR5, SSD 1TB, Windows 11.
-                            </p>
-                            <p class="precio">S/ 1920</p>
-                            <button class="btn-agregar" onclick="agregarCarrito('MSI Katana 15', 1320)">+ Agregar al
-                                carrito</button>
-                        </div>
-                    </div>
-                </div>
+        <div class="product-card" data-brand="MSI" data-id="3985" data-name="Laptop Gamer MSI Vector 16 HX 16&quot; QHD+ 240Hz Intel Core Ultra 9" data-price="10,999.90">
+          <img src="imagenes/laptop2.jpg" alt="Laptop Gamer MSI Vector 16" onerror="this.style.display='none'">
+          <div class="product-brand">MSI</div>
+          <div class="product-name">Laptop Gamer MSI Vector 16 HX 16" QHD+ 240Hz Intel Core Ultra 9</div>
+          <div class="product-id">ID 3985</div>
+          <div class="product-price">S/10,999.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
 
-                <!-- PRODUCTO 6 -->
-                <div class="col" data-cat="Laptop">
-                    <div class="card producto">
-                        <img src="imagenes/laptop4.jpg" alt="Lenovo LOQ 15IAX9">
-                        <div class="card-body">
-                            <div class="card-marca">Lenovo</div>
-                            <h5 class="card-nombre">LOQ 15 RTX 3050</h5>
-                            <p class="descripcion">
-                                i5-12450HX, RTX 3050 6GB, 15.6” FHD, 8GB DDR5, SSD 512GB, Windows 11.
-                            </p>
-                            <p class="precio">S/ 2920</p>
-                            <button class="btn-agregar" onclick="agregarCarrito('MSI Katana 15', 1320)">+ Agregar al
-                                carrito</button>
-                        </div>
-                    </div>
-                </div>
+        <div class="product-card" data-brand="ASUS" data-id="3768" data-name="Laptop Gamer Asus ROG Strix Scar 18 18&quot; Intel Core i9 64GB RAM 2TB SSD" data-price="19,499.90">
+          <img src="imagenes/laptop3.jpg" alt="Laptop Gamer Asus ROG Strix Scar 18" onerror="this.style.display='none'">
+          <div class="product-brand">ASUS</div>
+          <div class="product-name">Laptop Gamer Asus ROG Strix Scar 18 18" Intel Core i9 64GB RAM 2TB SSD</div>
+          <div class="product-id">ID 3768</div>
+          <span class="badge">-11%</span>
+          <div class="product-price-old">S/21,999.90</div>
+          <div class="product-price">S/19,499.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
 
-                <!-- PRODUCTO 7 -->
-                <div class="col" data-cat="Laptop">
-                    <div class="card producto">
-                        <img src="imagenes/laptop3.jpg" alt="ASUS ROG Strix G614">
-                        <div class="card-body">
-                            <div class="card-marca">ASUS</div>
-                            <h5 class="card-nombre">ROG Strix G614 RTX 4070</h5>
-                            <p class="descripcion">
-                                Intel Core i9-14900HX, RTX 4070 8GB, 32GB DDR5, SSD 1TB, Windows 11.
-                            </p>
-                            <p class="precio">S/1780</p>
-                            <button class="btn-agregar" onclick="agregarCarrito('ASUS ROG Strix G614', 0)"> + Agregar al
-                                carrito</button>
-                        </div>
-                    </div>
-                </div>
+        <div class="product-card" data-brand="Lenovo" data-id="3901" data-name="Laptop Gamer Lenovo LOQ 15.6&quot; FHD Intel Core i5 16GB RAM 512GB" data-price="2,999.90">
+          <img src="imagenes/laptop4.jpg" alt="Laptop Gamer Lenovo LOQ" onerror="this.style.display='none'">
+          <div class="product-brand">LENOVO</div>
+          <div class="product-name">Laptop Gamer Lenovo LOQ 15.6" FHD Intel Core i5 16GB RAM 512GB</div>
+          <div class="product-id">ID 3901</div>
+          <div class="product-price">S/2,999.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
 
-            </div>
-            <!-- fin row -->
+        <div class="product-card" data-brand="MSI" data-id="3842" data-name="Laptop Gamer MSI Cyborg 17 A13VFK 17.3&quot; FHD Intel Core i7 16GB" data-price="5,699.90">
+          <img src="imagenes/laptop5.jpg" alt="Laptop Gamer MSI Cyborg" onerror="this.style.display='none'">
+          <div class="product-brand">MSI</div>
+          <div class="product-name">Laptop Gamer MSI Cyborg 17 A13VFK 17.3" FHD Intel Core i7 16GB</div>
+          <div class="product-id">ID 3842</div>
+          <span class="badge">-14%</span>
+          <div class="product-price-old">S/6,599.90</div>
+          <div class="product-price">S/5,699.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
 
-            <div id="noResultados" class="no-resultados hidden">
-                No se encontraron productos 😕
-            </div>
+        <div class="product-card" data-brand="ASUS" data-id="3755" data-name="Laptop Gamer ASUS TUF Gaming F16 16&quot; Intel i5 144Hz 16GB 512GB" data-price="2,599.90">
+          <img src="imagenes/laptop6.jpeg" alt="Laptop Gamer ASUS TUF" onerror="this.style.display='none'">
+          <div class="product-brand">ASUS</div>
+          <div class="product-name">Laptop Gamer ASUS TUF Gaming F16 16" Intel i5 144Hz 16GB 512GB</div>
+          <div class="product-id">ID 3755</div>
+          <span class="badge">-19%</span>
+          <div class="product-price-old">S/3,199.90</div>
+          <div class="product-price">S/2,599.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+        <div class="product-card" data-brand="intel" data-id="3755" data-name="Notebook Acer Nitro Lite 16 &quot; Intel i5 144Hz 16GB 512GB" data-price="2,599.90">
+          <img src="imagenes/laptop7.jpg" alt="Laptop Gamer ASUS TUF" onerror="this.style.display='none'">
+          <div class="product-brand">intel</div>
+          <div class="product-name">Notebook Acer Nitro Lite 16" Intel i5 144Hz 16GB 512GB</div>
+          <div class="product-id">ID 3756</div>
+          <span class="badge">-19%</span>
+          <div class="product-price-old">S/3,299.90</div>
+          <div class="product-price">S/2,599.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
 
-        </section>
+       
 
-        <!-- CARRITO -->
-        <section id="carrito" class="hidden">
+      </div>
+      <button class="carousel-arrow right-arr" onclick="scrollCarousel(this,1)">❯</button>
+    </div>
+  </div>
 
-            <div class="section-title">🛒 Carrito de Compras</div>
+  <!-- PC 
+  -->
+  <div class="section" id="section-pc" data-category="PC" style="padding-top:0">
+    <div class="section-head">
+      <div class="section-title">PC</div>
+      <a class="section-link">Ver todos →</a>
+    </div>
+    <div class="carousel-wrap">
+      <button class="carousel-arrow left-arr" onclick="scrollCarousel(this,-1)">❮</button>
+      <div class="products-track">
 
-            <div id="carritoVacio" class="carrito-vacio hidden">
-                <div class="icono">🛒</div>
-                <p>Tu carrito está vacío</p>
-            </div>
+        <div class="product-card" data-brand="MSI" data-id="4521" data-name="PC Gamer MSI MAG Infinite Intel Core i7 32GB 1TB RTX 4070" data-price="5,899.90">
+          <img src="imagenes/pc1.jpg" alt="PC Gamer MSI MAG Infinite" onerror="this.style.display='none'">
+          <div class="product-brand">MSI</div>
+          <div class="product-name">PC Gamer MSI MAG Infinite Intel Core i7 32GB 1TB RTX 4070</div>
+          <div class="product-id">ID 4521 · <span>4 Unid.</span></div>
+          <span class="badge">-9%</span>
+          <div class="product-price-old">S/6,499.90</div>
+          <div class="product-price">S/5,899.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
 
-            <ul id="listaCarrito" class="lista-carrito"></ul>
+        <div class="product-card" data-brand="Lenovo" data-id="3580" data-name="Lenovo IdeaPad Slim III Intel Core i3 1440B 8GB 512GB" data-price="2,399.90">
+          <img src="imagenes/pc2.jpg" alt="Lenovo IdeaPad Slim III" onerror="this.style.display='none'">
+          <div class="product-brand">LENOVO</div>
+          <div class="product-name">Lenovo IdeaPad Slim III Intel Core i3 1440B 8GB 512GB</div>
+          <div class="product-id">ID 3580</div>
+          <div class="product-price">S/2,399.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
 
-            <div class="total-box" id="totalBox">
-                <span class="total-label">Total a pagar</span>
-                <span class="total-monto">S/ <span id="total">0</span></span>
-            </div>
+        <div class="product-card" data-brand="ASUS" data-id="3512" data-name="Laptop Asus Vivobook 15.6&quot; Intel Core i3 1440B 8GB SSD" data-price="1,999.90">
+          <img src="imagenes/pc3.jpg" alt="Laptop Asus Vivobook" onerror="this.style.display='none'">
+          <div class="product-brand">ASUS</div>
+          <div class="product-name">Laptop Asus Vivobook 15.6" Intel Core i3 1440B 8GB SSD</div>
+          <div class="product-id">ID 3512</div>
+          <div class="product-price">S/1,999.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
 
-            <div class="carrito-actions">
-                <button class="btn-whatsapp" onclick="enviarWhatsApp()">📲 Comprar por WhatsApp</button>
-                <button class="btn-volver" onclick="showSection('productos')">← Volver</button>
-            </div>
+        <div class="product-card" data-brand="Lenovo" data-id="3498" data-name="PC Gamer Lenovo Legion Tower Ryzen 5 16GB 512GB RTX 4060" data-price="3,149.90">
+          <img src="imagenes/pc4.png" alt="PC Gamer Lenovo Legion Tower" onerror="this.style.display='none'">
+          <div class="product-brand">LENOVO</div>
+          <div class="product-name">PC Gamer Lenovo Legion Tower Ryzen 5 16GB 512GB RTX 4060</div>
+          <div class="product-id">ID 3498</div>
+          <div class="product-price">S/3,149.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
 
-        </section>
+        <div class="product-card" data-brand="ASUS" data-id="3445" data-name="PC Gamer ASUS ROG Strix Ryzen 5 16GB 512GB RTX 3050" data-price="1,899.90">
+          <img src="imagenes/pc5.jpeg" alt="PC Gamer ASUS ROG Strix" onerror="this.style.display='none'">
+          <div class="product-brand">ASUS</div>
+          <div class="product-name">PC Gamer ASUS ROG Strix Ryzen 5 16GB 512GB RTX 3050</div>
+          <div class="product-id">ID 3445</div>
+          <div class="product-price">S/1,899.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+        <div class="product-card" data-brand="HP" data-id="3388" data-name="PC Gamer HP Omen Intel Core i5 16GB 512GB RTX 3060" data-price="2,199.90">
+          <img src="imagenes/pc2.jpg" alt="PC Gamer HP Omen" onerror="this.style.display='none'">
+          <div class="product-brand">HP</div>
+          <div class="product-name">PC Gamer HP Omen Intel Core i5 16GB 512GB RTX 3060</div>
+          <div class="product-id">ID 3388</div>
+          <div class="product-price">S/2,199.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+      </div>
+      <button class="carousel-arrow right-arr" onclick="scrollCarousel(this,1)">❯</button>
+    </div>
+  </div>
+
+  <!-- COMPONENTES -->
+  <div class="section" id="section-componentes" data-category="Componentes" style="padding-top:0">
+    <div class="section-head">
+      <div class="section-title">Componentes</div>
+      <a class="section-link">Ver todos →</a>
+    </div>
+    <div class="carousel-wrap">
+      <button class="carousel-arrow left-arr" onclick="scrollCarousel(this,-1)">❮</button>
+      <div class="products-track">
+
+        <div class="product-card" data-brand="PREDATOR" data-id="2901" data-name="Disco SSD 1TB Predator GM6 PCIe Gen4" data-price="729.90">
+          <img src="imagenes/componentes1.png" alt="Disco SSD Predator GM6" onerror="this.style.display='none'">
+          <div class="product-brand">PREDATOR</div>
+          <div class="product-name">Disco SSD 1TB Predator GM6 PCIe Gen4</div>
+          <span class="badge">-27%</span>
+          <div class="product-price-old">S/999.90</div>
+          <div class="product-price">S/729.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+        <div class="product-card" data-brand="MSI" data-id="2745" data-name="Tarjeta de video Gamer RTX 3060 8GB Ventus 2X OC" data-price="929.90">
+          <img src="imagenes/Tarjetadevideo.jpg" alt="Tarjeta de video RTX 3060" onerror="this.style.display='none'">
+          <div class="product-brand">MSI</div>
+          <div class="product-name">Tarjeta de video Gamer RTX 3060 8GB Ventus 2X OC</div>
+          <div class="product-price">S/929.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+        <div class="product-card" data-brand="AMD" data-id="2680" data-name="Procesador AMD Ryzen 7 9800X3D Box 8 Núcleos 4.7GHz" data-price="1,399.90">
+          <img src="imagenes/amdryzen.jpg" alt="Procesador AMD Ryzen 7" onerror="this.style.display='none'">
+          <div class="product-brand">AMD</div>
+          <div class="product-name">Procesador AMD Ryzen 7 9800X3D Box 8 Núcleos 4.7GHz</div>
+          <div class="product-price">S/1,399.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+        <div class="product-card" data-brand="Crucial" data-id="2540" data-name="Memoria RAM DDR5 48GB 6000MT/s CL30 Crucial" data-price="3,499.90">
+          <img src="imagenes/kingston.jpg" alt="Memoria RAM DDR5 Crucial" onerror="this.style.display='none'">
+          <div class="product-brand">CRUCIAL</div>
+          <div class="product-name">Memoria RAM DDR5 48GB 6000MT/s CL30 Crucial</div>
+          <div class="product-price">S/3,499.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+        <div class="product-card" data-brand="Ryzen" data-id="2745" data-name="PLACA ASUS ROG STRIX X870-E GAMING WIFI7 R2/USBC CARD AMD RYZEN AM5 DDR5" data-price="929.90">
+          <img src="imagenes/placa-asus-rog-strix-x870-e-gaming-wifi7-r2usbc-card-amd-ryzen-am5-ddr5-pn90mb1p00-m0vay0.jpg" alt="PLACA ASUS ROG STRIX X870-E GAMING WIFI7 R2/USBC CARD AMD RYZEN AM5 DDR5" onerror="this.style.display='none'">
+          <div class="product-brand">Ryzen</div>
+          <div class="product-name">PLACA ASUS ROG STRIX X870-E GAMING WIFI7 R2/USBC CARD AMD RYZEN AM5 DDR5</div>
+          <div class="product-price">S/2000.00</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+        <div class="product-card" data-brand="ANTRYX" data-id="2745" data-name="FUENTE DE PODER ANTRYX B600 V3 600W ATX v2.31" data-price="129.90">
+          <img src="imagenes/fuente-de-poder-antryx-b600-v3-600w-atx-v231.jpg" alt="FUENTE DE PODER ANTRYX B600 V3 600W ATX v2.31" onerror="this.style.display='none'">
+          <div class="product-brand">ANTRYX</div>
+          <div class="product-name">FUENTE DE PODER ANTRYX B600 V3 600W ATX v2.31</div>
+          <div class="product-price">S/129.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+        <div class="product-card" data-brand="Kingston FURY" data-id="2410" data-name="Memoria RAM DDR5 16GB 5600MHz Kingston Fury" data-price="1,199.90">
+          <img src="imagenes/kingston.jpg" alt="Memoria RAM Kingston FURY" onerror="this.style.display='none'">
+          <div class="product-brand">KINGSTON FURY</div>
+          <div class="product-name">Memoria RAM DDR5 16GB 5600MHz Kingston Fury</div>
+          <span class="badge">-20%</span>
+          <div class="product-price-old">S/1,499.90</div>
+          <div class="product-price">S/1,199.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+      </div>
+      <button class="carousel-arrow right-arr" onclick="scrollCarousel(this,1)">❯</button>
+    </div>
+  </div>
+
+  <!-- SMARTPHONES -->
+  <div class="section" id="section-smartphones" data-category="Smartphones" style="padding-top:0">
+    <div class="section-head">
+      <div class="section-title">Smartphones</div>
+      <a class="section-link">Ver todos →</a>
+    </div>
+    <div class="carousel-wrap">
+      <button class="carousel-arrow left-arr" onclick="scrollCarousel(this,-1)">❮</button>
+      <div class="products-track">
+
+        <div class="product-card" data-brand="Apple" data-id="1980" data-name="iPhone 17 256GB Negro" data-price="5,379.90">
+          <img src="imagenes/iphone17negro.jpg" alt="iPhone 17 256GB Negro" onerror="this.style.display='none'">
+          <div class="product-brand">APPLE</div>
+          <div class="product-name">iPhone 17 256GB Negro</div>
+          <span class="badge">-9%</span>
+          <div class="product-price-old">S/5,899.90</div>
+          <div class="product-price">S/5,379.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+        <div class="product-card" data-brand="Apple" data-id="1980" data-name="iPhone 16 pro max 256GB Negro" data-price="4,379.90">
+          <img src="imagenes/apple 16.jpg" alt="iPhone 16 pro max 256GB Negro" onerror="this.style.display='none'">
+          <div class="product-brand">APPLE</div>
+          <div class="product-name">iPhone 16 pro max 256GB Negro</div>
+          <span class="badge">-10%</span>
+          <div class="product-price-old">S/5,899.90</div>
+          <div class="product-price">S/4,379.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+        <div class="product-card" data-brand="Xiaomi" data-id="1845" data-name="Celular Xiaomi Redmi A7 Pro 4GB 128GB Negro" data-price="449.90">
+          <img src="imagenes/redmi.png" alt="Celular Xiaomi Redmi A7 Pro" onerror="this.style.display='none'">
+          <div class="product-brand">XIAOMI</div>
+          <div class="product-name">Celular Xiaomi Redmi A7 Pro 4GB 128GB Negro</div>
+          <span class="badge">-15%</span>
+          <div class="product-price-old">S/529.90</div>
+          <div class="product-price">S/449.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+        <div class="product-card" data-brand="Samsung" data-id="1790" data-name="Samsung Galaxy A35 5G 8GB 256GB Azul" data-price="1,299.90">
+          <img src="imagenes/samsung.jpg" alt="Samsung Galaxy A35 5G 8GB 256GB Azul" onerror="this.style.display='none'">
+          <div class="product-brand">SAMSUNG</div>
+          <div class="product-name">Samsung Galaxy A35 5G 8GB 256GB Azul</div>
+          <div class="product-price">S/1,299.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+        <div class="product-card" data-brand="Xiaomi" data-id="1720" data-name="Xiaomi 14T Pro 12GB 512GB Titanio" data-price="2,899.90">
+          <img src="imagenes/mi.jpg" alt="Xiaomi 14T Pro" onerror="this.style.display='none'">
+          <div class="product-brand">XIAOMI</div>
+          <div class="product-name">Xiaomi 14T Pro 12GB 512GB Titanio</div>
+          <span class="badge">-10%</span>
+          <div class="product-price-old">S/3,199.90</div>
+          <div class="product-price">S/2,899.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+      </div>
+      <button class="carousel-arrow right-arr" onclick="scrollCarousel(this,1)">❯</button>
+    </div>
+  </div>
+
+  
+ <!-- Gaming -->
+<div class="section" id="section-gaming" data-category="Gaming" style="padding-top:0">
+    <div class="section-head">
+     <div class="section-title">Gaming</div>
+      <a class="section-link">Ver todos →</a>
+    </div>
+    <div class="carousel-wrap">
+      <button class="carousel-arrow left-arr" onclick="scrollCarousel(this,-1)">❮</button>
+      <div class="products-track">
+
+         <div class="product-card" data-brand="Nintendo" data-id="1844" data-name="Consola Nintendo Switch 2 Gen4" data-price="2,199.90">
+          <img src="imagenes/switch.jpg" alt="Consola Nintendo Switch 2 Gen4" onerror="this.style.display='none'">
+          <div class="product-brand">Nintendo</div>
+          <div class="product-name">Consola Nintendo Switch 2 Gen4</div>
+          <span class="badge">-15%</span>
+          <div class="product-price-old">S/2,399.90</div>
+          <div class="product-price">S/2,199.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+        <div class="product-card" data-brand="Sony" data-id="1845" data-name="Mando de play station 5" data-price="499.90">
+          <img src="imagenes/mando.jpg" alt="Mando de play station 5" onerror="this.style.display='none'">
+          <div class="product-brand">SONY</div>
+          <div class="product-name">Mando de Play Station 5</div>
+          <span class="badge">-15%</span>
+          <div class="product-price-old">S/699.90</div>
+          <div class="product-price">S/499.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+        <div class="product-card" data-brand="Microsoft" data-id="1846" data-name="Mando de Xbox Series X" data-price="599.90">
+          <img src="imagenes/mandoxbox.jpg" alt="Mando de Xbox serie x" onerror="this.style.display='none'">
+          <div class="product-brand">Microsoft</div>
+          <div class="product-name">Mando de Xbox series X</div>
+          <span class="badge">-15%</span>
+          <div class="product-price-old">S/699.90</div>
+          <div class="product-price">S/599.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+         <div class="product-card" data-brand="Nintendo" data-id="1844" data-name="Bundle consola Nintendo Switch, Mario Party" data-price="2,199.90">
+          <img src="imagenes/nintentom.png" alt="Bundle consola Nintendo Switch, Mario Party" onerror="this.style.display='none'">
+          <div class="product-brand">Nintendo</div>
+          <div class="product-name">Bundle consola Nintendo Switch, Mario Party</div>
+          <div class="product-price-old">S/2,499.90</div>
+          <div class="product-price">S/2,199.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
 
         
-    </main>
 
-    <!-- VIDEO -->
-    <div class="video-section">
-        <div class="section-title">Video Destacado</div>
-        <div class="video-wrapper">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/fmSmcSfC5fk?si=Ht8lI6trd4q1DJC7"
-                title="YouTube video player" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-            </iframe>
+
+        <div class="product-card" data-brand="Lenovo" data-id="1846" data-name="Consola Port80S Lenovo Legion Go S AMD Ryzen Z2" data-price="2,199.90">
+          <img src="imagenes/LENOVOConsola.jpg" alt="Consola Lenovo Legion Go S" onerror="this.style.display='none'">
+          <div class="product-brand">LENOVO</div>
+          <div class="product-name">Consola Port80S Lenovo Legion Go S AMD Ryzen Z2</div>
+          <span class="badge">-15%</span>
+          <div class="product-price-old">S/2,399.90</div>
+          <div class="product-price">S/2,199.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
         </div>
+
+        <div class="product-card" data-brand="Lenovo" data-id="1846" data-name="Consola PlayStation 5 Slim Digital" data-price="1,199.90">
+          <img src="imagenes/ps5digitalbundleportada.png" alt="Consola Lenovo Legion Go S" onerror="this.style.display='none'">
+          <div class="product-brand">Sony</div>
+          <div class="product-name">Consola PlayStation 5 Slim Digital</div>
+          <span class="badge">-10%</span>
+          <div class="product-price-old">S/2,399.90</div>
+          <div class="product-price">S/1,199.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+      </div><!-- /products-track -->
+      <button class="carousel-arrow right-arr" onclick="scrollCarousel(this,1)">❯</button>
+    </div><!-- /carousel-wrap -->
+  </div><!-- /section-gaming -->
+
+<!-- Periféricos -->
+  <div class="section" id="section-Perifericos" data-category="Perifericos" style="padding-top:0">
+    <div class="section-head">
+      <div class="section-title">Periféricos</div>
+      <a class="section-link">Ver todos →</a>
+    </div>
+    <div class="carousel-wrap">
+      <button class="carousel-arrow left-arr" onclick="scrollCarousel(this,-1)">❮</button>
+      <div class="products-track">
+
+        <div class="product-card" data-brand="hyperx" data-id="1844" data-name="Auriculares Hyperx Cloud Stinger 2 " data-price="29.90">
+          <img src="imagenes/periferico1.jpg" alt="Auriculares Hyperx Cloud Stinger 2 " onerror="this.style.display='none'">
+          <div class="product-brand">hyperx</div>
+          <div class="product-name">Auriculares Hyperx Cloud Stinger 2 </div>
+          <span class="badge">-15%</span>
+          <div class="product-price">S/29.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+        <div class="product-card" data-brand="hyperx" data-id="1846" data-name="Mouse y Teclado Hyperx " data-price="49.90">
+          <img src="imagenes/mause_teclado.jpg" alt="Mouse y Teclado Hyperx " onerror="this.style.display='none'">
+          <div class="product-brand">hyperx</div>
+          <div class="product-name">Mouse y Teclado Hyperx </div>
+          <span class="badge">-11%</span>
+          <div class="product-price">S/49.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+        <div class="product-card" data-brand="GoPro" data-id="1847" data-name="Camara GoPro Gamer" data-price="999.90">
+          <img src="imagenes/gopro.jpg" alt="Mando de Xbox serie x" onerror="this.style.display='none'">
+          <div class="product-brand">GOPRO</div>
+          <div class="product-name">Camara GoPro Gamer</div>
+          
+          <div class="product-price-old">S/1.099.90</div>
+          <div class="product-price">S/999.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+        <div class="product-card" data-brand="Redragon" data-id="1844" data-name="Auriculares Redragon Hylas H260 " data-price="29.90">
+          <img src="imagenes/auricular1.jpg" alt="Auriculares Redragon Hylas H260 " onerror="this.style.display='none'">
+          <div class="product-brand">Redragon</div>
+          <div class="product-name">Auriculares Redragon Hylas H260 </div>
+          <span class="badge">-15%</span>
+          <div class="product-price">S/29.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+        <div class="product-card" data-brand="Logitech" data-id="1844" data-name="Auriculares Logitech Astro A50X Wireless Lightspeed  " data-price="39.90">
+          <img src="imagenes/auricular3.jpg" alt="Auriculares Logitech Astro A50X Wireless Lightspeed  " onerror="this.style.display='none'">
+          <div class="product-brand">Logitech</div>
+          <div class="product-name">Auriculares Logitech Astro A50X Wireless Lightspeed  </div>
+          <span class="badge">-12%</span>
+          <div class="product-price">S/39.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+
+         <div class="product-card" data-brand="Razer" data-id="1844" data-name="Auriculares Razer BLACKSHARK V2 X Green Black  " data-price="39.90">
+          <img src="imagenes/auricular4.jpg" alt="Auriculares Razer BLACKSHARK V2 X Green Black  " onerror="this.style.display='none'">
+          <div class="product-brand">Razer</div>
+          <div class="product-name">Auriculares Razer BLACKSHARK V2 X Green Black  </div>
+          
+          <div class="product-price">S/39.90</div>
+          <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
+        </div>
+
+          </div><!-- /products-track -->
+      <button class="carousel-arrow right-arr" onclick="scrollCarousel(this,1)">❯</button>
+    </div><!-- /carousel-wrap -->
+  </div><!-- /section-Perifericos -->
+
+
+
+  <!-- TIPS / BLOG -->
+  <div class="section" style="padding-top:0">
+    <div class="section-head">
+      <div class="section-title">Tips & Reviews</div>
+      <a class="section-link">Ver blog →</a>
+    </div>
+    <div class="tips-grid">
+      <div class="tip-card" onclick="showPage('guide')" style="cursor:pointer;">
+        <img src="imagenes/gaming.jpg" alt="¿Cuál es la mejor laptop gamer?" onerror="this.style.display='none'">
+        <div class="tip-body">
+          <div class="tip-tag">Guía de Compra</div>
+          <div class="tip-title">¿Qué laptop gaming comprar en 2025? Los mejores modelos bajo S/4,000</div>
+        </div>
+      </div>
+      <div class="tip-card" onclick="showPage('review')" style="cursor:pointer;">
+        <img src="imagenes/vector3.jpg" alt="¿Cuál domina? " onerror="this.style.display='none'">
+        <div class="tip-body">
+          <div class="tip-tag">Review</div>
+          <div class="tip-title">ASUS ROG Strix vs MSI Vector: ¿Cuál domina el gaming?</div>
+        </div>
+      </div>
+      <div class="tip-card" onclick="showPage('tips')" style="cursor:pointer;">
+        <img src="imagenes/optimizar2.jpg" alt="Optimización " onerror="this.style.display='none'">
+        <div class="tip-body">
+          <div class="tip-tag">Tech Tips</div>
+          <div class="tip-title">Cómo optimizar tu PC gamer para máximo rendimiento en FPS</div>
+        </div>
+      </div>
+      <div class="tip-card" onclick="showPage('phones')" style="cursor:pointer;">
+        <img src="imagenes/comparacion.jpg" alt="Comparación " onerror="this.style.display='none'">
+        <div class="tip-body">
+          <div class="tip-tag">Comparativa</div>
+          <div class="tip-title">iPhone 17 vs Samsung Galaxy S25: La batalla definitiva del 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top-bar"></div>
+    <div class="footer-main">
+      <div class="footer-brand-col">
+        <div class="footer-logo">
+          <span class="footer-logo-pc">Tienda</span><span class="footer-logo-tech">Tech</span>
+        </div>
+        <button class="footer-store-btn" onclick="showPage('tiendas')">
+          <i class="fas fa-map-marker-alt footer-store-pin"></i> Encuentra tu tienda
+        </button>
+        <div class="footer-contact">
+          
+          <div>
+            <div class="footer-contact-label">Atención al Cliente</div>
+            <div class="footer-contact-num">+51 1 7161666</div>
+          </div>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-newsletter">
+          <p>Obtén ofertas y promociones exclusivas.</p>
+          <button class="footer-sub-btn">Suscríbete</button>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-social-row">
+          <span class="footer-social-label">Síguenos</span>
+          <div class="footer-social-icons">
+            <a href="https://www.instagram.com/cgscomputer_oficial?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D" class="footer-social-icon" aria-label="Instagram">
+              <i class="fab fa-instagram" style="font-size:20px;"></i>
+            </a>
+            <a href="https://www.facebook.com/CGSComputeroficial?locale=es_LA" class="footer-social-icon" aria-label="Facebook">
+              <i class="fab fa-facebook-f" style="font-size:20px;"></i>
+            </a>
+            <a href="https://www.youtube.com/@Team-CGS" class="footer-social-icon" aria-label="YouTube">
+              <i class="fab fa-youtube" style="font-size:20px;"></i>
+            </a>
+            <a href="https://www.tiktok.com/@cgs_computer?is_from_webapp=1&sender_device=pc" class="footer-social-icon" aria-label="TikTok">
+              <i class="fab fa-tiktok" style="font-size:20px;"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-links-area">
+        <div class="footer-col">
+          <h4>TiendaTech</h4>
+          <a href="#">Navidad</a>
+          <a href="#">Ciber</a>
+          <a href="#">BlackDays</a>
+          <a href="#">Vuelta a Clases</a>
+          <a href="#">Día de la Madre</a>
+          <a href="#">Día del Padre</a>
+          <a href="#">Día del Niño</a>
+        </div>
+        <div class="footer-col">
+          <h4>¿Necesitas Ayuda?</h4>
+          <a href="#">Centro de ayuda</a>
+          <a href="#">Estado de mi despacho</a>
+          <a href="#">Revisa tu boleta</a>
+          <a href="#">Orden de servicio</a>
+          <a href="#">Preguntas frecuentes</a>
+          <a href="#">Términos y condiciones</a>
+        </div>
+        <div class="footer-col">
+          <h4>Acerca de TiendaTech</h4>
+          <a onclick="showPage('nosotros')">Quiénes somos</a>
+          <a href="#">Representante Legal</a>
+          <a href="#">Beneficios de comprar con nosotros</a>
+          <a href="#">Privacidad y seguridad</a>
+          <a href="#">Sustentabilidad</a>
+          <a href="#">Bases y Promociones</a>
+        </div>
+        <div class="footer-col">
+          <h4>Servicios</h4>
+          <a href="#">Consejos y tips tecnológicos</a>
+          <a href="#">Asesórate Online</a>
+          <a href="#">Arma tu PC</a>
+          <a href="#">Puntos verdes</a>
+          <a href="#">Entra en juego profesional</a>
+          <a href="#">Libro de Reclamaciones</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Copyright © 2026 TiendaTech.com.pe. Todos los derechos reservados.</span>
+    </div>
+  </footer>
+
+</div><!-- /home-page -->
+
+
+
+<!-- nosotros page -->
+<div class="page" id="nosotros-page">
+  <div class="hero-nos">
+    <h1>Sobre <span>TiendaTech</span></h1>
+    <p>Desde 2007, llevando la mejor tecnología a los peruanos con pasión, honestidad y los mejores precios.</p>
+  </div>
+
+  <div class="nos-stats">
+    <div class="nos-stat"><div class="nos-stat-num">17+</div><div class="nos-stat-label">Tiendas a nivel nacional</div></div>
+    <div class="nos-stat"><div class="nos-stat-num">18</div><div class="nos-stat-label">Años de experiencia</div></div>
+    <div class="nos-stat"><div class="nos-stat-num">500K+</div><div class="nos-stat-label">Clientes satisfechos</div></div>
+    <div class="nos-stat"><div class="nos-stat-num">5,000+</div><div class="nos-stat-label">Productos disponibles</div></div>
+  </div>
+
+  <div class="nos-content">
+    <h2>Nuestra <span>Historia</span></h2>
+    <p>TiendaTech nació en 2007 con la misión de democratizar el acceso a tecnología de calidad en el Perú. Comenzamos como una pequeña tienda en Lima y hoy somos la cadena de tecnología más grande del país, con presencia en las principales ciudades.</p>
+    <p>Nos especializamos en computadoras, laptops, smartphones, componentes y accesorios de las mejores marcas del mundo: Apple, MSI, ASUS, Lenovo, Samsung, Xiaomi y muchas más. Nuestro compromiso es ofrecerte los mejores precios con la garantía y el servicio que mereces.</p>
+
+   <!-- TABLA COMPARATIVA DE SERVICIOS -->
+<h2 style="font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;margin:32px 0 16px;">
+  Nuestros <span style="color:var(--green)">Planes de Garantía</span>
+</h2>
+
+<div style="overflow-x:auto;border-radius:12px;border:1.5px solid var(--border);margin-bottom:32px;">
+  <table style="width:100%;border-collapse:collapse;font-size:14px;background:#fff;">
+    <thead>
+      <tr style="background:var(--green);color:#fff;">
+        <th style="padding:14px 18px;text-align:left;font-weight:700;">Servicio</th>
+        <th style="padding:14px 18px;text-align:center;font-weight:700;">Básico</th>
+        <th style="padding:14px 18px;text-align:center;font-weight:700;">Plus</th>
+        <th style="padding:14px 18px;text-align:center;font-weight:700;">Premium</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:13px 18px;color:var(--text2);font-weight:500;">
+          Garantía del fabricante
+        </td>
+        <td style="padding:13px 18px;text-align:center;">1 año</td>
+        <td style="padding:13px 18px;text-align:center;">2 años</td>
+        <td style="padding:13px 18px;text-align:center;font-weight:700;color:var(--green);">
+          3 años
+        </td>
+      </tr>
+
+      <tr style="border-bottom:1px solid var(--border);background:var(--bg);">
+        <td style="padding:13px 18px;color:var(--text2);font-weight:500;">
+          Soporte técnico
+        </td>
+        <td style="padding:13px 18px;text-align:center;">En tienda</td>
+        <td style="padding:13px 18px;text-align:center;">En tienda + chat</td>
+        <td style="padding:13px 18px;text-align:center;font-weight:700;color:var(--green);">
+          24/7 Online
+        </td>
+      </tr>
+
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:13px 18px;color:var(--text2);font-weight:500;">
+          Despacho a domicilio
+        </td>
+        <td style="padding:13px 18px;text-align:center;color:var(--muted);">—</td>
+        <td style="padding:13px 18px;text-align:center;">Sí</td>
+        <td style="padding:13px 18px;text-align:center;">Sí</td>
+      </tr>
+
+      <tr style="border-bottom:1px solid var(--border);background:var(--bg);">
+        <td style="padding:13px 18px;color:var(--text2);font-weight:500;">
+          Cambio por daño accidental
+        </td>
+        <td style="padding:13px 18px;text-align:center;color:var(--muted);">—</td>
+        <td style="padding:13px 18px;text-align:center;color:var(--muted);">—</td>
+        <td style="padding:13px 18px;text-align:center;">Sí</td>
+      </tr>
+
+      <tr>
+        <td style="padding:13px 18px;color:var(--text2);font-weight:500;">
+          Precio
+        </td>
+        <td style="padding:13px 18px;text-align:center;font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;">
+          Gratis
+        </td>
+        <td style="padding:13px 18px;text-align:center;font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;">
+          S/ 49.90
+        </td>
+        <td style="padding:13px 18px;text-align:center;font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;color:var(--green);">
+          S/ 99.90
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+    <div class="nos-valores">
+      <div class="nos-valor"><div class="nos-valor-icon"><img src="imagenes/vector.jpg" alt="Honestidad" style="width:48px;height:48px;object-fit:cover;border-radius:50%;"></div><h3>Honestidad</h3><p>Precios transparentes, sin letra chica. Lo que ves es lo que pagas.</p></div>
+      <div class="nos-valor"><div class="nos-valor-icon"><img src="imagenes/top.jpg" alt="Innovación" style="width:48px;height:48px;object-fit:cover;border-radius:50%;"></div><h3>Innovación</h3><p>Siempre los últimos lanzamientos, avant première para nuestros clientes.</p></div>
+      <div class="nos-valor"><div class="nos-valor-icon"><img src="imagenes/top3.jpg" alt="Compromiso" style="width:48px;height:48px;object-fit:cover;border-radius:50%;"></div><h3>Compromiso</h3><p>Soporte pre y post venta. Tu satisfacción es nuestra prioridad.</p></div>
     </div>
 
-    <footer>
-        © 2025 TiendaTecnology — Todos los derechos reservados
-    </footer>
+    <div class="nos-team">
+      <h2>Nuestro <span>Equipo</span></h2>
+      <div class="team-grid">
+        <div class="team-card"><div class="team-avatar"><img src="imagenes/perfil.jpeg" alt="Cesar Calle" style="width:64px;height:64px;object-fit:cover;border-radius:50%;"></div><div class="team-name">Cesar Calle</div><div class="team-role">CEO & Fundador</div></div>
+        <div class="team-card"><div class="team-avatar"><img src="imagenes/perfil.jpeg" alt="Victor Noa" style="width:64px;height:64px;object-fit:cover;border-radius:50%;"></div><div class="team-name">Victor Noa</div><div class="team-role">Director de Tecnología</div></div>
+        <div class="team-card"><div class="team-avatar"><img src="imagenes/perfil.jpeg" alt="Luis Quispe" style="width:64px;height:64px;object-fit:cover;border-radius:50%;"></div><div class="team-name">Efrain Almerco</div><div class="team-role">Jefe de Soporte Técnico</div></div>
+        <div class="team-card"><div class="team-avatar"><img src="imagenes/perfil.jpeg" alt="Maria Lopez" style="width:64px;height:64px;object-fit:cover;border-radius:50%;"></div><div class="team-name">Jesus Cardenas</div><div class="team-role">Gerente de Marketing</div></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /nosotros-page -->
 
-    <footer class="footer-pc">
-        <div class="footer-container">
+<!-- tiendas page -->
+<div class="page" id="tiendas-page">
+  <div class="hero-nos">
+    <h1>Nuestras <span>Tiendas</span></h1>
+    <p>Encuéntranos en los mejores centros comerciales del Perú</p>
+  </div>
 
-            <!-- IZQUIERDA -->
-            <div class="footer-left">
-                <h2 class="logo-footer">Tienda<span>Tecnology</span></h2>
+  <div style="padding: 24px 24px 0;">
+    <h2 style="font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;margin-bottom:4px;">Encuentra tu tienda más cercana</h2>
+    <p style="color:var(--muted);font-size:13px;">17 tiendas en Lima y provincias</p>
+  </div>
 
-                <a href="https://www.google.com/maps" target="_blank" class="btn-tienda">
-                    📍 Encuentra tu tienda
-                </a>
+  <div class="tiendas-wrap">
+    <div class="tiendas-list-panel">
+      <div class="tiendas-search-row">
+        <input class="tiendas-search-input" id="tiendaSearch" placeholder="Buscar por nombre o dirección..." oninput="filterTiendas()">
+        <span class="tiendas-location-link" onclick="showToast('📍 Geolocalización próximamente')"><i class="fas fa-location-arrow" style="margin-right:4px;"></i> Usar mi ubicación actual</span>
+      </div>
+      <div class="tiendas-tabs">
+        <button class="tienda-tab active" onclick="setTiendaTab('todas',this)">Todas <span class="tienda-tab-count">(17)</span></button>
+        <button class="tienda-tab" onclick="setTiendaTab('lima',this)">Lima <span class="tienda-tab-count">(11)</span></button>
+        <button class="tienda-tab" onclick="setTiendaTab('provincia',this)">Provincias <span class="tienda-tab-count">(6)</span></button>
+      </div>
+      <div class="tiendas-list" id="tiendasList"></div>
+    </div>
 
-                <p>Obtén ofertas y promociones exclusivas.</p>
-                <a href="#" class="btn-suscribir">Suscríbete</a>
+    <div class="tiendas-map-panel">
+      <div class="tiendas-map-inner">
+        <iframe id="tiendaMapFrame"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.5!2d-77.0297!3d-12.0464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sTiendaTech+Lima+Per%C3%BA!5e0!3m2!1ses!2spe!4v1"
+          width="100%" height="100%" style="border:0;min-height:600px;" allowfullscreen loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</div>
 
-                <div class="social">
-                    <a href="#">📸</a>
-                    <a href="#">📘</a>
-                    <a href="#">▶️</a>
-                    <a href="#">🎵</a>
-                </div>
-            </div>
+<!-- /tiendas-page -->
 
-            <!-- SOLO 3 COLUMNAS -->
-            <div class="footer-links">
+<!-- mis pedidos page -->
+<div class="page" id="pedidos-page">
+  <div class="pedidos-hero">
+    <h1>Mis <span>Pedidos</span></h1>
+    <p>Consulta el estado y el historial de tus compras</p>
+  </div>
+  <div class="pedidos-content" id="pedidos-content">
+    <!-- Rendered by JS -->
+  </div>
+</div><!-- /pedidos-page -->
 
-                <div class="footer-col">
-                    <h4>Ayuda</h4>
-                    <a href="#faq">Preguntas frecuentes</a>
-                    <a href="#terminos">Términos y condiciones</a>
-                </div>
 
-                <div class="footer-col">
-                    <h4>Acerca de</h4>
-                   
-                    <a href="Quienes_somos/somos.html" target="_blank">Quiénes somos</a>
-                    <a href="#privacidad">Privacidad</a>
-                </div>
+<!-- guía de compra page -->
+<div class="page" id="guide-page" style="display:none;background:white;min-height:100vh;">
 
-                <div class="footer-col">
-                    <h4>Servicios</h4>
-                    <a href="#armatuPC">Arma tu PC</a>
-                    <a href="#asesoria">Asesoría online</a>
-                </div>
+  <div class="guide-hero">
+    <div class="guide-hero-inner">
+      <div class="guide-breadcrumb">
+        <span onclick="showPage('home')" style="cursor:pointer;opacity:.7;">Inicio</span>
+        <span class="guide-sep">›</span>
+        <span onclick="showPage('home')" style="cursor:pointer;opacity:.7;">Tips &amp; Reviews</span>
+        <span class="guide-sep">›</span>
+        <span>Guía de Compra</span>
+      </div>
+      <div class="guide-tag-pill">Guía de Compra</div>
+      <h1 class="guide-hero-title">¿Qué laptop gaming comprar<br>en 2025? Los mejores modelos<br><span>bajo S/4,000</span></h1>
+      <p class="guide-hero-sub">Analizamos el mercado peruano para darte las mejores opciones según tu presupuesto y necesidades.</p>
+    </div>
+  </div>
 
-            </div>
+  <div class="guide-sticky-nav">
+    <div class="guide-nav-inner">
+      <a class="guide-nav-link active" onclick="guideScrollTo('intro',this)">Introducción</a>
+      <a class="guide-nav-link" onclick="guideScrollTo('que-buscar',this)">¿Qué buscar?</a>
+      <a class="guide-nav-link" onclick="guideScrollTo('modelos',this)">Los mejores modelos</a>
+      <a class="guide-nav-link" onclick="guideScrollTo('comparativa',this)">Comparativa</a>
+      <a class="guide-nav-link" onclick="guideScrollTo('conclusion',this)">Conclusión</a>
+    </div>
+  </div>
+
+  <div class="guide-body">
+    <section class="guide-section" id="guide-intro">
+      <h2>¿Por qué una laptop gaming bajo S/4,000 es viable hoy?</h2>
+      <p>El mercado de laptops gaming ha evolucionado enormemente. Lo que antes costaba S/6,000 ahora está disponible gracias a la competencia entre <strong>Lenovo, ASUS y MSI</strong>. En 2025 es perfectamente posible conseguir una máquina capaz de correr los últimos juegos en gráficos medios-altos en ese rango de precio.</p>
+      <div class="guide-info-box">
+        <div class="guide-info-icon"><img src="imagenes/optimizar.jpg" alt="Info" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
+        <div><strong>¿Para quién es esta guía?</strong>
+        <p>Para jugadores ocasionales y entusiastas que quieren rendimiento real sin gastar más de S/4,000. También útil si necesitas una laptop para trabajo y gaming.</p></div>
+      </div>
+    </section>
+
+    <section class="guide-section" id="guide-que-buscar">
+      <h2>¿Qué especificaciones buscar?</h2>
+      <p>Estos son los factores clave que determinan el rendimiento gaming:</p>
+      <div class="guide-specs-grid">
+        <div class="guide-spec-card">
+          <h3>Pantalla</h3>
+          <p>Mínimo <strong>Full HD</strong> a 144Hz. La tasa de refresco importa más que la resolución.</p>
+          <div class="guide-spec-icon"><img src="imagenes/pantalla.jpg" alt="Pantalla" width="50"></div>
         </div>
-    </footer>
+        <div class="guide-spec-card">
+          <h3>Teclado y Touchpad</h3>
+          <p>Integrados en la base para escribir y mover el cursor.</p>
+          <div class="guide-spec-icon"><img src="imagenes/teclado.jpeg" alt="Teclado" width="50"></div>
+        </div>
+        <div class="guide-spec-card">
+          <h3>Batería</h3>
+          <p>Permite usar el equipo sin estar enchufado por varias horas.</p>
+          <div class="guide-spec-icon"><img src="imagenes/bateria.png" alt="Batería" width="50"></div>
+        </div>
+        <div class="guide-spec-card"><div class="guide-spec-icon"><img src="imagenes/amdryzen.jpg" alt="Procesador" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>Procesador</h3><p><strong>Intel Core i5/i7 de 12ª-13ª gen</strong> o <strong>AMD Ryzen 5/7 7000</strong>. Ambos excelentes para gaming.</p></div>
+        <div class="guide-spec-card"><div class="guide-spec-icon"><img src="imagenes/kingston.jpg" alt="RAM" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>RAM</h3><p>Mínimo <strong>16GB DDR5</strong>. 32GB es una ventaja enorme para multitarea.</p></div>
+        <div class="guide-spec-card"><div class="guide-spec-icon"><img src="imagenes/componentes1.png" alt="SSD" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>Almacenamiento</h3><p><strong>512GB SSD NVMe</strong> mínimo. Los juegos modernos pesan; 1TB es ideal.</p></div>
+        <div class="guide-spec-card"><div class="guide-spec-icon"><img src="imagenes/bateria.png" alt="Refrigeración" style="width:56px;height:56px;object-fit:contain;border-radius:8px;"></div><h3>Refrigeración</h3><p>Prioriza <strong>buena refrigeración</strong>. Jugarás enchufado la mayoría del tiempo.</p></div>
+      </div>
+    </section>
 
-    <script src="index.js"></script>
+    <section class="guide-section" id="guide-modelos">
+      <h2>Los mejores modelos disponibles en TiendaTech</h2>
+      <p>Basándonos en stock, precio y rendimiento real, nuestros tres favoritos bajo S/4,000:</p>
+      <div class="guide-model-card featured">
+        <div class="guide-model-badge">🏆 Mejor relación calidad-precio</div>
+        <div class="guide-model-inner">
+          <div class="guide-model-img"><img src="imagenes/laptop4.jpg" alt="Lenovo LOQ" style="width:100%;height:100%;object-fit:cover;border-radius:8px;"></div>
+          <div class="guide-model-info">
+            <div class="guide-model-brand">LENOVO</div>
+            <h3 class="guide-model-name">Laptop Gamer Lenovo LOQ 15.6" FHD Intel Core i5 16GB RAM 512GB</h3>
+            <div class="guide-model-id">ID 3901</div>
+            <div class="guide-model-tags"><span class="guide-tag">RTX 3050</span><span class="guide-tag">144Hz</span><span class="guide-tag">16GB RAM</span><span class="guide-tag">512GB SSD</span></div>
+            <p class="guide-model-desc">La opción más equilibrada. Con RTX 3050 y Core i5 de 12ª gen, corre Valorant, CS2 y Fortnite en configuración alta sin problema. La pantalla de 144Hz marca la diferencia en shooters.</p>
+            <div class="guide-model-price-row">
+              <div class="guide-model-price">S/2,999.90</div>
+              <button class="guide-btn-cart" onclick="addToCartFromCard({id:'3901',name:'Laptop Gamer Lenovo LOQ 15.6 FHD Intel Core i5 16GB RAM 512GB',price:'2,999.90',brand:'LENOVO',img:''})">Agregar al carro</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="guide-model-card">
+        <div class="guide-model-inner">
+          <div class="guide-model-img"><img src="imagenes/laptop6.jpeg" alt="ASUS TUF" style="width:100%;height:100%;object-fit:cover;border-radius:8px;"></div>
+          <div class="guide-model-info">
+            <div class="guide-model-brand">ASUS</div>
+            <h3 class="guide-model-name">Laptop Gamer ASUS TUF Gaming F16 16" Intel Core i7 16GB 512GB</h3>
+            <div class="guide-model-id">ID 3880</div>
+            <div class="guide-model-tags"><span class="guide-tag">RTX 4050</span><span class="guide-tag">165Hz</span><span class="guide-tag">16GB DDR5</span><span class="guide-tag">MIL-STD-810H</span></div>
+            <p class="guide-model-desc">Conocido por su durabilidad militar y excelente refrigeración. La RTX 4050 le da un salto generacional notable, especialmente en ray tracing. Ideal si buscas algo que dure 4-5 años.</p>
+            <div class="guide-model-price-row">
+              <div class="guide-model-price">S/3,499.90</div>
+              <div class="guide-model-price-old">S/3,799.90</div>
+              <button class="guide-btn-cart" onclick="addToCartFromCard({id:'3880',name:'Laptop Gamer ASUS TUF Gaming F16 16 Intel Core i7 16GB 512GB',price:'3,499.90',brand:'ASUS',img:''})">Agregar al carro</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="guide-model-card">
+        <div class="guide-model-inner">
+          <div class="guide-model-img"><img src="imagenes/laptop5.jpg" alt="MSI Cyborg" style="width:100%;height:100%;object-fit:cover;border-radius:8px;"></div>
+          <div class="guide-model-info">
+            <div class="guide-model-brand">MSI</div>
+            <h3 class="guide-model-name">Laptop Gamer MSI Cyborg 15 A13VFK 15.6" FHD Intel Core i7 16GB</h3>
+            <div class="guide-model-id">ID 3842</div>
+            <div class="guide-model-tags"><span class="guide-tag">RTX 4060</span><span class="guide-tag">144Hz IPS</span><span class="guide-tag">16GB RAM</span><span class="guide-tag">Diseño RGB</span></div>
+            <p class="guide-model-desc">Chasis semi-transparente con RGB integrado. La RTX 4060 la convierte en la más potente de la lista — capaz de correr juegos exigentes en gráficos altos.</p>
+            <div class="guide-model-price-row">
+              <div class="guide-model-price">S/3,899.90</div>
+              <button class="guide-btn-cart" onclick="addToCartFromCard({id:'3842',name:'Laptop Gamer MSI Cyborg 15 A13VFK 15.6 FHD Intel Core i7 16GB',price:'3,899.90',brand:'MSI',img:''})">Agregar al carro</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <section class="guide-section" id="guide-comparativa">
+      <h2>Comparativa rápida</h2>
+      <div class="guide-table-wrap">
+        <table class="guide-table">
+          <thead><tr><th>Modelo</th><th>GPU</th><th>CPU</th><th>RAM</th><th>Pantalla</th><th>Precio</th><th>Ideal para</th></tr></thead>
+          <tbody>
+            <tr class="guide-table-highlight"><td><strong>Lenovo LOQ</strong></td><td>RTX 3050</td><td>Core i5-12450H</td><td>16GB</td><td>15.6" 144Hz</td><td><strong>S/2,999</strong></td><td>Presupuesto ajustado</td></tr>
+            <tr><td><strong>ASUS TUF F16</strong></td><td>RTX 4050</td><td>Core i7-13650HX</td><td>16GB DDR5</td><td>16" 165Hz</td><td><strong>S/3,499</strong></td><td>Durabilidad + rendimiento</td></tr>
+            <tr><td><strong>MSI Cyborg 15</strong></td><td>RTX 4060</td><td>Core i7-13620H</td><td>16GB DDR5</td><td>15.6" 144Hz</td><td><strong>S/3,899</strong></td><td>Máximo rendimiento</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 style="margin-top:48px;margin-bottom:20px;">Preguntas frecuentes</h3>
+      <div class="guide-faq">
+        <div class="guide-faq-item"><button class="guide-faq-q" onclick="toggleFaq(this)">¿Puedo jugar títulos AAA con estas laptops? <span class="guide-faq-icon">+</span></button><div class="guide-faq-a"><p>Sí, con ajustes. Cyberpunk 2077, Elden Ring o CoD corren en gráficos medios a 60fps. Con el MSI Cyborg (RTX 4060) puedes subir a gráficos altos.</p></div></div>
+        <div class="guide-faq-item"><button class="guide-faq-q" onclick="toggleFaq(this)">¿Sirven también para trabajo y estudios? <span class="guide-faq-icon">+</span></button><div class="guide-faq-a"><p>Absolutamente. Son excelentes para edición de video, programación y diseño en AutoCAD. La pantalla de 144Hz hace el trabajo diario más fluido.</p></div></div>
+        <div class="guide-faq-item"><button class="guide-faq-q" onclick="toggleFaq(this)">¿Cuánto duran en batería? <span class="guide-faq-icon">+</span></button><div class="guide-faq-a"><p>Para gaming, siempre conectadas. En uso ofimático, entre 4-6 horas.</p></div></div>
+        <div class="guide-faq-item"><button class="guide-faq-q" onclick="toggleFaq(this)">¿Tienen garantía en Perú? <span class="guide-faq-icon">+</span></button><div class="guide-faq-a"><p>Sí. Garantía oficial del fabricante de 1 año, con centros de servicio en Lima y principales ciudades.</p></div></div>
+      </div>
+    </section>
+
+    <section class="guide-section" id="guide-conclusion">
+      <h2>Conclusión: ¿cuál elegir?</h2>
+      <div class="guide-conclusion-grid">
+        <div class="guide-conclusion-card green"><div class="guide-conclusion-icon"><img src="imagenes/laptop4.jpg" alt="Lenovo LOQ" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Elige el Lenovo LOQ si…</h4><p>Tu presupuesto es ajustado y quieres el mayor valor. Para gaming casual y trabajo es perfecta.</p></div>
+        <div class="guide-conclusion-card blue"><div class="guide-conclusion-icon"><img src="imagenes/laptop6.jpeg" alt="ASUS TUF" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Elige el ASUS TUF si…</h4><p>Buscas durabilidad a largo plazo y salto generacional en GPU. Inversión inteligente para 4-5 años.</p></div>
+        <div class="guide-conclusion-card red"><div class="guide-conclusion-icon"><img src="imagenes/laptop5.jpg" alt="MSI Cyborg" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Elige el MSI Cyborg si…</h4><p>Quieres máximo rendimiento. La GPU más potente de las tres.</p></div>
+      </div>
+      <div style="margin-top:32px;text-align:center;">
+        <button class="guide-cta-big" onclick="showPage('home');setTimeout(()=>document.getElementById('section-laptops').scrollIntoView({behavior:'smooth'}),400)">
+          Ver todos los laptops gaming en TiendaTech →
+        </button>
+      </div>
+    </section>
+  </div>
+</div><!-- /guide-page -->
+
+<!-- review page -->
+<div class="page" id="review-page" style="display:none;background:white;min-height:100vh;">
+
+    <div class="guide-hero">
+      <div class="guide-hero-inner">
+        <div class="guide-breadcrumb">
+          <span onclick="showPage('home')" style="cursor:pointer;opacity:.7;">Inicio</span>
+          <span class="guide-sep">›</span>
+          <span>Review</span>
+        </div>
+        <div class="guide-tag-pill">Review</div>
+        <h1 class="guide-hero-title">ASUS ROG Strix vs MSI Vector</h1>
+        <p class="guide-hero-sub">Comparativa completa entre dos laptops gaming potentes.</p>
+      </div>
+    </div>
+    <div class="guide-body">
+      <section class="guide-section">
+        <h2>¿Cuál rinde mejor?</h2>
+        <p>La ASUS ROG Strix destaca por su refrigeración y estabilidad. La MSI Vector ofrece mayor potencia bruta en juegos AAA.</p>
+        <div class="guide-info-box">
+          <div class="guide-info-icon"><img src="imagenes/comparativa.jpg" alt="Review" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
+          <div>
+            <strong>Conclusión rápida</strong>
+            <p>ASUS = mejor equilibrio. MSI = máximo rendimiento.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+</div><!-- /review-page -->
+
+<!-- tips page -->
+<div class="page" id="tips-page" style="display:none;background:white;min-height:100vh;">
+
+    <div class="guide-hero">
+      <div class="guide-hero-inner">
+        <div class="guide-breadcrumb">
+          <span onclick="showPage('home')" style="cursor:pointer;opacity:.7;">Inicio</span>
+          <span class="guide-sep">›</span>
+          <span>Tech Tips</span>
+        </div>
+        <div class="guide-tag-pill">Tech Tips</div>
+        <h1 class="guide-hero-title">Cómo optimizar tu PC gamer</h1>
+        <p class="guide-hero-sub">Mejora FPS y rendimiento en juegos fácilmente.</p>
+      </div>
+    </div>
+    <div class="guide-body">
+      <section class="guide-section">
+        <h2>Consejos rápidos</h2>
+        <p>Actualiza drivers, activa modo rendimiento y limpia procesos innecesarios.</p>
+        <div class="guide-info-box">
+          <div class="guide-info-icon"><img src="imagenes/optimizar2.jpg" alt="Tips" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
+          <div>
+            <strong>Tip importante</strong>
+            <p>Usa SSD y mínimo 16GB RAM para gaming fluido.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+</div><!-- /tips-page -->
+
+<!-- phones page -->
+<div class="page" id="phones-page" style="display:none;background:white;min-height:100vh;">
+
+    <div class="guide-hero">
+      <div class="guide-hero-inner">
+        <div class="guide-breadcrumb">
+          <span onclick="showPage('home')" style="cursor:pointer;opacity:.7;">Inicio</span>
+          <span class="guide-sep">›</span>
+          <span>Comparativa</span>
+        </div>
+        <div class="guide-tag-pill">Comparativa</div>
+        <h1 class="guide-hero-title">iPhone 17 vs Samsung Galaxy S25</h1>
+        <p class="guide-hero-sub">La batalla definitiva de smartphones 2025.</p>
+      </div>
+    </div>
+    <div class="guide-body">
+      <section class="guide-section">
+        <h2>¿Cuál conviene más?</h2>
+        <p>El iPhone destaca en video y estabilidad. Samsung sobresale en pantalla y personalización.</p>
+        <div class="guide-info-box">
+          <div class="guide-info-icon"><img src="imagenes/comparacion.jpg" alt="Phones" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
+          <div>
+            <strong>Resumen rápido</strong>
+            <p>iPhone = ecosistema. Samsung = libertad y potencia.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+</div><!-- /phones-page -->
+
+<script src="index.js"></script>
 </body>
-
 </html>
