@@ -3014,8 +3014,15 @@ footer {
   .cat-btn .cat-label, .cat-btn .cat-arrow { display: none; }
   .cat-btn { padding: 10px 12px; }
   .mobile-search-btn, .mobile-menu-btn { display: flex; }
-  .cart-btn { padding: 10px 12px; }
+  .cart-btn { padding: 10px 12px; flex-shrink: 0; order: 1; }
   .cart-text { display: none; }
+  /* FIX carrito invisible en móvil: el botón de WhatsApp ("CONTÁCTENOS")
+     no se reducía en móvil y, junto con flex-wrap:nowrap + overflow-x:clip
+     en html/body, empujaba el carrito fuera del viewport visible.
+     Se reduce a solo-icono y se le da order mayor que el carrito,
+     para que el carrito tenga siempre prioridad de espacio/visibilidad. */
+  .whatsapp-contact { padding: 10px 12px; order: 2; }
+  .whatsapp-contact span { display: none; }
   .nav-logo { font-size: 22px; }
   .user-greeting { padding: 8px; }
   #greeting-name { display: none; }
@@ -4115,6 +4122,11 @@ body { font-size: var(--fs-base); }
   .hs-title { font-size: clamp(20px, 7vw, 28px); }
   .product-card { min-width: 78vw; max-width: 78vw; }
   .section-title { font-size: 20px; }
+  /* margen extra de seguridad en pantallas muy angostas para que
+     el carrito nunca quede sin espacio en la barra superior */
+  nav { gap: 6px; padding: 10px 10px; }
+  .cart-btn { padding: 9px 10px; }
+  .whatsapp-contact { padding: 9px 10px; }
 }
 
 /* =====================================================================
