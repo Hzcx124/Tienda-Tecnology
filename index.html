@@ -288,10 +288,10 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
               <div class="hs-inner-carousel" id="innerCarousel0">
                 <div class="hs-inner-track" id="innerTrack0">
                   <img src="imagenes/laptop.jpg"  alt="Gaming Laptop"       class="hs-main-img">
-                  <img src="imagenes/laptop2.jpg" alt="Gaming Laptop 2"     class="hs-main-img">
-                  <img src="imagenes/laptop3.jpg" alt="Gaming Laptop 3"     class="hs-main-img">
-                  <img src="imagenes/laptop4.jpg" alt="Gaming Laptop 4"     class="hs-main-img">
-                  <img src="imagenes/laptop5.jpg" alt="Gaming Laptop 5"     class="hs-main-img">
+                  <img loading="lazy" decoding="async" src="imagenes/laptop2.jpg" alt="Gaming Laptop 2"     class="hs-main-img">
+                  <img loading="lazy" decoding="async" src="imagenes/laptop3.jpg" alt="Gaming Laptop 3"     class="hs-main-img">
+                  <img loading="lazy" decoding="async" src="imagenes/laptop4.jpg" alt="Gaming Laptop 4"     class="hs-main-img">
+                  <img loading="lazy" decoding="async" src="imagenes/laptop5.jpg" alt="Gaming Laptop 5"     class="hs-main-img">
                 </div>
                 <div class="hs-inner-dots" id="innerDots0"></div>
               </div>
@@ -324,7 +324,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <!-- Video oculto para compatibilidad con JS -->
-        <video id="heroVideo" src="imagenes/videoplayback.mp4" muted autoplay loop playsinline preload="metadata" style="display:none"></video>
+        <video id="heroVideo" src="imagenes/videoplayback.mp4" muted loop playsinline preload="none" style="display:none"></video>
+        <!-- FIX rendimiento: este video estaba oculto (display:none) pero tenía
+             autoplay + preload="metadata", por lo que descargaba y reproducía
+             en segundo plano sin que nadie lo viera jamás. Se quitó "autoplay"
+             y se cambió a preload="none". Los listeners de heroVideo en
+             index.js no se tocaron y siguen funcionando igual (no se usa
+             realmente porque el video nunca se reproduce, igual que antes). -->
       </div>
 
       <!-- ── SLIDE 2: Smartphones ── -->
@@ -366,12 +372,12 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
               <div class="hs-img-glow s2-glow"></div>
               <div class="hs-inner-carousel" id="innerCarousel1">
                 <div class="hs-inner-track" id="innerTrack1">
-                  <img src="imagenes/a.png"           alt="iPhone 17 Pro"    class="hs-main-img hs-phone">
-                  <img src="imagenes/iphone17negro.jpg" alt="iPhone 17 Negro" class="hs-main-img hs-phone">
-                  <img src="imagenes/iphone15.png"    alt="iPhone 15"        class="hs-main-img hs-phone">
-                  <img src="imagenes/apple 16.jpg"    alt="Apple 16"         class="hs-main-img hs-phone">
-                  <img src="imagenes/redmi.png"       alt="Redmi"            class="hs-main-img hs-phone">
-                  <img src="imagenes/mi.jpg"          alt="Xiaomi Mi"        class="hs-main-img hs-phone">
+                  <img loading="lazy" decoding="async" src="imagenes/a.jpg"           alt="iPhone 17 Pro"    class="hs-main-img hs-phone">
+                  <img loading="lazy" decoding="async" src="imagenes/iphone17negro.jpg" alt="iPhone 17 Negro" class="hs-main-img hs-phone">
+                  <img loading="lazy" decoding="async" src="imagenes/iphone15.jpg"    alt="iPhone 15"        class="hs-main-img hs-phone">
+                  <img loading="lazy" decoding="async" src="imagenes/apple 16.jpg"    alt="Apple 16"         class="hs-main-img hs-phone">
+                  <img loading="lazy" decoding="async" src="imagenes/redmi.png"       alt="Redmi"            class="hs-main-img hs-phone">
+                  <img loading="lazy" decoding="async" src="imagenes/mi.jpg"          alt="Xiaomi Mi"        class="hs-main-img hs-phone">
                 </div>
                 <div class="hs-inner-dots" id="innerDots1"></div>
               </div>
@@ -442,12 +448,12 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
               <div class="hs-img-glow s3-glow"></div>
               <div class="hs-inner-carousel" id="innerCarousel2">
                 <div class="hs-inner-track" id="innerTrack2">
-                  <img src="imagenes/v.jpeg"           alt="RTX 4090"         class="hs-main-img">
-                  <img src="imagenes/Tarjetadevideo.jpg" alt="Tarjeta de Video" class="hs-main-img">
-                  <img src="imagenes/amdryzen.jpg"     alt="AMD Ryzen"        class="hs-main-img">
-                  <img src="imagenes/componentes1.png" alt="Componentes"      class="hs-main-img">
-                  <img src="imagenes/placa-asus-rog-strix-x870-e-gaming-wifi7-r2usbc-card-amd-ryzen-am5-ddr5-pn90mb1p00-m0vay0.jpg" alt="Placa ASUS ROG" class="hs-main-img">
-                  <img src="imagenes/fuente-de-poder-antryx-b600-v3-600w-atx-v231.jpg" alt="Fuente de Poder" class="hs-main-img">
+                  <img loading="lazy" decoding="async" src="imagenes/v.jpeg"           alt="RTX 4090"         class="hs-main-img">
+                  <img loading="lazy" decoding="async" src="imagenes/Tarjetadevideo.jpg" alt="Tarjeta de Video" class="hs-main-img">
+                  <img loading="lazy" decoding="async" src="imagenes/amdryzen.jpg"     alt="AMD Ryzen"        class="hs-main-img">
+                  <img loading="lazy" decoding="async" src="imagenes/componentes1.jpg" alt="Componentes"      class="hs-main-img">
+                  <img loading="lazy" decoding="async" src="imagenes/placa-asus-rog-strix-x870-e-gaming-wifi7-r2usbc-card-amd-ryzen-am5-ddr5-pn90mb1p00-m0vay0.jpg" alt="Placa ASUS ROG" class="hs-main-img">
+                  <img loading="lazy" decoding="async" src="imagenes/fuente-de-poder-antryx-b600-v3-600w-atx-v231.jpg" alt="Fuente de Poder" class="hs-main-img">
                 </div>
                 <div class="hs-inner-dots" id="innerDots2"></div>
               </div>
@@ -481,7 +487,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
       <!-- ── SLIDE 4: Consolas Gaming ── -->
       <div class="hero-slide s4 hero">
-        <div class="hs-bg-img" style="background-image:url('imagenes/ps5digitalbundleportada.png')"></div>
+        <div class="hs-bg-img" style="background-image:url('imagenes/ps5digitalbundleportada.jpg')"></div>
         <div class="hs-orb s4-orb"></div>
 
         <div class="hs-layout">
@@ -518,10 +524,10 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
               <div class="hs-img-glow s4-glow"></div>
               <div class="hs-inner-carousel" id="innerCarousel3">
                 <div class="hs-inner-track" id="innerTrack3">
-                  <img src="imagenes/ps5digitalbundleportada.png" alt="PlayStation 5"   class="hs-main-img">
-                  <img src="imagenes/mando.jpg"      alt="DualSense PS5"     class="hs-main-img">
-                  <img src="imagenes/mandoxbox.jpg"  alt="Control Xbox"      class="hs-main-img">
-                  <img src="imagenes/switch.jpg"     alt="Nintendo Switch 2" class="hs-main-img">
+                  <img loading="lazy" decoding="async" src="imagenes/ps5digitalbundleportada.jpg" alt="PlayStation 5"   class="hs-main-img">
+                  <img loading="lazy" decoding="async" src="imagenes/mando.jpg"      alt="DualSense PS5"     class="hs-main-img">
+                  <img loading="lazy" decoding="async" src="imagenes/mandoxbox.jpg"  alt="Control Xbox"      class="hs-main-img">
+                  <img loading="lazy" decoding="async" src="imagenes/switch.jpg"     alt="Nintendo Switch 2" class="hs-main-img">
                 </div>
                 <div class="hs-inner-dots" id="innerDots3"></div>
               </div>
@@ -582,12 +588,21 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
  <div class="featured-banners">
 
     <div class="feat-banner dark" style="padding:0;overflow:hidden;position:relative;">
+      <!-- FIX rendimiento: antes este video (2.2MB) se descargaba y
+           reproducía YA, al mismo tiempo que el heroVideo oculto de arriba
+           y todas las imágenes del hero — dos videos a la vez al cargar la
+           página. Ahora usa data-src + poster y solo se carga/reproduce
+           cuando el banner está por entrar en pantalla (ver index.js,
+           función lazyLoadFeaturedVideo). El comportamiento final
+           (autoplay, mute, loop) es idéntico una vez visible. -->
       <video
-        src="imagenes/videoplayback.mp4"
-        autoplay
+        id="featuredVideo"
+        data-src="imagenes/videoplayback.mp4"
+        poster="imagenes/videoplayback-poster.jpg"
         muted
         loop
         playsinline
+        preload="none"
         style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit;"
       ></video>
     </div>
@@ -597,7 +612,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       <h3 style="font-size:19px;">MacBook Neo 14"</h3>
       <div class="bprice" style="margin-top:6px;">S/4,299.90</div>
       <span class="badge" style="margin-top:4px;">-11%</span>
-      <img src="imagenes/mac.png" alt="MacBook Neo">
+      <img loading="lazy" decoding="async" src="imagenes/mac.png" alt="MacBook Neo">
     </div>
 
     <div class="feat-banner dark">
@@ -608,7 +623,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     <strong style="font-size:17px;">S/629.90</strong>
     <span class="badge red">-10%</span>
   </p>
-  <img src="imagenes/Smart.jpg" alt="Smart TV">
+  <img loading="lazy" decoding="async" src="imagenes/Smart.jpg" alt="Smart TV">
 </div>
 
   </div>
@@ -659,7 +674,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       <div class="products-track">
 
         <div class="product-card" data-brand="PC GAMER" data-id="4105" data-name="Laptop Gamer MSI Katana 17 HX B14VFK 17.3&quot; QHD Intel Core Ultra 9" data-price="6,899.90">
-          <img src="imagenes/laptop.jpg" alt="Laptop Gamer MSI Katana 17" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/laptop.jpg" alt="Laptop Gamer MSI Katana 17" onerror="this.style.display='none'">
           <div class="product-brand">PC GAMER</div>
           <div class="product-name">Laptop Gamer MSI Katana 17 HX B14VFK 17.3" QHD Intel Core Ultra 9</div>
           <div class="product-id">ID 4105</div>
@@ -670,7 +685,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="MSI" data-id="3985" data-name="Laptop Gamer MSI Vector 16 HX 16&quot; QHD+ 240Hz Intel Core Ultra 9" data-price="10,999.90">
-          <img src="imagenes/laptop2.jpg" alt="Laptop Gamer MSI Vector 16" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/laptop2.jpg" alt="Laptop Gamer MSI Vector 16" onerror="this.style.display='none'">
           <div class="product-brand">MSI</div>
           <div class="product-name">Laptop Gamer MSI Vector 16 HX 16" QHD+ 240Hz Intel Core Ultra 9</div>
           <div class="product-id">ID 3985</div>
@@ -679,7 +694,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="ASUS" data-id="3768" data-name="Laptop Gamer Asus ROG Strix Scar 18 18&quot; Intel Core i9 64GB RAM 2TB SSD" data-price="19,499.90">
-          <img src="imagenes/laptop3.jpg" alt="Laptop Gamer Asus ROG Strix Scar 18" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/laptop3.jpg" alt="Laptop Gamer Asus ROG Strix Scar 18" onerror="this.style.display='none'">
           <div class="product-brand">ASUS</div>
           <div class="product-name">Laptop Gamer Asus ROG Strix Scar 18 18" Intel Core i9 64GB RAM 2TB SSD</div>
           <div class="product-id">ID 3768</div>
@@ -690,7 +705,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="Lenovo" data-id="3901" data-name="Laptop Gamer Lenovo LOQ 15.6&quot; FHD Intel Core i5 16GB RAM 512GB" data-price="2,999.90">
-          <img src="imagenes/laptop4.jpg" alt="Laptop Gamer Lenovo LOQ" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/laptop4.jpg" alt="Laptop Gamer Lenovo LOQ" onerror="this.style.display='none'">
           <div class="product-brand">LENOVO</div>
           <div class="product-name">Laptop Gamer Lenovo LOQ 15.6" FHD Intel Core i5 16GB RAM 512GB</div>
           <div class="product-id">ID 3901</div>
@@ -699,7 +714,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="MSI" data-id="3842" data-name="Laptop Gamer MSI Cyborg 17 A13VFK 17.3&quot; FHD Intel Core i7 16GB" data-price="5,699.90">
-          <img src="imagenes/laptop5.jpg" alt="Laptop Gamer MSI Cyborg" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/laptop5.jpg" alt="Laptop Gamer MSI Cyborg" onerror="this.style.display='none'">
           <div class="product-brand">MSI</div>
           <div class="product-name">Laptop Gamer MSI Cyborg 17 A13VFK 17.3" FHD Intel Core i7 16GB</div>
           <div class="product-id">ID 3842</div>
@@ -710,7 +725,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="ASUS" data-id="3755" data-name="Laptop Gamer ASUS TUF Gaming F16 16&quot; Intel i5 144Hz 16GB 512GB" data-price="2,599.90">
-          <img src="imagenes/laptop6.jpeg" alt="Laptop Gamer ASUS TUF" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/laptop6.jpeg" alt="Laptop Gamer ASUS TUF" onerror="this.style.display='none'">
           <div class="product-brand">ASUS</div>
           <div class="product-name">Laptop Gamer ASUS TUF Gaming F16 16" Intel i5 144Hz 16GB 512GB</div>
           <div class="product-id">ID 3755</div>
@@ -720,7 +735,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
         </div>
         <div class="product-card" data-brand="intel" data-id="3755" data-name="Notebook Acer Nitro Lite 16 &quot; Intel i5 144Hz 16GB 512GB" data-price="2,599.90">
-          <img src="imagenes/laptop7.jpg" alt="Laptop Gamer ASUS TUF" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/laptop7.jpg" alt="Laptop Gamer ASUS TUF" onerror="this.style.display='none'">
           <div class="product-brand">intel</div>
           <div class="product-name">Notebook Acer Nitro Lite 16" Intel i5 144Hz 16GB 512GB</div>
           <div class="product-id">ID 3756</div>
@@ -749,7 +764,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       <div class="products-track">
 
         <div class="product-card" data-brand="MSI" data-id="4521" data-name="PC Gamer MSI MAG Infinite Intel Core i7 32GB 1TB RTX 4070" data-price="5,899.90">
-          <img src="imagenes/pc1.jpg" alt="PC Gamer MSI MAG Infinite" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/pc1.jpg" alt="PC Gamer MSI MAG Infinite" onerror="this.style.display='none'">
           <div class="product-brand">MSI</div>
           <div class="product-name">PC Gamer MSI MAG Infinite Intel Core i7 32GB 1TB RTX 4070</div>
           <div class="product-id">ID 4521 · <span>4 Unid.</span></div>
@@ -760,7 +775,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="Lenovo" data-id="3580" data-name="Lenovo IdeaPad Slim III Intel Core i3 1440B 8GB 512GB" data-price="2,399.90">
-          <img src="imagenes/pc2.jpg" alt="Lenovo IdeaPad Slim III" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/pc2.jpg" alt="Lenovo IdeaPad Slim III" onerror="this.style.display='none'">
           <div class="product-brand">LENOVO</div>
           <div class="product-name">Lenovo IdeaPad Slim III Intel Core i3 1440B 8GB 512GB</div>
           <div class="product-id">ID 3580</div>
@@ -769,7 +784,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="ASUS" data-id="3512" data-name="Laptop Asus Vivobook 15.6&quot; Intel Core i3 1440B 8GB SSD" data-price="1,999.90">
-          <img src="imagenes/pc3.jpg" alt="Laptop Asus Vivobook" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/pc3.jpg" alt="Laptop Asus Vivobook" onerror="this.style.display='none'">
           <div class="product-brand">ASUS</div>
           <div class="product-name">Laptop Asus Vivobook 15.6" Intel Core i3 1440B 8GB SSD</div>
           <div class="product-id">ID 3512</div>
@@ -778,7 +793,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="Lenovo" data-id="3498" data-name="PC Gamer Lenovo Legion Tower Ryzen 5 16GB 512GB RTX 4060" data-price="3,149.90">
-          <img src="imagenes/pc4.png" alt="PC Gamer Lenovo Legion Tower" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/pc4.png" alt="PC Gamer Lenovo Legion Tower" onerror="this.style.display='none'">
           <div class="product-brand">LENOVO</div>
           <div class="product-name">PC Gamer Lenovo Legion Tower Ryzen 5 16GB 512GB RTX 4060</div>
           <div class="product-id">ID 3498</div>
@@ -787,7 +802,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="ASUS" data-id="3445" data-name="PC Gamer ASUS ROG Strix Ryzen 5 16GB 512GB RTX 3050" data-price="1,899.90">
-          <img src="imagenes/pc5.jpeg" alt="PC Gamer ASUS ROG Strix" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/pc5.jpeg" alt="PC Gamer ASUS ROG Strix" onerror="this.style.display='none'">
           <div class="product-brand">ASUS</div>
           <div class="product-name">PC Gamer ASUS ROG Strix Ryzen 5 16GB 512GB RTX 3050</div>
           <div class="product-id">ID 3445</div>
@@ -796,7 +811,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="HP" data-id="3388" data-name="PC Gamer HP Omen Intel Core i5 16GB 512GB RTX 3060" data-price="2,199.90">
-          <img src="imagenes/pc2.jpg" alt="PC Gamer HP Omen" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/pc2.jpg" alt="PC Gamer HP Omen" onerror="this.style.display='none'">
           <div class="product-brand">HP</div>
           <div class="product-name">PC Gamer HP Omen Intel Core i5 16GB 512GB RTX 3060</div>
           <div class="product-id">ID 3388</div>
@@ -820,7 +835,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       <div class="products-track">
 
         <div class="product-card" data-brand="PREDATOR" data-id="2901" data-name="Disco SSD 1TB Predator GM6 PCIe Gen4" data-price="729.90">
-          <img src="imagenes/componentes1.png" alt="Disco SSD Predator GM6" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/componentes1.jpg" alt="Disco SSD Predator GM6" onerror="this.style.display='none'">
           <div class="product-brand">PREDATOR</div>
           <div class="product-name">Disco SSD 1TB Predator GM6 PCIe Gen4</div>
           <span class="badge">-27%</span>
@@ -830,7 +845,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="MSI" data-id="2745" data-name="Tarjeta de video Gamer RTX 3060 8GB Ventus 2X OC" data-price="929.90">
-          <img src="imagenes/Tarjetadevideo.jpg" alt="Tarjeta de video RTX 3060" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/Tarjetadevideo.jpg" alt="Tarjeta de video RTX 3060" onerror="this.style.display='none'">
           <div class="product-brand">MSI</div>
           <div class="product-name">Tarjeta de video Gamer RTX 3060 8GB Ventus 2X OC</div>
           <div class="product-price">S/929.90</div>
@@ -838,7 +853,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="AMD" data-id="2680" data-name="Procesador AMD Ryzen 7 9800X3D Box 8 Núcleos 4.7GHz" data-price="1,399.90">
-          <img src="imagenes/amdryzen.jpg" alt="Procesador AMD Ryzen 7" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/amdryzen.jpg" alt="Procesador AMD Ryzen 7" onerror="this.style.display='none'">
           <div class="product-brand">AMD</div>
           <div class="product-name">Procesador AMD Ryzen 7 9800X3D Box 8 Núcleos 4.7GHz</div>
           <div class="product-price">S/1,399.90</div>
@@ -846,7 +861,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="Crucial" data-id="2540" data-name="Memoria RAM DDR5 48GB 6000MT/s CL30 Crucial" data-price="3,499.90">
-          <img src="imagenes/kingston.jpg" alt="Memoria RAM DDR5 Crucial" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/kingston.jpg" alt="Memoria RAM DDR5 Crucial" onerror="this.style.display='none'">
           <div class="product-brand">CRUCIAL</div>
           <div class="product-name">Memoria RAM DDR5 48GB 6000MT/s CL30 Crucial</div>
           <div class="product-price">S/3,499.90</div>
@@ -854,7 +869,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="Ryzen" data-id="2745" data-name="PLACA ASUS ROG STRIX X870-E GAMING WIFI7 R2/USBC CARD AMD RYZEN AM5 DDR5" data-price="929.90">
-          <img src="imagenes/placa-asus-rog-strix-x870-e-gaming-wifi7-r2usbc-card-amd-ryzen-am5-ddr5-pn90mb1p00-m0vay0.jpg" alt="PLACA ASUS ROG STRIX X870-E GAMING WIFI7 R2/USBC CARD AMD RYZEN AM5 DDR5" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/placa-asus-rog-strix-x870-e-gaming-wifi7-r2usbc-card-amd-ryzen-am5-ddr5-pn90mb1p00-m0vay0.jpg" alt="PLACA ASUS ROG STRIX X870-E GAMING WIFI7 R2/USBC CARD AMD RYZEN AM5 DDR5" onerror="this.style.display='none'">
           <div class="product-brand">Ryzen</div>
           <div class="product-name">PLACA ASUS ROG STRIX X870-E GAMING WIFI7 R2/USBC CARD AMD RYZEN AM5 DDR5</div>
           <div class="product-price">S/2000.00</div>
@@ -862,7 +877,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="ANTRYX" data-id="2745" data-name="FUENTE DE PODER ANTRYX B600 V3 600W ATX v2.31" data-price="129.90">
-          <img src="imagenes/fuente-de-poder-antryx-b600-v3-600w-atx-v231.jpg" alt="FUENTE DE PODER ANTRYX B600 V3 600W ATX v2.31" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/fuente-de-poder-antryx-b600-v3-600w-atx-v231.jpg" alt="FUENTE DE PODER ANTRYX B600 V3 600W ATX v2.31" onerror="this.style.display='none'">
           <div class="product-brand">ANTRYX</div>
           <div class="product-name">FUENTE DE PODER ANTRYX B600 V3 600W ATX v2.31</div>
           <div class="product-price">S/129.90</div>
@@ -870,7 +885,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="Kingston FURY" data-id="2410" data-name="Memoria RAM DDR5 16GB 5600MHz Kingston Fury" data-price="1,199.90">
-          <img src="imagenes/kingston.jpg" alt="Memoria RAM Kingston FURY" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/kingston.jpg" alt="Memoria RAM Kingston FURY" onerror="this.style.display='none'">
           <div class="product-brand">KINGSTON FURY</div>
           <div class="product-name">Memoria RAM DDR5 16GB 5600MHz Kingston Fury</div>
           <span class="badge">-20%</span>
@@ -895,7 +910,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       <div class="products-track">
 
         <div class="product-card" data-brand="Apple" data-id="1980" data-name="iPhone 17 256GB Negro" data-price="5,379.90">
-          <img src="imagenes/iphone17negro.jpg" alt="iPhone 17 256GB Negro" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/iphone17negro.jpg" alt="iPhone 17 256GB Negro" onerror="this.style.display='none'">
           <div class="product-brand">APPLE</div>
           <div class="product-name">iPhone 17 256GB Negro</div>
           <span class="badge">-9%</span>
@@ -905,7 +920,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="Apple" data-id="1980" data-name="iPhone 16 pro max 256GB Negro" data-price="4,379.90">
-          <img src="imagenes/apple 16.jpg" alt="iPhone 16 pro max 256GB Negro" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/apple 16.jpg" alt="iPhone 16 pro max 256GB Negro" onerror="this.style.display='none'">
           <div class="product-brand">APPLE</div>
           <div class="product-name">iPhone 16 pro max 256GB Negro</div>
           <span class="badge">-10%</span>
@@ -915,7 +930,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="Xiaomi" data-id="1845" data-name="Celular Xiaomi Redmi A7 Pro 4GB 128GB Negro" data-price="449.90">
-          <img src="imagenes/redmi.png" alt="Celular Xiaomi Redmi A7 Pro" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/redmi.png" alt="Celular Xiaomi Redmi A7 Pro" onerror="this.style.display='none'">
           <div class="product-brand">XIAOMI</div>
           <div class="product-name">Celular Xiaomi Redmi A7 Pro 4GB 128GB Negro</div>
           <span class="badge">-15%</span>
@@ -925,7 +940,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="Samsung" data-id="1790" data-name="Samsung Galaxy A35 5G 8GB 256GB Azul" data-price="1,299.90">
-          <img src="imagenes/samsung.jpg" alt="Samsung Galaxy A35 5G 8GB 256GB Azul" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/samsung.jpg" alt="Samsung Galaxy A35 5G 8GB 256GB Azul" onerror="this.style.display='none'">
           <div class="product-brand">SAMSUNG</div>
           <div class="product-name">Samsung Galaxy A35 5G 8GB 256GB Azul</div>
           <div class="product-price">S/1,299.90</div>
@@ -933,7 +948,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="Xiaomi" data-id="1720" data-name="Xiaomi 14T Pro 12GB 512GB Titanio" data-price="2,899.90">
-          <img src="imagenes/mi.jpg" alt="Xiaomi 14T Pro" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/mi.jpg" alt="Xiaomi 14T Pro" onerror="this.style.display='none'">
           <div class="product-brand">XIAOMI</div>
           <div class="product-name">Xiaomi 14T Pro 12GB 512GB Titanio</div>
           <span class="badge">-10%</span>
@@ -959,7 +974,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       <div class="products-track">
 
          <div class="product-card" data-brand="Nintendo" data-id="1844" data-name="Consola Nintendo Switch 2 Gen4" data-price="2,199.90">
-          <img src="imagenes/switch.jpg" alt="Consola Nintendo Switch 2 Gen4" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/switch.jpg" alt="Consola Nintendo Switch 2 Gen4" onerror="this.style.display='none'">
           <div class="product-brand">Nintendo</div>
           <div class="product-name">Consola Nintendo Switch 2 Gen4</div>
           <span class="badge">-15%</span>
@@ -969,7 +984,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="Sony" data-id="1845" data-name="Mando de play station 5" data-price="499.90">
-          <img src="imagenes/mando.jpg" alt="Mando de play station 5" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/mando.jpg" alt="Mando de play station 5" onerror="this.style.display='none'">
           <div class="product-brand">SONY</div>
           <div class="product-name">Mando de Play Station 5</div>
           <span class="badge">-15%</span>
@@ -979,7 +994,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="Microsoft" data-id="1846" data-name="Mando de Xbox Series X" data-price="599.90">
-          <img src="imagenes/mandoxbox.jpg" alt="Mando de Xbox serie x" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/mandoxbox.jpg" alt="Mando de Xbox serie x" onerror="this.style.display='none'">
           <div class="product-brand">Microsoft</div>
           <div class="product-name">Mando de Xbox series X</div>
           <span class="badge">-15%</span>
@@ -988,7 +1003,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           <button class="add-cart-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Agregar al carro</button>
         </div>
          <div class="product-card" data-brand="Nintendo" data-id="1844" data-name="Bundle consola Nintendo Switch, Mario Party" data-price="2,199.90">
-          <img src="imagenes/nintentom.png" alt="Bundle consola Nintendo Switch, Mario Party" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/nintentom.jpg" alt="Bundle consola Nintendo Switch, Mario Party" onerror="this.style.display='none'">
           <div class="product-brand">Nintendo</div>
           <div class="product-name">Bundle consola Nintendo Switch, Mario Party</div>
           <div class="product-price-old">S/2,499.90</div>
@@ -1000,7 +1015,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 
         <div class="product-card" data-brand="Lenovo" data-id="1846" data-name="Consola Port80S Lenovo Legion Go S AMD Ryzen Z2" data-price="2,199.90">
-          <img src="imagenes/LENOVOConsola.jpg" alt="Consola Lenovo Legion Go S" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/LENOVOConsola.jpg" alt="Consola Lenovo Legion Go S" onerror="this.style.display='none'">
           <div class="product-brand">LENOVO</div>
           <div class="product-name">Consola Port80S Lenovo Legion Go S AMD Ryzen Z2</div>
           <span class="badge">-15%</span>
@@ -1010,7 +1025,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="Lenovo" data-id="1846" data-name="Consola PlayStation 5 Slim Digital" data-price="1,199.90">
-          <img src="imagenes/ps5digitalbundleportada.png" alt="Consola Lenovo Legion Go S" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/ps5digitalbundleportada.jpg" alt="Consola Lenovo Legion Go S" onerror="this.style.display='none'">
           <div class="product-brand">Sony</div>
           <div class="product-name">Consola PlayStation 5 Slim Digital</div>
           <span class="badge">-10%</span>
@@ -1035,7 +1050,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       <div class="products-track">
 
         <div class="product-card" data-brand="hyperx" data-id="1844" data-name="Auriculares Hyperx Cloud Stinger 2 " data-price="29.90">
-          <img src="imagenes/periferico1.jpg" alt="Auriculares Hyperx Cloud Stinger 2 " onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/periferico1.jpg" alt="Auriculares Hyperx Cloud Stinger 2 " onerror="this.style.display='none'">
           <div class="product-brand">hyperx</div>
           <div class="product-name">Auriculares Hyperx Cloud Stinger 2 </div>
           <span class="badge">-15%</span>
@@ -1044,7 +1059,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="hyperx" data-id="1846" data-name="Mouse y Teclado Hyperx " data-price="49.90">
-          <img src="imagenes/mause_teclado.jpg" alt="Mouse y Teclado Hyperx " onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/mause_teclado.jpg" alt="Mouse y Teclado Hyperx " onerror="this.style.display='none'">
           <div class="product-brand">hyperx</div>
           <div class="product-name">Mouse y Teclado Hyperx </div>
           <span class="badge">-11%</span>
@@ -1053,7 +1068,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="GoPro" data-id="1847" data-name="Camara GoPro Gamer" data-price="999.90">
-          <img src="imagenes/gopro.jpg" alt="Mando de Xbox serie x" onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/gopro.jpg" alt="Mando de Xbox serie x" onerror="this.style.display='none'">
           <div class="product-brand">GOPRO</div>
           <div class="product-name">Camara GoPro Gamer</div>
           
@@ -1063,7 +1078,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="Redragon" data-id="1844" data-name="Auriculares Redragon Hylas H260 " data-price="29.90">
-          <img src="imagenes/auricular1.jpg" alt="Auriculares Redragon Hylas H260 " onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/auricular1.jpg" alt="Auriculares Redragon Hylas H260 " onerror="this.style.display='none'">
           <div class="product-brand">Redragon</div>
           <div class="product-name">Auriculares Redragon Hylas H260 </div>
           <span class="badge">-15%</span>
@@ -1072,7 +1087,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
 
         <div class="product-card" data-brand="Logitech" data-id="1844" data-name="Auriculares Logitech Astro A50X Wireless Lightspeed  " data-price="39.90">
-          <img src="imagenes/auricular3.jpg" alt="Auriculares Logitech Astro A50X Wireless Lightspeed  " onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/auricular3.jpg" alt="Auriculares Logitech Astro A50X Wireless Lightspeed  " onerror="this.style.display='none'">
           <div class="product-brand">Logitech</div>
           <div class="product-name">Auriculares Logitech Astro A50X Wireless Lightspeed  </div>
           <span class="badge">-12%</span>
@@ -1082,7 +1097,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 
          <div class="product-card" data-brand="Razer" data-id="1844" data-name="Auriculares Razer BLACKSHARK V2 X Green Black  " data-price="39.90">
-          <img src="imagenes/auricular4.jpg" alt="Auriculares Razer BLACKSHARK V2 X Green Black  " onerror="this.style.display='none'">
+          <img loading="lazy" decoding="async" src="imagenes/auricular4.jpg" alt="Auriculares Razer BLACKSHARK V2 X Green Black  " onerror="this.style.display='none'">
           <div class="product-brand">Razer</div>
           <div class="product-name">Auriculares Razer BLACKSHARK V2 X Green Black  </div>
           
@@ -1105,28 +1120,28 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     </div>
     <div class="tips-grid">
       <div class="tip-card" onclick="showPage('guide')" style="cursor:pointer;">
-        <img src="imagenes/gaming.jpg" alt="¿Cuál es la mejor laptop gamer?" onerror="this.style.display='none'">
+        <img loading="lazy" decoding="async" src="imagenes/gaming.jpg" alt="¿Cuál es la mejor laptop gamer?" onerror="this.style.display='none'">
         <div class="tip-body">
           <div class="tip-tag">Guía de Compra</div>
           <div class="tip-title">¿Qué laptop gaming comprar en 2025? Los mejores modelos bajo S/4,000</div>
         </div>
       </div>
       <div class="tip-card" onclick="showPage('review')" style="cursor:pointer;">
-        <img src="imagenes/vector3.jpg" alt="¿Cuál domina? " onerror="this.style.display='none'">
+        <img loading="lazy" decoding="async" src="imagenes/vector3.jpg" alt="¿Cuál domina? " onerror="this.style.display='none'">
         <div class="tip-body">
           <div class="tip-tag">Review</div>
           <div class="tip-title">ASUS ROG Strix vs MSI Vector: ¿Cuál domina el gaming?</div>
         </div>
       </div>
       <div class="tip-card" onclick="showPage('tips')" style="cursor:pointer;">
-        <img src="imagenes/optimizar2.jpg" alt="Optimización " onerror="this.style.display='none'">
+        <img loading="lazy" decoding="async" src="imagenes/optimizar2.jpg" alt="Optimización " onerror="this.style.display='none'">
         <div class="tip-body">
           <div class="tip-tag">Tech Tips</div>
           <div class="tip-title">Cómo optimizar tu PC gamer para máximo rendimiento en FPS</div>
         </div>
       </div>
       <div class="tip-card" onclick="showPage('phones')" style="cursor:pointer;">
-        <img src="imagenes/comparacion.jpg" alt="Comparación " onerror="this.style.display='none'">
+        <img loading="lazy" decoding="async" src="imagenes/comparacion.jpg" alt="Comparación " onerror="this.style.display='none'">
         <div class="tip-body">
           <div class="tip-tag">Comparativa</div>
           <div class="tip-title">iPhone 17 vs Samsung Galaxy S25: La batalla definitiva del 2025</div>
@@ -1325,18 +1340,18 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 </div>
 
     <div class="nos-valores">
-      <div class="nos-valor"><div class="nos-valor-icon"><img src="imagenes/vector.jpg" alt="Honestidad" style="width:48px;height:48px;object-fit:cover;border-radius:50%;"></div><h3>Honestidad</h3><p>Precios transparentes, sin letra chica. Lo que ves es lo que pagas.</p></div>
-      <div class="nos-valor"><div class="nos-valor-icon"><img src="imagenes/top.jpg" alt="Innovación" style="width:48px;height:48px;object-fit:cover;border-radius:50%;"></div><h3>Innovación</h3><p>Siempre los últimos lanzamientos, avant première para nuestros clientes.</p></div>
-      <div class="nos-valor"><div class="nos-valor-icon"><img src="imagenes/top3.jpg" alt="Compromiso" style="width:48px;height:48px;object-fit:cover;border-radius:50%;"></div><h3>Compromiso</h3><p>Soporte pre y post venta. Tu satisfacción es nuestra prioridad.</p></div>
+      <div class="nos-valor"><div class="nos-valor-icon"><img loading="lazy" decoding="async" src="imagenes/vector.jpg" alt="Honestidad" style="width:48px;height:48px;object-fit:cover;border-radius:50%;"></div><h3>Honestidad</h3><p>Precios transparentes, sin letra chica. Lo que ves es lo que pagas.</p></div>
+      <div class="nos-valor"><div class="nos-valor-icon"><img loading="lazy" decoding="async" src="imagenes/top.jpg" alt="Innovación" style="width:48px;height:48px;object-fit:cover;border-radius:50%;"></div><h3>Innovación</h3><p>Siempre los últimos lanzamientos, avant première para nuestros clientes.</p></div>
+      <div class="nos-valor"><div class="nos-valor-icon"><img loading="lazy" decoding="async" src="imagenes/top3.jpg" alt="Compromiso" style="width:48px;height:48px;object-fit:cover;border-radius:50%;"></div><h3>Compromiso</h3><p>Soporte pre y post venta. Tu satisfacción es nuestra prioridad.</p></div>
     </div>
 
     <div class="nos-team">
       <h2>Nuestro <span>Equipo</span></h2>
       <div class="team-grid">
-        <div class="team-card"><div class="team-avatar"><img src="imagenes/perfil.jpeg" alt="Cesar Calle" style="width:64px;height:64px;object-fit:cover;border-radius:50%;"></div><div class="team-name">Cesar Calle</div><div class="team-role">CEO & Fundador</div></div>
-        <div class="team-card"><div class="team-avatar"><img src="imagenes/perfil.jpeg" alt="Victor Noa" style="width:64px;height:64px;object-fit:cover;border-radius:50%;"></div><div class="team-name">Victor Noa</div><div class="team-role">Director de Tecnología</div></div>
-        <div class="team-card"><div class="team-avatar"><img src="imagenes/perfil.jpeg" alt="Luis Quispe" style="width:64px;height:64px;object-fit:cover;border-radius:50%;"></div><div class="team-name">Efrain Almerco</div><div class="team-role">Jefe de Soporte Técnico</div></div>
-        <div class="team-card"><div class="team-avatar"><img src="imagenes/perfil.jpeg" alt="Maria Lopez" style="width:64px;height:64px;object-fit:cover;border-radius:50%;"></div><div class="team-name">Jesus Cardenas</div><div class="team-role">Gerente de Marketing</div></div>
+        <div class="team-card"><div class="team-avatar"><img loading="lazy" decoding="async" src="imagenes/perfil.jpeg" alt="Cesar Calle" style="width:64px;height:64px;object-fit:cover;border-radius:50%;"></div><div class="team-name">Cesar Calle</div><div class="team-role">CEO & Fundador</div></div>
+        <div class="team-card"><div class="team-avatar"><img loading="lazy" decoding="async" src="imagenes/perfil.jpeg" alt="Victor Noa" style="width:64px;height:64px;object-fit:cover;border-radius:50%;"></div><div class="team-name">Victor Noa</div><div class="team-role">Director de Tecnología</div></div>
+        <div class="team-card"><div class="team-avatar"><img loading="lazy" decoding="async" src="imagenes/perfil.jpeg" alt="Luis Quispe" style="width:64px;height:64px;object-fit:cover;border-radius:50%;"></div><div class="team-name">Efrain Almerco</div><div class="team-role">Jefe de Soporte Técnico</div></div>
+        <div class="team-card"><div class="team-avatar"><img loading="lazy" decoding="async" src="imagenes/perfil.jpeg" alt="Maria Lopez" style="width:64px;height:64px;object-fit:cover;border-radius:50%;"></div><div class="team-name">Jesus Cardenas</div><div class="team-role">Gerente de Marketing</div></div>
       </div>
     </div>
   </div>
@@ -1410,7 +1425,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       <p class="guide-hero-sub">Analizamos el mercado peruano para darte las mejores opciones según tu presupuesto y necesidades.</p>
     </div>
     <div class="guide-hero-img-wrap">
-      <img src="imagenes/laptop4.jpg" alt="Laptop gaming">
+      <img loading="lazy" decoding="async" src="imagenes/laptop4.jpg" alt="Laptop gaming">
     </div>
   </div>
 
@@ -1429,7 +1444,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       <h2>¿Por qué una laptop gaming bajo S/4,000 es viable hoy?</h2>
       <p>El mercado de laptops gaming ha evolucionado enormemente. Lo que antes costaba S/6,000 ahora está disponible gracias a la competencia entre <strong>Lenovo, ASUS y MSI</strong>. En 2025 es perfectamente posible conseguir una máquina capaz de correr los últimos juegos en gráficos medios-altos en ese rango de precio.</p>
       <div class="guide-info-box">
-        <div class="guide-info-icon"><img src="imagenes/optimizar.jpg" alt="Info" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
+        <div class="guide-info-icon"><img loading="lazy" decoding="async" src="imagenes/optimizar.jpg" alt="Info" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
         <div><strong>¿Para quién es esta guía?</strong>
         <p>Para jugadores ocasionales y entusiastas que quieren rendimiento real sin gastar más de S/4,000. También útil si necesitas una laptop para trabajo y gaming.</p></div>
       </div>
@@ -1442,22 +1457,22 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         <div class="guide-spec-card">
           <h3>Pantalla</h3>
           <p>Mínimo <strong>Full HD</strong> a 144Hz. La tasa de refresco importa más que la resolución.</p>
-          <div class="guide-spec-icon"><img src="imagenes/pantalla.jpg" alt="Pantalla" width="50"></div>
+          <div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/pantalla.jpg" alt="Pantalla" width="50"></div>
         </div>
         <div class="guide-spec-card">
           <h3>Teclado y Touchpad</h3>
           <p>Integrados en la base para escribir y mover el cursor.</p>
-          <div class="guide-spec-icon"><img src="imagenes/teclado.jpeg" alt="Teclado" width="50"></div>
+          <div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/teclado.jpeg" alt="Teclado" width="50"></div>
         </div>
         <div class="guide-spec-card">
           <h3>Batería</h3>
           <p>Permite usar el equipo sin estar enchufado por varias horas.</p>
-          <div class="guide-spec-icon"><img src="imagenes/bateria.png" alt="Batería" width="50"></div>
+          <div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/bateria.jpg" alt="Batería" width="50"></div>
         </div>
-        <div class="guide-spec-card"><div class="guide-spec-icon"><img src="imagenes/amdryzen.jpg" alt="Procesador" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>Procesador</h3><p><strong>Intel Core i5/i7 de 12ª-13ª gen</strong> o <strong>AMD Ryzen 5/7 7000</strong>. Ambos excelentes para gaming.</p></div>
-        <div class="guide-spec-card"><div class="guide-spec-icon"><img src="imagenes/kingston.jpg" alt="RAM" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>RAM</h3><p>Mínimo <strong>16GB DDR5</strong>. 32GB es una ventaja enorme para multitarea.</p></div>
-        <div class="guide-spec-card"><div class="guide-spec-icon"><img src="imagenes/componentes1.png" alt="SSD" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>Almacenamiento</h3><p><strong>512GB SSD NVMe</strong> mínimo. Los juegos modernos pesan; 1TB es ideal.</p></div>
-        <div class="guide-spec-card"><div class="guide-spec-icon"><img src="imagenes/bateria.png" alt="Refrigeración" style="width:56px;height:56px;object-fit:contain;border-radius:8px;"></div><h3>Refrigeración</h3><p>Prioriza <strong>buena refrigeración</strong>. Jugarás enchufado la mayoría del tiempo.</p></div>
+        <div class="guide-spec-card"><div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/amdryzen.jpg" alt="Procesador" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>Procesador</h3><p><strong>Intel Core i5/i7 de 12ª-13ª gen</strong> o <strong>AMD Ryzen 5/7 7000</strong>. Ambos excelentes para gaming.</p></div>
+        <div class="guide-spec-card"><div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/kingston.jpg" alt="RAM" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>RAM</h3><p>Mínimo <strong>16GB DDR5</strong>. 32GB es una ventaja enorme para multitarea.</p></div>
+        <div class="guide-spec-card"><div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/componentes1.jpg" alt="SSD" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>Almacenamiento</h3><p><strong>512GB SSD NVMe</strong> mínimo. Los juegos modernos pesan; 1TB es ideal.</p></div>
+        <div class="guide-spec-card"><div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/bateria.jpg" alt="Refrigeración" style="width:56px;height:56px;object-fit:contain;border-radius:8px;"></div><h3>Refrigeración</h3><p>Prioriza <strong>buena refrigeración</strong>. Jugarás enchufado la mayoría del tiempo.</p></div>
       </div>
     </section>
 
@@ -1467,7 +1482,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       <div class="guide-model-card featured">
         <div class="guide-model-badge">🏆 Mejor relación calidad-precio</div>
         <div class="guide-model-inner">
-          <div class="guide-model-img"><img src="imagenes/laptop4.jpg" alt="Lenovo LOQ" style="width:100%;height:100%;object-fit:cover;border-radius:8px;"></div>
+          <div class="guide-model-img"><img loading="lazy" decoding="async" src="imagenes/laptop4.jpg" alt="Lenovo LOQ" style="width:100%;height:100%;object-fit:cover;border-radius:8px;"></div>
           <div class="guide-model-info">
             <div class="guide-model-brand">LENOVO</div>
             <h3 class="guide-model-name">Laptop Gamer Lenovo LOQ 15.6" FHD Intel Core i5 16GB RAM 512GB</h3>
@@ -1483,7 +1498,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       </div>
       <div class="guide-model-card">
         <div class="guide-model-inner">
-          <div class="guide-model-img"><img src="imagenes/laptop6.jpeg" alt="ASUS TUF" style="width:100%;height:100%;object-fit:cover;border-radius:8px;"></div>
+          <div class="guide-model-img"><img loading="lazy" decoding="async" src="imagenes/laptop6.jpeg" alt="ASUS TUF" style="width:100%;height:100%;object-fit:cover;border-radius:8px;"></div>
           <div class="guide-model-info">
             <div class="guide-model-brand">ASUS</div>
             <h3 class="guide-model-name">Laptop Gamer ASUS TUF Gaming F16 16" Intel Core i7 16GB 512GB</h3>
@@ -1500,7 +1515,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       </div>
       <div class="guide-model-card">
         <div class="guide-model-inner">
-          <div class="guide-model-img"><img src="imagenes/laptop5.jpg" alt="MSI Cyborg" style="width:100%;height:100%;object-fit:cover;border-radius:8px;"></div>
+          <div class="guide-model-img"><img loading="lazy" decoding="async" src="imagenes/laptop5.jpg" alt="MSI Cyborg" style="width:100%;height:100%;object-fit:cover;border-radius:8px;"></div>
           <div class="guide-model-info">
             <div class="guide-model-brand">MSI</div>
             <h3 class="guide-model-name">Laptop Gamer MSI Cyborg 15 A13VFK 15.6" FHD Intel Core i7 16GB</h3>
@@ -1540,9 +1555,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     <section class="guide-section" id="guide-conclusion">
       <h2>Conclusión: ¿cuál elegir?</h2>
       <div class="guide-conclusion-grid">
-        <div class="guide-conclusion-card green"><div class="guide-conclusion-icon"><img src="imagenes/laptop4.jpg" alt="Lenovo LOQ" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Elige el Lenovo LOQ si…</h4><p>Tu presupuesto es ajustado y quieres el mayor valor. Para gaming casual y trabajo es perfecta.</p></div>
-        <div class="guide-conclusion-card blue"><div class="guide-conclusion-icon"><img src="imagenes/laptop6.jpeg" alt="ASUS TUF" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Elige el ASUS TUF si…</h4><p>Buscas durabilidad a largo plazo y salto generacional en GPU. Inversión inteligente para 4-5 años.</p></div>
-        <div class="guide-conclusion-card red"><div class="guide-conclusion-icon"><img src="imagenes/laptop5.jpg" alt="MSI Cyborg" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Elige el MSI Cyborg si…</h4><p>Quieres máximo rendimiento. La GPU más potente de las tres.</p></div>
+        <div class="guide-conclusion-card green"><div class="guide-conclusion-icon"><img loading="lazy" decoding="async" src="imagenes/laptop4.jpg" alt="Lenovo LOQ" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Elige el Lenovo LOQ si…</h4><p>Tu presupuesto es ajustado y quieres el mayor valor. Para gaming casual y trabajo es perfecta.</p></div>
+        <div class="guide-conclusion-card blue"><div class="guide-conclusion-icon"><img loading="lazy" decoding="async" src="imagenes/laptop6.jpeg" alt="ASUS TUF" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Elige el ASUS TUF si…</h4><p>Buscas durabilidad a largo plazo y salto generacional en GPU. Inversión inteligente para 4-5 años.</p></div>
+        <div class="guide-conclusion-card red"><div class="guide-conclusion-icon"><img loading="lazy" decoding="async" src="imagenes/laptop5.jpg" alt="MSI Cyborg" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Elige el MSI Cyborg si…</h4><p>Quieres máximo rendimiento. La GPU más potente de las tres.</p></div>
       </div>
       <div style="margin-top:32px;text-align:center;">
         <button class="guide-cta-big" onclick="showPage('home');setTimeout(()=>document.getElementById('section-laptops').scrollIntoView({behavior:'smooth'}),400)">
@@ -1570,7 +1585,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         <p class="guide-hero-sub">Probamos ambas máquinas en juegos, temperaturas y batería para darte un veredicto claro.</p>
       </div>
       <div class="guide-hero-img-wrap">
-        <img src="imagenes/vector.jpg" alt="ASUS ROG Strix vs MSI Vector">
+        <img loading="lazy" decoding="async" src="imagenes/vector.jpg" alt="ASUS ROG Strix vs MSI Vector">
       </div>
     </div>
 
@@ -1589,7 +1604,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         <h2>Dos filosofías distintas de laptop gaming</h2>
         <p>La <strong>ASUS ROG Strix</strong> y la <strong>MSI Vector</strong> representan dos enfoques distintos para el mismo objetivo: máximo rendimiento gaming en un chasis portátil. ASUS apuesta por refrigeración robusta y materiales premium; MSI prioriza potencia bruta y un diseño más agresivo pensado para quienes exigen el máximo de FPS en cada partida.</p>
         <div class="guide-info-box">
-          <div class="guide-info-icon"><img src="imagenes/vector.jpg" alt="Vector vs Strix" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
+          <div class="guide-info-icon"><img loading="lazy" decoding="async" src="imagenes/vector.jpg" alt="Vector vs Strix" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
           <div>
             <strong>¿Para quién es esta comparativa?</strong>
             <p>Para gamers que ya tienen un presupuesto premium definido (sobre S/9,000) y dudan entre estabilidad a largo plazo o el mayor rendimiento posible en juegos AAA.</p>
@@ -1604,21 +1619,21 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           <div class="guide-spec-card">
             <h3>GPU</h3>
             <p><strong>ROG Strix:</strong> RTX 4080 (175W)<br><strong>MSI Vector:</strong> RTX 4090 (150W)</p>
-            <div class="guide-spec-icon"><img src="imagenes/v.jpeg" alt="GPU" width="50"></div>
+            <div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/v.jpeg" alt="GPU" width="50"></div>
           </div>
           <div class="guide-spec-card">
             <h3>CPU</h3>
             <p><strong>ROG Strix:</strong> Intel Core i9-13980HX<br><strong>MSI Vector:</strong> Intel Core i9-13900HX</p>
-            <div class="guide-spec-icon"><img src="imagenes/amdryzen.jpg" alt="CPU" width="50"></div>
+            <div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/amdryzen.jpg" alt="CPU" width="50"></div>
           </div>
           <div class="guide-spec-card">
             <h3>Pantalla</h3>
             <p><strong>ROG Strix:</strong> 16" QHD+ 240Hz<br><strong>MSI Vector:</strong> 16" QHD+ 240Hz</p>
-            <div class="guide-spec-icon"><img src="imagenes/pantalla.jpg" alt="Pantalla" width="50"></div>
+            <div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/pantalla.jpg" alt="Pantalla" width="50"></div>
           </div>
-          <div class="guide-spec-card"><div class="guide-spec-icon"><img src="imagenes/kingston.jpg" alt="RAM" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>RAM</h3><p>Ambas con <strong>32GB DDR5</strong> de fábrica, ampliables hasta 64GB.</p></div>
-          <div class="guide-spec-card"><div class="guide-spec-icon"><img src="imagenes/componentes1.png" alt="Almacenamiento" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>Almacenamiento</h3><p><strong>1TB SSD NVMe Gen4</strong> en ambos modelos, con slot libre para ampliar.</p></div>
-          <div class="guide-spec-card"><div class="guide-spec-icon"><img src="imagenes/bateria.png" alt="Refrigeración" style="width:56px;height:56px;object-fit:contain;border-radius:8px;"></div><h3>Refrigeración</h3><p>ROG usa <strong>cámara de vapor + Liquid Metal</strong>. MSI usa <strong>Cooler Boost 5</strong> con 7 heatpipes.</p></div>
+          <div class="guide-spec-card"><div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/kingston.jpg" alt="RAM" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>RAM</h3><p>Ambas con <strong>32GB DDR5</strong> de fábrica, ampliables hasta 64GB.</p></div>
+          <div class="guide-spec-card"><div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/componentes1.jpg" alt="Almacenamiento" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>Almacenamiento</h3><p><strong>1TB SSD NVMe Gen4</strong> en ambos modelos, con slot libre para ampliar.</p></div>
+          <div class="guide-spec-card"><div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/bateria.jpg" alt="Refrigeración" style="width:56px;height:56px;object-fit:contain;border-radius:8px;"></div><h3>Refrigeración</h3><p>ROG usa <strong>cámara de vapor + Liquid Metal</strong>. MSI usa <strong>Cooler Boost 5</strong> con 7 heatpipes.</p></div>
         </div>
       </section>
 
@@ -1628,7 +1643,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         <p>La <strong>MSI Vector</strong>, gracias a su RTX 4090, entrega entre un 12% y 18% más de FPS en juegos exigentes como Cyberpunk 2077 o Alan Wake 2. Sin embargo, esto viene con una contrapartida: temperaturas más altas bajo carga sostenida y un ventilador notablemente más audible.</p>
         <p>La <strong>ASUS ROG Strix</strong>, aunque parte de una RTX 4080 ligeramente menos potente, mantiene temperaturas hasta 8°C más bajas en sesiones largas gracias a su sistema de Liquid Metal, lo que se traduce en un rendimiento más estable durante partidas de varias horas sin throttling perceptible.</p>
         <div class="guide-info-box">
-          <div class="guide-info-icon"><img src="imagenes/optimizar.jpg" alt="Rendimiento" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
+          <div class="guide-info-icon"><img loading="lazy" decoding="async" src="imagenes/optimizar.jpg" alt="Rendimiento" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
           <div>
             <strong>Dato clave</strong>
             <p>Si juegas en sesiones cortas y priorizas FPS máximos, MSI gana. Si juegas largas sesiones o haces streaming, ASUS ofrece mayor estabilidad térmica.</p>
@@ -1663,8 +1678,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       <section class="guide-section" id="review-conclusion">
         <h2>Veredicto final</h2>
         <div class="guide-conclusion-grid">
-          <div class="guide-conclusion-card green"><div class="guide-conclusion-icon"><img src="imagenes/laptop6.jpeg" alt="ASUS ROG Strix" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Elige ASUS ROG Strix si…</h4><p>Buscas estabilidad térmica, mejor batería y vas a usar la laptop en sesiones largas de juego o trabajo creativo.</p></div>
-          <div class="guide-conclusion-card red"><div class="guide-conclusion-icon"><img src="imagenes/laptop5.jpg" alt="MSI Vector" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Elige MSI Vector si…</h4><p>Quieres el máximo rendimiento posible y no te importa algo más de ruido y calor a cambio de más FPS.</p></div>
+          <div class="guide-conclusion-card green"><div class="guide-conclusion-icon"><img loading="lazy" decoding="async" src="imagenes/laptop6.jpeg" alt="ASUS ROG Strix" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Elige ASUS ROG Strix si…</h4><p>Buscas estabilidad térmica, mejor batería y vas a usar la laptop en sesiones largas de juego o trabajo creativo.</p></div>
+          <div class="guide-conclusion-card red"><div class="guide-conclusion-icon"><img loading="lazy" decoding="async" src="imagenes/laptop5.jpg" alt="MSI Vector" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Elige MSI Vector si…</h4><p>Quieres el máximo rendimiento posible y no te importa algo más de ruido y calor a cambio de más FPS.</p></div>
         </div>
         <div style="margin-top:32px;text-align:center;">
           <button class="guide-cta-big" onclick="showPage('home');setTimeout(()=>document.getElementById('section-laptops').scrollIntoView({behavior:'smooth'}),400)">
@@ -1692,7 +1707,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         <p class="guide-hero-sub">Mejora tus FPS, reduce temperaturas y exprime el rendimiento de tu equipo con ajustes simples.</p>
       </div>
       <div class="guide-hero-img-wrap">
-        <img src="imagenes/optimizar.jpg" alt="Optimización de PC gamer">
+        <img loading="lazy" decoding="async" src="imagenes/optimizar.jpg" alt="Optimización de PC gamer">
       </div>
     </div>
 
@@ -1711,7 +1726,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         <h2>Tu PC puede rendir más de lo que crees</h2>
         <p>Muchos jugadores piensan que la única forma de mejorar el rendimiento gaming es comprando hardware nuevo. La realidad es que la mayoría de los equipos tienen un margen importante de mejora con ajustes de software, mantenimiento básico y configuración correcta, sin gastar un sol extra.</p>
         <div class="guide-info-box">
-          <div class="guide-info-icon"><img src="imagenes/optimizar.jpg" alt="Optimización" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
+          <div class="guide-info-icon"><img loading="lazy" decoding="async" src="imagenes/optimizar.jpg" alt="Optimización" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
           <div>
             <strong>¿Para quién es esta guía?</strong>
             <p>Para cualquier gamer que sienta que su PC "ya no rinde igual" o que simplemente quiere exprimir cada FPS posible antes de pensar en una actualización.</p>
@@ -1726,21 +1741,21 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           <div class="guide-spec-card">
             <h3>Actualiza drivers de GPU</h3>
             <p>Cada actualización de NVIDIA o AMD incluye optimizaciones específicas para juegos nuevos. Revisa cada mes.</p>
-            <div class="guide-spec-icon"><img src="imagenes/v.jpeg" alt="Drivers GPU" width="50"></div>
+            <div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/v.jpeg" alt="Drivers GPU" width="50"></div>
           </div>
           <div class="guide-spec-card">
             <h3>Modo de rendimiento</h3>
             <p>Activa el plan de energía "Alto rendimiento" o "Rendimiento óptimo" en la configuración de Windows.</p>
-            <div class="guide-spec-icon"><img src="imagenes/optimizar2.jpg" alt="Modo rendimiento" width="50"></div>
+            <div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/optimizar2.jpg" alt="Modo rendimiento" width="50"></div>
           </div>
           <div class="guide-spec-card">
             <h3>Cierra procesos en segundo plano</h3>
             <p>Apps como navegadores con muchas pestañas o launchers innecesarios consumen RAM y CPU sin que lo notes.</p>
-            <div class="guide-spec-icon"><img src="imagenes/componentes1.png" alt="Procesos" width="50"></div>
+            <div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/componentes1.jpg" alt="Procesos" width="50"></div>
           </div>
-          <div class="guide-spec-card"><div class="guide-spec-icon"><img src="imagenes/pantalla.jpg" alt="Resolución" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>Resolución y escalado</h3><p>Usa <strong>DLSS o FSR</strong> si tu GPU lo soporta: misma calidad visual con muchos más FPS.</p></div>
-          <div class="guide-spec-card"><div class="guide-spec-icon"><img src="imagenes/kingston.jpg" alt="RAM" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>XMP/EXPO activado</h3><p>Activa el perfil de tu RAM en la BIOS para que corra a su velocidad real anunciada, no a la velocidad base.</p></div>
-          <div class="guide-spec-card"><div class="guide-spec-icon"><img src="imagenes/bateria.png" alt="Modo juego" style="width:56px;height:56px;object-fit:contain;border-radius:8px;"></div><h3>Modo Juego de Windows</h3><p>Activa "Modo Juego" en Configuración para priorizar recursos del sistema hacia el juego activo.</p></div>
+          <div class="guide-spec-card"><div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/pantalla.jpg" alt="Resolución" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>Resolución y escalado</h3><p>Usa <strong>DLSS o FSR</strong> si tu GPU lo soporta: misma calidad visual con muchos más FPS.</p></div>
+          <div class="guide-spec-card"><div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/kingston.jpg" alt="RAM" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>XMP/EXPO activado</h3><p>Activa el perfil de tu RAM en la BIOS para que corra a su velocidad real anunciada, no a la velocidad base.</p></div>
+          <div class="guide-spec-card"><div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/bateria.jpg" alt="Modo juego" style="width:56px;height:56px;object-fit:contain;border-radius:8px;"></div><h3>Modo Juego de Windows</h3><p>Activa "Modo Juego" en Configuración para priorizar recursos del sistema hacia el juego activo.</p></div>
         </div>
       </section>
 
@@ -1749,7 +1764,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         <p>El polvo acumulado es uno de los enemigos silenciosos del rendimiento: eleva las temperaturas y obliga a la GPU y CPU a reducir su velocidad para protegerse (throttling).</p>
         <p>Limpia los ventiladores y disipadores cada 3 a 6 meses con aire comprimido, revisa que las rejillas de ventilación del gabinete o laptop no estén obstruidas, y considera cambiar la pasta térmica del procesador cada 1-2 años si notas temperaturas elevadas en reposo.</p>
         <div class="guide-info-box">
-          <div class="guide-info-icon"><img src="imagenes/optimizar2.jpg" alt="Limpieza" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
+          <div class="guide-info-icon"><img loading="lazy" decoding="async" src="imagenes/optimizar2.jpg" alt="Limpieza" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
           <div>
             <strong>Tip importante</strong>
             <p>Usa <strong>SSD</strong> en vez de disco duro mecánico y mínimo <strong>16GB de RAM</strong>: estas dos mejoras tienen más impacto en la fluidez general que casi cualquier otro cambio.</p>
@@ -1770,9 +1785,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       <section class="guide-section" id="tips-conclusion">
         <h2>En resumen</h2>
         <div class="guide-conclusion-grid">
-          <div class="guide-conclusion-card green"><div class="guide-conclusion-icon"><img src="imagenes/optimizar.jpg" alt="Software" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Si quieres resultados ya…</h4><p>Actualiza drivers y activa el modo de rendimiento. Son los dos cambios más rápidos con mayor impacto.</p></div>
-          <div class="guide-conclusion-card blue"><div class="guide-conclusion-icon"><img src="imagenes/kingston.jpg" alt="Hardware" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Si tu PC ya tiene años…</h4><p>Revisa primero RAM y almacenamiento (SSD). Suele ser la mejora con mejor relación costo-beneficio.</p></div>
-          <div class="guide-conclusion-card red"><div class="guide-conclusion-icon"><img src="imagenes/optimizar2.jpg" alt="Limpieza" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Si notas temperaturas altas…</h4><p>Limpia el equipo y revisa la pasta térmica antes de pensar en comprar algo nuevo.</p></div>
+          <div class="guide-conclusion-card green"><div class="guide-conclusion-icon"><img loading="lazy" decoding="async" src="imagenes/optimizar.jpg" alt="Software" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Si quieres resultados ya…</h4><p>Actualiza drivers y activa el modo de rendimiento. Son los dos cambios más rápidos con mayor impacto.</p></div>
+          <div class="guide-conclusion-card blue"><div class="guide-conclusion-icon"><img loading="lazy" decoding="async" src="imagenes/kingston.jpg" alt="Hardware" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Si tu PC ya tiene años…</h4><p>Revisa primero RAM y almacenamiento (SSD). Suele ser la mejora con mejor relación costo-beneficio.</p></div>
+          <div class="guide-conclusion-card red"><div class="guide-conclusion-icon"><img loading="lazy" decoding="async" src="imagenes/optimizar2.jpg" alt="Limpieza" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Si notas temperaturas altas…</h4><p>Limpia el equipo y revisa la pasta térmica antes de pensar en comprar algo nuevo.</p></div>
         </div>
         <div style="margin-top:32px;text-align:center;">
           <button class="guide-cta-big" onclick="showPage('home');setTimeout(()=>document.getElementById('section-componentes').scrollIntoView({behavior:'smooth'}),400)">
@@ -1800,7 +1815,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         <p class="guide-hero-sub">Cámara, batería, rendimiento y ecosistema: te decimos cuál te conviene según tu estilo de uso.</p>
       </div>
       <div class="guide-hero-img-wrap">
-        <img src="imagenes/comparacion.jpg" alt="iPhone 17 vs Samsung Galaxy S25">
+        <img loading="lazy" decoding="async" src="imagenes/comparacion.jpg" alt="iPhone 17 vs Samsung Galaxy S25">
       </div>
     </div>
 
@@ -1819,7 +1834,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         <h2>Dos ecosistemas, dos filosofías</h2>
         <p>El <strong>iPhone 17</strong> y el <strong>Samsung Galaxy S25</strong> lideran el mercado premium de smartphones en 2025, pero apuntan a públicos distintos. Apple ofrece un ecosistema cerrado pero extremadamente pulido e integrado; Samsung apuesta por personalización, pantalla y un hardware más versátil.</p>
         <div class="guide-info-box">
-          <div class="guide-info-icon"><img src="imagenes/comparacion.jpg" alt="Comparativa" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
+          <div class="guide-info-icon"><img loading="lazy" decoding="async" src="imagenes/comparacion.jpg" alt="Comparativa" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
           <div>
             <strong>¿Para quién es esta comparativa?</strong>
             <p>Para quienes están eligiendo su próximo smartphone premium y ya tienen claro su presupuesto, pero dudan entre iOS y Android.</p>
@@ -1833,21 +1848,21 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           <div class="guide-spec-card">
             <h3>Chip</h3>
             <p><strong>iPhone 17:</strong> Apple A19<br><strong>Galaxy S25:</strong> Snapdragon 8 Elite Gen 2</p>
-            <div class="guide-spec-icon"><img src="imagenes/a.png" alt="Chip" width="50"></div>
+            <div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/a.jpg" alt="Chip" width="50"></div>
           </div>
           <div class="guide-spec-card">
             <h3>Pantalla</h3>
             <p><strong>iPhone 17:</strong> 6.3" OLED 120Hz<br><strong>Galaxy S25:</strong> 6.2" AMOLED 120Hz</p>
-            <div class="guide-spec-icon"><img src="imagenes/pantalla.jpg" alt="Pantalla" width="50"></div>
+            <div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/pantalla.jpg" alt="Pantalla" width="50"></div>
           </div>
           <div class="guide-spec-card">
             <h3>Almacenamiento</h3>
             <p><strong>iPhone 17:</strong> 256GB / 512GB<br><strong>Galaxy S25:</strong> 256GB / 512GB</p>
-            <div class="guide-spec-icon"><img src="imagenes/componentes1.png" alt="Almacenamiento" width="50"></div>
+            <div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/componentes1.jpg" alt="Almacenamiento" width="50"></div>
           </div>
-          <div class="guide-spec-card"><div class="guide-spec-icon"><img src="imagenes/redmi.png" alt="RAM" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>RAM</h3><p><strong>iPhone 17:</strong> 8GB · <strong>Galaxy S25:</strong> 12GB. Android suele necesitar más RAM por su sistema multitarea.</p></div>
-          <div class="guide-spec-card"><div class="guide-spec-icon"><img src="imagenes/iphone17negro.jpg" alt="Conectividad" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>Conectividad</h3><p>Ambos con <strong>5G</strong>, Wi-Fi 7 y Bluetooth 5.4 de última generación.</p></div>
-          <div class="guide-spec-card"><div class="guide-spec-icon"><img src="imagenes/samsung.jpg" alt="Resistencia" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>Resistencia</h3><p>Ambos con certificación <strong>IP68</strong> contra agua y polvo.</p></div>
+          <div class="guide-spec-card"><div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/redmi.png" alt="RAM" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>RAM</h3><p><strong>iPhone 17:</strong> 8GB · <strong>Galaxy S25:</strong> 12GB. Android suele necesitar más RAM por su sistema multitarea.</p></div>
+          <div class="guide-spec-card"><div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/iphone17negro.jpg" alt="Conectividad" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>Conectividad</h3><p>Ambos con <strong>5G</strong>, Wi-Fi 7 y Bluetooth 5.4 de última generación.</p></div>
+          <div class="guide-spec-card"><div class="guide-spec-icon"><img loading="lazy" decoding="async" src="imagenes/samsung.jpg" alt="Resistencia" style="width:56px;height:56px;object-fit:cover;border-radius:8px;"></div><h3>Resistencia</h3><p>Ambos con certificación <strong>IP68</strong> contra agua y polvo.</p></div>
         </div>
       </section>
 
@@ -1856,7 +1871,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         <p>El <strong>iPhone 17</strong> destaca por la consistencia de su procesamiento de imagen y su estabilización de video, ideal para quienes grban contenido o priorizan resultados confiables sin editar mucho. Su sistema de cámaras está muy optimizado para fotografía computacional.</p>
         <p>El <strong>Samsung Galaxy S25</strong> ofrece mayor versatilidad: zoom óptico más potente, modo nocturno más agresivo y más opciones manuales para quienes disfrutan ajustar la fotografía a su gusto. En batería, el S25 suele rendir entre 1 y 2 horas más en uso intensivo gracias a su mayor capacidad.</p>
         <div class="guide-info-box">
-          <div class="guide-info-icon"><img src="imagenes/iphone15.png" alt="Cámara" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
+          <div class="guide-info-icon"><img loading="lazy" decoding="async" src="imagenes/iphone15.jpg" alt="Cámara" style="width:36px;height:36px;object-fit:cover;border-radius:6px;"></div>
           <div>
             <strong>Dato clave</strong>
             <p>Si subes mucho contenido a redes sin editar, el iPhone te da resultados más parejos. Si te gusta editar y experimentar, el Samsung te da más control.</p>
@@ -1891,8 +1906,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       <section class="guide-section" id="phones-conclusion">
         <h2>¿Cuál conviene más?</h2>
         <div class="guide-conclusion-grid">
-          <div class="guide-conclusion-card green"><div class="guide-conclusion-icon"><img src="imagenes/iphone17negro.jpg" alt="iPhone 17" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Elige iPhone 17 si…</h4><p>Ya usas otros productos Apple y valoras la integración del ecosistema y resultados de cámara consistentes sin esfuerzo.</p></div>
-          <div class="guide-conclusion-card blue"><div class="guide-conclusion-icon"><img src="imagenes/samsung.jpg" alt="Galaxy S25" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Elige Galaxy S25 si…</h4><p>Quieres más personalización, mejor batería y un zoom más versátil para fotografía.</p></div>
+          <div class="guide-conclusion-card green"><div class="guide-conclusion-icon"><img loading="lazy" decoding="async" src="imagenes/iphone17negro.jpg" alt="iPhone 17" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Elige iPhone 17 si…</h4><p>Ya usas otros productos Apple y valoras la integración del ecosistema y resultados de cámara consistentes sin esfuerzo.</p></div>
+          <div class="guide-conclusion-card blue"><div class="guide-conclusion-icon"><img loading="lazy" decoding="async" src="imagenes/samsung.jpg" alt="Galaxy S25" style="width:60px;height:60px;object-fit:cover;border-radius:8px;"></div><h4>Elige Galaxy S25 si…</h4><p>Quieres más personalización, mejor batería y un zoom más versátil para fotografía.</p></div>
         </div>
         <div style="margin-top:32px;text-align:center;">
           <button class="guide-cta-big" onclick="showPage('home');setTimeout(()=>document.getElementById('section-smartphones').scrollIntoView({behavior:'smooth'}),400)">
