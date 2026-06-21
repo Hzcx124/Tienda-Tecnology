@@ -3956,7 +3956,13 @@ footer {
    body (clip evita el desbordamiento sin crear contenedor de scroll). */
 html {
   max-width: 100%;
-  /* sin overflow-x: hidden  -> el viewport sigue siendo el scroller */
+  /* overflow-x: clip recorta el desbordamiento horizontal SIN crear
+     un contenedor de scroll (a diferencia de 'hidden'), por lo que
+     NO reintroduce el bug del scroll vertical que saltaba al inicio.
+     Necesario aquí (no sólo en body) porque elementos con
+     position: fixed (cart-panel, toast, mobile-nav-drawer) se anclan
+     al viewport / <html>, y el clip del <body> no los alcanza. */
+  overflow-x: clip;
   /* sin height: 100vh ni position: fixed */
   overscroll-behavior-y: auto;
 }
@@ -3966,6 +3972,8 @@ body {
   overscroll-behavior-y: auto;
 }
 @supports not (overflow-x: clip) {
+  /* Si el navegador no soporta 'clip', recortamos en <body> (no en
+     <html>, para no reintroducir el doble contenedor de scroll). */
   body { overflow-x: hidden; }
 }
 *, *::before, *::after { box-sizing: border-box; }
