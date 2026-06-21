@@ -743,19 +743,17 @@ nav {
   position: relative;
   overflow: hidden;
   display: flex;
-  align-items: stretch;}
+  align-items: stretch;
+  background: #000;}
 
-/* Imagen de fondo borrosa tipo cine */
+/* Fondo negro sólido (antes: imagen de fondo borrosa tipo cine) */
 .hs-bg-img {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
-  filter: brightness(.18) saturate(1.15);
-  transform: scale(1);
+  background-image: none !important;
+  background-color: #000;
   z-index: 0;
-  opacity: .22;
-  transition: transform 8s ease;}
+  opacity: 1;}
 .hero-slide.active .hs-bg-img {
   transform: scale(1.0);}
 
@@ -3348,12 +3346,25 @@ footer {
   padding: 70px 40px;
   background-image:
     linear-gradient(90deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,.65) 40%, rgba(0,0,0,.35) 100%),
-    url('/imagenes/ba.png');
+    url('imagenes/ba.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
   align-items: center;}
+/* Variantes de fondo según el tema de cada página */
+.guide-hero.review-hero-bg {
+  background-image:
+    linear-gradient(90deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,.65) 40%, rgba(0,0,0,.35) 100%),
+    url('imagenes/pc2.jpg');}
+.guide-hero.tips-hero-bg {
+  background-image:
+    linear-gradient(90deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,.65) 40%, rgba(0,0,0,.35) 100%),
+    url('imagenes/pc1.jpg');}
+.guide-hero.phones-hero-bg {
+  background-image:
+    linear-gradient(90deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,.65) 40%, rgba(0,0,0,.35) 100%),
+    url('imagenes/apple 16.jpg');}
 .guide-hero-inner { flex: 1; }
 .guide-breadcrumb {
   font-size: 12px;
@@ -3399,8 +3410,8 @@ footer {
   border-radius: 20px;}
 .guide-hero-img-wrap {
   flex-shrink: 0;
-  width: 200px;
-  height: 200px;
+  width: 220px;
+  height: 220px;
   background: rgba(0, 200, 80, .06);
   border: 1px solid rgba(0, 200, 80, .15);
   border-radius: 20px;
@@ -3408,7 +3419,13 @@ footer {
   align-items: center;
   justify-content: center;
   font-size: 80px;
+  overflow: hidden;
   animation: neonPulseGreen 3s ease-in-out infinite;}
+.guide-hero-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 19px;}
 .guide-sticky-nav {
   position: sticky;
   top: 60px;
@@ -3923,4 +3940,195 @@ footer {
   .hs-inner-carousel { width: 200px; }
   .hs-inner-track { width: 200px; }
   .hs-inner-track img { width: 200px; max-height: 200px; }
+}
+
+/* =====================================================================
+   RESPONSIVE FIXES (añadido) - 2026
+   Objetivo: que el sitio se vea bien en cualquier resolución,
+   especialmente móviles, sin alterar el diseño original.
+   ===================================================================== */
+
+/* 1. Base fluida y prevención de scroll horizontal global
+   IMPORTANTE: NO aplicar overflow-x: hidden al <html>, porque combinado
+   con el mismo valor en <body> crea dos contenedores de scroll y, al
+   colapsarse la barra del navegador móvil (evento resize), la página
+   "salta" automáticamente al inicio. Usamos overflow-x: clip solo en
+   body (clip evita el desbordamiento sin crear contenedor de scroll). */
+html {
+  max-width: 100%;
+  /* sin overflow-x: hidden  -> el viewport sigue siendo el scroller */
+  /* sin height: 100vh ni position: fixed */
+  overscroll-behavior-y: auto;
+}
+body {
+  max-width: 100%;
+  overflow-x: clip;            /* fallback: hidden si el navegador no soporta clip */
+  overscroll-behavior-y: auto;
+}
+@supports not (overflow-x: clip) {
+  body { overflow-x: hidden; }
+}
+*, *::before, *::after { box-sizing: border-box; }
+
+/* 2. Imágenes y vídeos siempre fluidos */
+img, video, iframe, picture, svg {
+  max-width: 100%;
+  height: auto;
+}
+.product-img-wrap img,
+.hs-bg-img,
+.added-product-img img {
+  object-fit: cover;
+}
+
+/* 3. Contenedores no deben forzar más ancho que el viewport */
+section, header, footer, nav, main, .container, .wrap {
+  max-width: 100%;
+}
+
+/* 4. Tipografía fluida básica */
+:root { --fs-base: clamp(14px, 1.6vw, 16px); }
+body { font-size: var(--fs-base); }
+
+/* =====================================================================
+   TABLET (hasta 1024px)
+   ===================================================================== */
+@media (max-width: 1024px) {
+  /* Tarjetas de producto: 2 columnas cuando el contenedor sea grid */
+  .products-grid,
+  .tips-grid,
+  .team-grid,
+  .guide-specs-grid,
+  .guide-conclusion-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  /* Carrusel horizontal sigue funcionando, pero las cards no se desbordan */
+  .products-track { gap: 14px; }
+
+  /* Hero un poco más compacto */
+  .hero-carousel { min-height: 420px; }
+}
+
+/* =====================================================================
+   MÓVIL (hasta 768px)
+   ===================================================================== */
+@media (max-width: 768px) {
+  /* Navbar: el menú principal se reemplaza por el botón hamburguesa
+     (ya existente en el HTML). Ocultamos los items que estorban. */
+  nav { padding: 10px 14px; gap: 8px; flex-wrap: nowrap; }
+  .nav-search,
+  .nav-auth-group,
+  .user-menu-wrap,
+  .cat-btn { display: none !important; }
+  .mobile-menu-btn,
+  .mobile-search-btn { display: inline-flex !important; }
+  .nav-logo { font-size: 20px; }
+
+  /* Drawer ya gestionado por JS — solo aseguramos ancho seguro */
+  .mobile-nav-drawer { width: min(86vw, 320px); max-width: 100%; }
+
+  /* Tarjetas de producto en 1 columna cuando es grid */
+  .products-grid,
+  .tips-grid,
+  .team-grid,
+  .guide-specs-grid,
+  .guide-conclusion-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  /* Carrusel: tarjetas un poco más anchas y con snap */
+  .carousel-wrap { padding: 0 8px; }
+  .products-track { gap: 12px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .product-card { scroll-snap-align: start; }
+
+  /* Banner / hero escala sin deformar */
+  .hero-carousel,
+  .hero-slide,
+  .hs-bg-img {
+    min-height: 360px;
+    height: auto;
+  }
+  .hs-title   { font-size: clamp(22px, 6vw, 32px); line-height: 1.15; }
+  .hs-sub     { font-size: clamp(13px, 3.6vw, 16px); }
+  .hs-eyebrow { font-size: 12px; }
+
+  /* Botones y formularios fáciles de tocar */
+  button, .btn, .btn-primary, .added-btn-primary, .added-btn-secondary,
+  input[type="text"], input[type="email"], input[type="password"],
+  input[type="tel"], input[type="number"], select, textarea {
+    min-height: 44px;
+    font-size: 16px;   /* evita el zoom automático en iOS */
+  }
+  input, textarea, select { width: 100%; }
+  .form-group { margin-bottom: 12px; }
+
+  /* Modales ocupan casi toda la pantalla con padding seguro */
+  .modal-box,
+  .added-modal-box {
+    width: 94vw;
+    max-width: 94vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 18px;
+    border-radius: 14px;
+  }
+  .added-modal-footer { flex-direction: column; gap: 8px; }
+  .added-modal-footer button { width: 100%; }
+
+  /* Carrito lateral a pantalla completa */
+  .cart-drawer, .cart-side, .cart-panel { width: 100vw !important; max-width: 100vw !important; }
+
+  /* Footer apilado */
+  footer .footer-grid,
+  .footer-grid,
+  .footer-cols {
+    grid-template-columns: 1fr !important;
+    text-align: left;
+    gap: 18px;
+  }
+
+  /* Guías / secciones internas */
+  .guide-nav-inner { overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+  .guide-nav-link { display: inline-block; }
+
+  /* Tablas no se desbordan */
+  table { display: block; width: 100%; overflow-x: auto; }
+}
+
+/* =====================================================================
+   MÓVIL PEQUEÑO (hasta 480px)
+   ===================================================================== */
+@media (max-width: 480px) {
+  .nav-logo { font-size: 18px; }
+  .hs-title { font-size: clamp(20px, 7vw, 28px); }
+  .product-card { min-width: 78vw; max-width: 78vw; }
+  .section-title { font-size: 20px; }
+}
+
+/* =====================================================================
+   ESCRITORIO (más de 1024px) - garantizar 3+ columnas en grids
+   ===================================================================== */
+@media (min-width: 1025px) {
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 22px;
+  }
+  .tips-grid,
+  .team-grid,
+  .guide-specs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 22px;
+  }
+}
+
+/* 5. Utilidad: evitar que cualquier elemento con ancho fijo en px
+   rompa el layout en pantallas muy pequeñas */
+@media (max-width: 768px) {
+  [style*="width:"][style*="px"] { max-width: 100% !important; }
 }
