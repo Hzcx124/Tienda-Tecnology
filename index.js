@@ -1367,3 +1367,30 @@ if (_origAddProduct) {
   // Inicializar los 4 carruseles internos
   for (let i = 0; i < 4; i++) setupInner(i);
 })();
+
+// ── Lazy load + autoplay del video del banner featured ──
+(function initFeaturedVideo() {
+  const vid = document.getElementById('featuredVideo');
+  if (!vid) return;
+
+  // Si ya tiene src asignado directamente en el HTML, solo aseguramos que reproduzca
+  if (vid.src && vid.src !== window.location.href) {
+    vid.play().catch(() => {});
+    return;
+  }
+
+  // Fallback: mover data-src → src cuando entra al viewport
+  const src = vid.dataset.src;
+  if (!src) return;
+
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      vid.src = src;
+      vid.load();
+      vid.play().catch(() => {});
+      obs.disconnect();
+    }
+  }, { threshold: 0.1 });
+
+  obs.observe(vid);
+})();
