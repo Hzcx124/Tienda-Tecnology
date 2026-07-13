@@ -1,8 +1,4 @@
-/* estilos para TiendaTech - proyecto final */
- 
-/* ============================================================
-   ANIMACIONES NEON PULSE — definiciones globales
-   ============================================================ */
+
  
 /* Pulse verde principal — botones CTA, bordes de cards activas */
 @keyframes neonPulseGreen {
@@ -4152,3 +4148,238 @@ body { font-size: var(--fs-base); }
 @media (max-width: 768px) {
   [style*="width:"][style*="px"] { max-width: 100% !important; }
 }
+
+/* =====================================================================
+   MODAL FIESTAS PATRIAS
+   ===================================================================== */
+.patria-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: rgba(0, 0, 0, .6);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s;
+}
+.patria-overlay.show { opacity: 1; pointer-events: all; }
+
+.patria-box {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  overflow: hidden;
+  transform: translateY(20px) scale(.97);
+  transition: transform .3s;
+  box-shadow: var(--shadow-xl), 0 0 40px rgba(217, 24, 43, 0.18);
+  text-align: center;
+  padding: 0 32px 32px;
+  font-family: 'DM Sans', sans-serif;
+}
+.patria-overlay.show .patria-box { transform: translateY(0) scale(1); }
+
+.patria-flag {
+  display: flex;
+  width: 100%;
+  height: 10px;
+  margin: 0 0 24px;
+}
+.patria-flag span { flex: 1; }
+.patria-flag span:nth-child(1) { background: #D91E36; }
+.patria-flag span:nth-child(2) { background: #ffffff; }
+.patria-flag span:nth-child(3) { background: #D91E36; }
+
+.patria-close {
+  position: absolute;
+  top: 22px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 20px;
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  cursor: pointer;
+}
+.patria-close:hover { color: var(--text); background: var(--bg); }
+
+.patria-emoji {
+  font-size: 44px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.patria-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 6px;
+}
+.patria-subtitle {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 22px;
+  padding: 0 8px;
+}
+
+.patria-coupon {
+  background: var(--green-light);
+  border: 1.5px dashed var(--green);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin-bottom: 22px;
+}
+.patria-coupon-label {
+  font-size: 12px;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 8px;
+}
+.patria-coupon-code {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.patria-coupon-code span {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--accent);
+}
+.patria-copy-btn {
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.patria-copy-btn:hover { background: var(--green-dark); }
+.patria-coupon-desc {
+  font-size: 13px;
+  color: var(--text2);
+  margin-top: 8px;
+}
+
+.patria-countdown { margin-bottom: 24px; }
+.patria-countdown-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.patria-countdown-timer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.patria-time-unit {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 4px;
+  min-width: 56px;
+}
+.patria-time-unit span {
+  display: block;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+}
+.patria-time-unit small {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.patria-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.patria-btn-primary {
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 13px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.patria-btn-primary:hover { background: var(--green-dark); }
+.patria-btn-secondary {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 4px;
+  cursor: pointer;
+}
+.patria-btn-secondary:hover { color: var(--text); }
+
+@media (max-width: 480px) {
+  .patria-box { margin: 0 12px; padding: 0 20px 24px; max-width: none; }
+  .patria-coupon-code span { font-size: 22px; }
+  .patria-time-unit { min-width: 48px; }
+}
+
+/* =====================================================================
+   CUPÓN EN EL CARRITO
+   ===================================================================== */
+.coupon-box { margin-bottom: 16px; }
+.coupon-input-row {
+  display: flex;
+  gap: 8px;
+}
+.coupon-input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--bg3);
+  text-transform: uppercase;
+}
+.coupon-input:focus {
+  outline: none;
+  border-color: var(--green);
+  background: #fff;
+}
+.coupon-apply-btn {
+  background: var(--text);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.coupon-apply-btn:hover { background: var(--green-dark); }
+.coupon-msg {
+  font-size: 12px;
+  margin: 6px 2px 0;
+  min-height: 14px;
+}
+.coupon-msg.ok { color: var(--green-dark); }
+.coupon-msg.error { color: var(--red); }
