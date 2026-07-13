@@ -1,6 +1,3 @@
-// Proyecto Final - Tienda de tecnologia
-// Hecho por el grupo para el curso de desarrollo web
-// Nota: hay algunas cosas que se podrian mejorar pero funciona bien
 
 // búsqueda
 
@@ -46,21 +43,31 @@ function toggleMobileSearch() {
   }
 }
 
-function mobileLiveSearch(query) {
-  const dd = document.getElementById('mobileSearchDropdown');
+function renderSearchDropdown(query, dropdownId, opts) {
+  const { closeFn, useProductImg } = opts || {};
+  const dd = document.getElementById(dropdownId);
   if (!dd) return;
+
   const q = query.trim();
   if (!q) { dd.classList.remove('show'); return; }
+
   const matches = filterProducts(q).slice(0, 8);
+  const closeCall = closeFn ? `;${closeFn}()` : '';
+
   if (!matches.length) {
     dd.innerHTML = `<div class="search-no-results">No se encontraron productos para "<strong>${q}</strong>"</div>`;
   } else {
     dd.innerHTML = matches.map(p => {
-      const catCfg = CATEGORY_CONFIG[p.cat] || { imageUrl: '', icon: '📦' };
-      const iconHtml = catCfg.imageUrl
-        ? `<img src="${catCfg.imageUrl}" class="search-result-img" onerror="this.style.display='none'">`
-        : `<span class="search-result-icon">${catCfg.icon}</span>`;
-      return `<div class="search-result-item" onclick="doSearch('${p.name.replace(/'/g, "\\'")}');toggleMobileSearch()">
+      let iconHtml;
+      if (useProductImg) {
+        iconHtml = `<img src="${p.img}" class="search-result-img">`;
+      } else {
+        const catCfg = CATEGORY_CONFIG[p.cat] || { imageUrl: '', icon: '📦' };
+        iconHtml = catCfg.imageUrl
+          ? `<img src="${catCfg.imageUrl}" class="search-result-img" onerror="this.style.display='none'">`
+          : `<span class="search-result-icon">${catCfg.icon}</span>`;
+      }
+      return `<div class="search-result-item" onclick="doSearch('${p.name.replace(/'/g, "\\'")}')${closeCall}">
         <div class="search-result-icon-wrap">${iconHtml}</div>
         <div class="search-result-info">
           <div class="search-result-name">${highlightMatch(p.name, q)}</div>
@@ -70,7 +77,16 @@ function mobileLiveSearch(query) {
       </div>`;
     }).join('');
   }
+
   dd.classList.add('show');
+}
+
+function liveSearch(query) {
+  renderSearchDropdown(query, 'searchDropdown', { useProductImg: true });
+}
+
+function mobileLiveSearch(query) {
+  renderSearchDropdown(query, 'mobileSearchDropdown', { closeFn: 'toggleMobileSearch' });
 }
 
 // abrir/cerrar menu lateral
@@ -87,35 +103,6 @@ function toggleMobileDrawer() {
   }
 }
 
-function liveSearch(query) {
-  const dd = document.getElementById('searchDropdown');
-  if (!dd) return;
-
-  const q = query.trim();
-  if (!q) {
-    dd.classList.remove('show');
-    return;
-  }
-
-  const matches = filterProducts(q).slice(0, 8);
-
-  if (!matches.length) {
-    dd.innerHTML = `<div class="search-no-results">No se encontraron productos para "<strong>${q}</strong>"</div>`;
-  } else {
-    dd.innerHTML = matches.map(p => `
-      <div class="search-result-item" onclick="doSearch('${p.name.replace(/'/g, "\\'")}')">
-        <img src="${p.img}" class="search-result-img">
-        <div class="search-result-info">
-          <div class="search-result-name">${highlightMatch(p.name, q)}</div>
-          <div class="search-result-meta">${p.brand} · ${p.cat}</div>
-        </div>
-        <div class="search-result-price">S/ ${p.price}</div>
-      </div>
-    `).join('');
-  }
-
-  dd.classList.add('show');
-}
 // doSearch
 
 // TODO: agregar paginación después
@@ -164,26 +151,7 @@ function jumpToProduct(id, cardEl) {
   setTimeout(() => cardEl.classList.remove('search-match'), 2000);
 }
 
-// Cerrar dropdown de búsqueda al hacer clic fuera
-document.addEventListener('click', e => {
-  if (!e.target.closest('.nav-search')) {
-    const dd = document.getElementById('searchDropdown');
-    if (dd) dd.classList.remove('show');
-  }
-});
-
 //  MEGA MENÚ (Categorías)
-
-// mega menu de categorias
-function toggleMega() {
-  const wrap = document.getElementById('megaWrap');
-  const overlay = document.getElementById('megaOverlay');
-  const btn = document.getElementById('catBtn');
-  if (!wrap) return;
-  const isOpen = wrap.classList.toggle('open');
-  if (overlay) overlay.classList.toggle('open', isOpen);
-  if (btn) btn.classList.toggle('open', isOpen);
-}
 
 // Cerrar el mega-menú con la tecla Escape
 document.addEventListener('keydown', e => {
@@ -460,11 +428,32 @@ function showPage(name) {
 
 // carrito
 
+// Cupones válidos: código -> % de descuento
+const COUPONS = {
+  'PERU28': 28
+};
+
+// Cupón activo — persiste en localStorage mientras el carrito tenga productos
+let activeCoupon = JSON.parse(localStorage.getItem('pf_coupon') || 'null'); // { code, percent }
+
 // Cargar carrito guardado en localStorage (persiste entre sesiones)
 let cart = JSON.parse(localStorage.getItem('pf_cart') || '[]');
-console.log('carrito cargado:', cart);
+
+// Si no hay productos en el carrito, no debe quedar un cupón "colgado"
+if (!cart.length && activeCoupon) {
+  activeCoupon = null;
+  localStorage.removeItem('pf_coupon');
+}
 
 function saveCart() { localStorage.setItem('pf_cart', JSON.stringify(cart)); }
+
+function saveCoupon() {
+  if (activeCoupon) {
+    localStorage.setItem('pf_coupon', JSON.stringify(activeCoupon));
+  } else {
+    localStorage.removeItem('pf_coupon');
+  }
+}
 
 // agregar al carrito
 function addToCartFromCard(p) {
@@ -526,6 +515,7 @@ function changeQty(id, delta) {
   item.qty += delta;
   if (item.qty <= 0) cart = cart.filter(x => x.id != id);
   saveCart();
+  if (!cart.length) { activeCoupon = null; saveCoupon(); }
   updateCartCount();
   renderCart();
 }
@@ -535,6 +525,7 @@ function changeQty(id, delta) {
 function removeFromCart(id) {
   cart = cart.filter(x => x.id != id);
   saveCart();
+  if (!cart.length) { activeCoupon = null; saveCoupon(); }
   updateCartCount();
   renderCart();
 }
@@ -574,10 +565,67 @@ function renderCart() {
   }).join('');
 
   if (footer) footer.style.display = 'block';
+
+  const discount = activeCoupon ? subtotal * (activeCoupon.percent / 100) : 0;
+  const total = subtotal - discount;
+
   const sub = document.getElementById('cart-subtotal');
   const tot = document.getElementById('cart-total');
+  const discRow = document.getElementById('cart-discount-row');
+  const discEl = document.getElementById('cart-discount');
+  const codeEl = document.getElementById('cart-coupon-code');
+
   if (sub) sub.textContent = 'S/ ' + subtotal.toFixed(2);
-  if (tot) tot.textContent = 'S/ ' + subtotal.toFixed(2);
+  if (tot) tot.textContent = 'S/ ' + total.toFixed(2);
+
+  if (activeCoupon && discRow && discEl && codeEl) {
+    discRow.style.display = 'flex';
+    discEl.textContent = '- S/ ' + discount.toFixed(2);
+    codeEl.textContent = activeCoupon.code;
+
+    const input = document.getElementById('couponInput');
+    const msg = document.getElementById('couponMsg');
+    if (input && !input.value) input.value = activeCoupon.code;
+    if (msg && !msg.textContent) {
+      msg.textContent = `¡Cupón aplicado! ${activeCoupon.percent}% de descuento.`;
+      msg.className = 'coupon-msg ok';
+    }
+  } else if (discRow) {
+    discRow.style.display = 'none';
+  }
+}
+
+// Aplica el cupón escrito en el input del carrito
+function applyCoupon() {
+  const input = document.getElementById('couponInput');
+  const msg = document.getElementById('couponMsg');
+  if (!input) return;
+
+  const code = input.value.trim().toUpperCase();
+  if (!code) {
+    if (msg) { msg.textContent = 'Ingresa un código de cupón.'; msg.className = 'coupon-msg error'; }
+    return;
+  }
+
+  if (!cart.length) {
+    if (msg) { msg.textContent = 'Tu carrito está vacío.'; msg.className = 'coupon-msg error'; }
+    return;
+  }
+
+  const percent = COUPONS[code];
+  if (!percent) {
+    activeCoupon = null;
+    saveCoupon();
+    if (msg) { msg.textContent = 'Cupón no válido o expirado.'; msg.className = 'coupon-msg error'; }
+    renderCart();
+    return;
+  }
+
+  activeCoupon = { code, percent };
+  saveCoupon();
+  if (msg) { msg.textContent = `¡Cupón aplicado! ${percent}% de descuento.`; msg.className = 'coupon-msg ok'; }
+  showToast(`Cupón ${code} aplicado (${percent}% off)`);
+  renderCart();
 }
 
 // updateCartCount
@@ -605,7 +653,9 @@ function checkout() {
   saveOrder();
   showToast(' ¡Pedido realizado con éxito!');
   cart = [];
+  activeCoupon = null;
   saveCart();
+  saveCoupon();
   updateCartCount();
   renderCart();
   setTimeout(() => { toggleCart(); showPage('pedidos'); }, 1200);
@@ -633,12 +683,18 @@ function saveOrder() {
   const subtotal = cart.reduce((s, item) =>
     s + parseFloat(String(item.price).replace(',', '')) * item.qty, 0);
 
+  const discount = activeCoupon ? subtotal * (activeCoupon.percent / 100) : 0;
+  const total = subtotal - discount;
+
   const newOrder = {
     id: 'PF-' + Date.now(),
     date: new Date().toLocaleDateString('es-PE', { day: '2-digit', month: 'long', year: 'numeric' }),
     status: 'procesando',
     items: cart.map(i => ({ ...i })),
-    total: subtotal.toFixed(2)
+    subtotal: subtotal.toFixed(2),
+    coupon: activeCoupon ? activeCoupon.code : null,
+    discount: discount.toFixed(2),
+    total: total.toFixed(2)
   };
   orders.unshift(newOrder);
   saveOrders(orders);
@@ -1289,11 +1345,7 @@ if (_origAddProduct) {
 // ═══════════════════════════════════════════════════════
 
 (function initInnerCarousels() {
-  const INNER_INTERVAL = 2800; // ms entre imágenes
-  const innerTimers = [];
-
-  // Color neon por carrusel (coincide con slide)
-  const IC_COLORS = ['#00c853', '#a855f7', '#ff6d00', '#0099ff'];
+  const INNER_INTERVAL = 2800;
 
   function setupInner(idx) {
     const track = document.getElementById(`innerTrack${idx}`);
@@ -1305,66 +1357,49 @@ if (_origAddProduct) {
     if (imgs.length < 2) { imgs[0] && imgs[0].classList.add('ic-active'); return; }
 
     let current = 0;
+    let timer;
 
-    // Construir dots
     imgs.forEach((_, i) => {
       const btn = document.createElement('button');
       btn.className = 'hs-inner-dot' + (i === 0 ? ' active' : '');
       btn.setAttribute('aria-label', `Imagen ${i + 1}`);
-      btn.onclick = () => goInner(idx, i);
+      btn.onclick = () => goInner(i);
       dotsEl.appendChild(btn);
     });
 
-    // Construir flechas mini
     const arrowL = document.createElement('button');
     arrowL.className = 'hs-inner-arrow left';
     arrowL.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M15 18l-6-6 6-6"/></svg>';
-    arrowL.onclick = () => goInner(idx, (current - 1 + imgs.length) % imgs.length);
+    arrowL.onclick = () => goInner((current - 1 + imgs.length) % imgs.length);
 
     const arrowR = document.createElement('button');
     arrowR.className = 'hs-inner-arrow right';
     arrowR.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 18l6-6-6-6"/></svg>';
-    arrowR.onclick = () => goInner(idx, (current + 1) % imgs.length);
+    arrowR.onclick = () => goInner((current + 1) % imgs.length);
 
     carousel.appendChild(arrowL);
     carousel.appendChild(arrowR);
 
-    // Activar primera imagen
     imgs[0].classList.add('ic-active');
 
-    function goInner(carIdx, n) {
-      if (carIdx !== idx) return;
+    function goInner(n) {
       imgs[current].classList.remove('ic-active');
       current = (n + imgs.length) % imgs.length;
       imgs[current].classList.add('ic-active');
-
-      // Actualizar dots
-      const dots = dotsEl.querySelectorAll('.hs-inner-dot');
-      dots.forEach((d, i) => {
+      dotsEl.querySelectorAll('.hs-inner-dot').forEach((d, i) => {
         d.classList.toggle('active', i === current);
       });
-
-      resetInnerTimer(idx);
+      resetTimer();
     }
 
-    // Exponer goInner globalmente para poder llamarlo desde el timer
-    window[`goInner${idx}`] = (n) => goInner(idx, n);
-    window[`getInnerCurrent${idx}`] = () => current;
-    window[`getInnerCount${idx}`] = () => imgs.length;
-
-    function resetInnerTimer(carIdx) {
-      clearInterval(innerTimers[carIdx]);
-      innerTimers[carIdx] = setInterval(() => {
-        const cur = window[`getInnerCurrent${carIdx}`]();
-        const cnt = window[`getInnerCount${carIdx}`]();
-        window[`goInner${carIdx}`]((cur + 1) % cnt);
-      }, INNER_INTERVAL);
+    function resetTimer() {
+      clearInterval(timer);
+      timer = setInterval(() => goInner((current + 1) % imgs.length), INNER_INTERVAL);
     }
 
-    resetInnerTimer(idx);
+    resetTimer();
   }
 
-  // Inicializar los 4 carruseles internos
   for (let i = 0; i < 4; i++) setupInner(i);
 })();
 
@@ -1394,3 +1429,74 @@ if (_origAddProduct) {
 
   obs.observe(vid);
 })();
+
+// ── Modal Fiestas Patrias ──
+(function initPatriaModal() {
+  const overlay = document.getElementById('patriaModal');
+  if (!overlay) return;
+
+  // Fecha límite de la oferta: 28 de julio del año actual (si ya pasó, usa el próximo año)
+  function getDeadline() {
+    const now = new Date();
+    let year = now.getFullYear();
+    let deadline = new Date(year, 6, 28, 23, 59, 59); // mes 6 = julio (0-indexado)
+    if (deadline < now) deadline = new Date(year + 1, 6, 28, 23, 59, 59);
+    return deadline;
+  }
+  const deadline = getDeadline();
+
+  function tickPatriaCountdown() {
+    const now = new Date();
+    let diff = Math.max(0, deadline - now);
+
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const m = Math.floor((diff / (1000 * 60)) % 60);
+    const s = Math.floor((diff / 1000) % 60);
+
+    const elD = document.getElementById('patria-d');
+    const elH = document.getElementById('patria-h');
+    const elM = document.getElementById('patria-m');
+    const elS = document.getElementById('patria-s');
+    if (elD) elD.textContent = String(d).padStart(2, '0');
+    if (elH) elH.textContent = String(h).padStart(2, '0');
+    if (elM) elM.textContent = String(m).padStart(2, '0');
+    if (elS) elS.textContent = String(s).padStart(2, '0');
+  }
+
+  tickPatriaCountdown();
+  setInterval(tickPatriaCountdown, 1000);
+
+  // Se muestra cada vez que se carga la página, con una pequeña pausa
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => overlay.classList.add('show'), 700);
+  });
+})();
+
+function closePatriaModal(e) {
+  const overlay = document.getElementById('patriaModal');
+  if (!overlay) return;
+  // Si el clic viene del overlay (fondo), o no hay evento (botón), cerramos
+  if (!e || e.target === overlay) {
+    overlay.classList.remove('show');
+  }
+}
+
+function copyPatriaCoupon() {
+  const code = 'PERU28';
+  const btn = document.getElementById('patriaCopyBtn');
+  const finishCopy = () => {
+    if (btn) {
+      const original = btn.textContent;
+      btn.textContent = '¡Copiado!';
+      setTimeout(() => { btn.textContent = original; }, 1800);
+    }
+    showToast('Cupón PERU28 copiado');
+  };
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(finishCopy).catch(finishCopy);
+  } else {
+    finishCopy();
+  }
+}
